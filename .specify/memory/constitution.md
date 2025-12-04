@@ -1,55 +1,68 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report:
+Version change: 0.0.0 → 0.1.0
+Modified principles:
+  - PROJECT_NAME: AI-Powered eBook Platform
+  - PRINCIPLE_1_NAME: Security → Data Security & Privacy
+  - PRINCIPLE_2_NAME: Scalability → Scalability & Performance
+  - PRINCIPLE_3_NAME: Maintainability → Code Maintainability & Modularity
+  - PRINCIPLE_4_NAME: UX → User Experience (UX)
+  - PRINCIPLE_5_NAME: AI Ethics → AI Ethics & Citation
+Added sections:
+  - Technology Stack Context
+  - Constraints & Considerations
+  - Goals & Expected Outcomes
+Removed sections: None
+Templates requiring updates:
+  - .specify/templates/plan-template.md: ⚠ pending
+  - .specify/templates/spec-template.md: ⚠ pending
+  - .specify/templates/tasks-template.md: ⚠ pending
+  - .specify/templates/commands/*.md: ⚠ pending
+Follow-up TODOs:
+  - TODO(RATIFICATION_DATE): Original adoption date is unknown.
+-->
+# AI-Powered eBook Platform Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Data Security & Privacy
+All user data MUST be handled safely and encrypted, especially sensitive information. User privacy is paramount.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Scalability & Performance
+The platform MUST support multiple books, users, and languages efficiently. Architectural decisions MUST consider future growth and maintain optimal performance.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Code Maintainability & Modularity
+The codebase MUST be clean, modular, and adhere to a clear separation of concerns (frontend, backend, AI). This ensures ease of understanding, testing, and future enhancements.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. User Experience (UX)
+The platform MUST provide an intuitive book reading interface and chatbot interaction. Design choices MUST prioritize a seamless and engaging user journey.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. AI Ethics & Citation
+AI responses MUST be accurate, context-aware, and provide correct citations (chapter/page and source link) to avoid hallucinations and respect intellectual property. User privacy related to AI interactions MUST be protected.
 
-### [PRINCIPLE_6_NAME]
+## Technology Stack Context
 
+**Frontend**: Docusaurus (TypeScript) with i18n for multi-language support.
+**Backend**: FastAPI (Python) for robust AI integration and API services.
+**Database**: Neon DB for structured data, Qdrant for vector embeddings.
+**AI System**: OpenAI Agents SDK for Retrieval-Augmented Generation (RAG).
+**Deployment**: GitHub Pages for frontend, Railway with Docker for backend.
 
-[PRINCIPLE__DESCRIPTION]
+## Constraints & Considerations
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+- **Language Support**: Initially, only handle eBooks in supported languages (English, Urdu).
+- **Chatbot References**: The chatbot MUST provide references for all answers.
+- **Persistent History**: Conversation history MUST be persistent and tied to user profiles.
+- **Best Practices**: Adhere to best practices for API design, frontend routing, and modularization.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Goals & Expected Outcomes
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- **Functional Platform**: A fully functional AI-powered eBook platform.
+- **Accurate AI**: Accurate, context-aware chatbot responses.
+- **Seamless UX**: A seamless, multilingual user experience.
+- **Secure & Scalable**: A secure and scalable system architecture.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This Constitution supersedes all other practices. Amendments require thorough documentation, approval, and a clear migration plan. All Pull Requests and code reviews MUST verify compliance with these principles. Complexity MUST always be justified.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 0.1.0 | **Ratified**: TODO(RATIFICATION_DATE) | **Last Amended**: 2025-12-03
