@@ -100,3 +100,36 @@ Acceptance Criteria:
 Full set of chapters covering all modules
 Properly formatted for Docusaurus
 Ready for ingestion into the RAG system
+
+
+
+Create a detailed development plan for the AI-native textbook “Physical AI & Humanoid Robotics”, based on the specification provided. The plan should break the work into clear, actionable steps with priorities, dependencies, and outcomes.
+
+Requirements:
+
+Tasks Breakdown:
+
+Divide the book into chapters and sections based on course modules.
+Define tasks for writing, reviewing, and formatting each chapter.
+Include tasks for adding code snippets, diagrams, and examples.
+
+Dependencies:
+
+Identify dependencies between chapters, technical examples, and RAG metadata.
+Specify which chapters can be developed in parallel.
+
+Timeline & Milestones:
+
+Suggest a sequence for completing chapters, review, and final formatting.
+Include checkpoints for RAG metadata validation and MDX readiness.
+
+Outputs & Deliverables:
+
+Fully formatted MDX files per chapter.
+Complete metadata (chapter_id, page_number, slug, URL) for RAG.
+Ready-for-ingestion book repository for frontend integration.
+
+Quality & Standards:
+
+Ensure content clarity, consistency, and factual accuracy.
+Confirm code snippets and examples are correct and executable where applicable.
