@@ -1,0 +1,20 @@
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+.env*
+
+# Git
+.git/
+
+# Temp files
+*.tmp
+*.swp
+
+# IDE/Editor files
+.vscode/
+.idea/
+
+# Docusaurus specific
+docs/

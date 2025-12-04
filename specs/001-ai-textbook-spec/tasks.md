@@ -9,7 +9,7 @@
 ## Phase 1: Setup & Docusaurus Configuration
 
 - [ ] T001 Create content directory structure: `frontend/docs/chapters/`, `frontend/docs/assets/`, `frontend/docs/_data/`
-- [ ] T002 Configure Docusaurus `docusaurus.config.js` to recognize `frontend/docs` as the docs path and `frontend/docs/assets` for static/asset handling.
+- [ ] T002 Configure Docusaurus `docusaurus.config.ts` to recognize `frontend/docs` as the docs path and `frontend/docs/assets` for static/asset handling.
 - [ ] T003 Create initial `rag-metadata.json` file in `frontend/docs/_data/rag-metadata.json`
 - [ ] T004 Define and document MDX chapter template with YAML frontmatter in `frontend/docs/chapter-template.md`
 - [ ] T005 Define chapter IDs, slugs, and initial URLs for all 10 chapters.
