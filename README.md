@@ -175,3 +175,70 @@ Review and edit each chapter for clarity and accuracy
 Validate MDX formatting for Docusaurus
 Ensure metadata is ready for RAG ingestion
 
+
+
+Generate a detailed task list for creating the AI-native textbook “Physical AI & Humanoid Robotics.”
+The tasks should be broken down into clear, actionable steps that an AI agent or human contributor can execute directly.
+Do not include RAG, chatbot, backend, or frontend tasks.
+Focus only on book writing, chapter creation, content structure, and MDX formatting.
+
+Task Requirements:
+1. Chapter Planning & Structure
+Create tasks for planning each chapter based on course modules.
+Define tasks for outlining chapter objectives, section breakdown, and required explanations.
+Include tasks for deciding where examples, diagrams, or code snippets are needed.
+
+2. Writing Tasks
+
+Break writing into small, manageable tasks such as:
+Write introduction for Chapter X
+Write section on concept Y
+Explain topic Z with diagrams or analogies
+Write step-by-step explanation of ROS 2 configuration
+Write python code example for Robotics concept
+Draft summary and learning outcomes
+Each chapter should have multiple writing tasks.
+
+3. Technical Content Tasks
+
+Tasks to create or refine code snippets (Python, ROS 2, URDF, etc.)
+Tasks to generate diagrams: architecture diagrams, robotics pipeline diagrams, simulation flow, sensor layouts, etc.
+Tasks to draft pseudo-code or step-by-step explanations for robotics processes.
+
+4. MDX Formatting Tasks
+
+Convert each chapter into properly structured MDX format.
+Add headings, subheadings, lists, tables, and code blocks.
+Insert images and diagrams using proper Docusaurus MDX syntax.
+Validate formatting for consistency and readability.
+
+5. Review & Refinement
+
+Tasks for technical accuracy review.
+Tasks for rewriting unclear or ambiguous content.
+Tasks for ensuring consistent terminology acros chapters.
+Tasks for grammar, clarity, and tone refinement.
+Tasks for internal cross-referencing between chapters.
+
+6. Metadata Preparation
+
+Even though this is not RAG-specific, include basic metadata tasks such as:
+Assign chapter IDs, titles, and slugs
+Add frontmatter to each MDX file
+Ensure all chapters follow a consistent metadata structure
+(Do not include embeddings or RAG ingestion tasks.)
+
+7. Final Assembly Tasks
+
+Compile all chapters into the Docusaurus /docs folder.
+Verify sidebar structure aligns with book flow.
+Ensure navigation is consistent and all links work.
+Perform a final content sweep to ensure chapter cohesion.
+
+Output Format
+
+The task list should be:
+Highly detailed
+Structured hierarchically
+Broken into granular, actionable items
+Organized by chapter and by type of task (writing, diagrams, formatting, metadata, review)

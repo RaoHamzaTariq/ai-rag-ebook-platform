@@ -1,214 +1,140 @@
-# Feature Tasks: AI-Native Textbook for Physical AI & Humanoid Robotics
-
-**Feature Branch**: `001-ai-textbook-spec`
-**Created**: 2025-12-04
-**Status**: Draft
-**Spec**: E:/AI Native Books/ai-rag-ebook-platform/specs/001-ai-textbook-spec/spec.md
-**Plan**: E:/AI Native Books/ai-rag-ebook-platform/specs/001-ai-textbook-spec/plan.md
-
-## Phase 1: Setup & Docusaurus Configuration
-
-- [ ] T001 Create content directory structure: `frontend/docs/chapters/`, `frontend/docs/assets/`, `frontend/docs/_data/`
-- [ ] T002 Configure Docusaurus `docusaurus.config.ts` to recognize `frontend/docs` as the docs path and `frontend/docs/assets` for static/asset handling.
-- [ ] T003 Create initial `rag-metadata.json` file in `frontend/docs/_data/rag-metadata.json`
-- [ ] T004 Define and document MDX chapter template with YAML frontmatter in `frontend/docs/chapter-template.md`
-- [ ] T005 Define chapter IDs, slugs, and initial URLs for all 10 chapters.
-
-## Phase 2: Content Authoring (Chapter-Wise)
-
-**Goal**: Authors can create new chapters and sections following defined content structure and standards.
-**Independent Test**: Create a new MDX chapter file with all required metadata, content structure elements (headings, subheadings, explanations, examples, diagrams, code snippets), and verify its adherence to content standards.
-
-### Chapter 1: Foundations of Physical AI & Embodied Intelligence
-
-- [ ] T006 [US1] Write content and explanations for Chapter 1 in `frontend/docs/chapters/01-foundations.mdx`
-- [ ] T007 [US1] Add examples and analogies for Chapter 1 in `frontend/docs/chapters/01-foundations.mdx`
-
-### Chapter 2: ROS 2 Fundamentals
-
-- [ ] T008 [P] [US1] Write content and explanations for Chapter 2 in `frontend/docs/chapters/02-ros2-fundamentals.mdx`
-- [ ] T009 [P] [US1] Add examples and analogies for Chapter 2 in `frontend/docs/chapters/02-ros2-fundamentals.mdx`
-
-### Chapter 3: Gazebo Simulation & Digital Twin
-
-- [ ] T010 [US1] Write content and explanations for Chapter 3 in `frontend/docs/chapters/03-gazebo-simulation.mdx`
-- [ ] T011 [US1] Add examples and analogies for Chapter 3 in `frontend/docs/chapters/03-gazebo-simulation.mdx`
-
-### Chapter 4: Unity for Robot Visualization
-
-- [ ] T012 [P] [US1] Write content and explanations for Chapter 4 in `frontend/docs/chapters/04-unity-visualization.mdx`
-- [ ] T013 [P] [US1] Add examples and analogies for Chapter 4 in `frontend/docs/chapters/04-unity-visualization.mdx`
-
-### Chapter 5: NVIDIA Isaac Sim & Isaac ROS
-
-- [ ] T014 [P] [US1] Write content and explanations for Chapter 5 in `frontend/docs/chapters/05-nvidia-isaac.mdx`
-- [ ] T015 [P] [US1] Add examples and analogies for Chapter 5 in `frontend/docs/chapters/05-nvidia-isaac.mdx`
-
-### Chapter 6: Vision, Perception, and Navigation
-
-- [ ] T016 [P] [US1] Write content and explanations for Chapter 6 in `frontend/docs/chapters/06-vision-perception.mdx`
-- [ ] T017 [P] [US1] Add examples and analogies for Chapter 6 in `frontend/docs/chapters/06-vision-perception.mdx`
-
-### Chapter 7: Humanoid Kinematics, Bipedal Locomotion & Balance
-
-- [ ] T018 [P] [US1] Write content and explanations for Chapter 7 in `frontend/docs/chapters/07-humanoid-kinematics.mdx`
-- [ ] T019 [P] [US1] Add examples and analogies for Chapter 7 in `frontend/docs/chapters/07-humanoid-kinematics.mdx`
-
-### Chapter 8: Manipulation & Grasping
-
-- [ ] T020 [P] [US1] Write content and explanations for Chapter 8 in `frontend/docs/chapters/08-manipulation-grasping.mdx`
-- [ ] T021 [P] [US1] Add examples and analogies for Chapter 8 in `frontend/docs/chapters/08-manipulation-grasping.mdx`
-
-### Chapter 9: Conversational Robotics (GPT integration)
-
-- [ ] T022 [P] [US1] Write content and explanations for Chapter 9 in `frontend/docs/chapters/09-conversational-robotics.mdx`
-- [ ] T023 [P] [US1] Add examples and analogies for Chapter 9 in `frontend/docs/chapters/09-conversational-robotics.mdx`
-
-### Chapter 10: Capstone: Autonomous Humanoid Project
-
-- [ ] T024 [P] [US1] Write content and explanations for Chapter 10 in `frontend/docs/chapters/10-capstone-project.mdx`
-- [ ] T025 [P] [US1] Add examples and analogies for Chapter 10 in `frontend/docs/chapters/10-capstone-project.mdx`
-
-## Phase 3: Asset Integration
-
-**Goal**: Integrate code snippets and diagrams into their respective chapters.
-
-### Chapter 1: Foundations of Physical AI & Embodied Intelligence
-
-- [ ] T026 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 1 (if applicable) in `frontend/docs/chapters/01-foundations.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/01-foundations/code/`.
-- [ ] T027 [P] [US1] Create diagrams or illustrations for Chapter 1 (if applicable) and integrate into `frontend/docs/chapters/01-foundations.mdx`. Store diagrams in `frontend/docs/assets/chapters/01-foundations/diagrams/`.
-
-### Chapter 2: ROS 2 Fundamentals
-
-- [ ] T028 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 2 in `frontend/docs/chapters/02-ros2-fundamentals.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/02-ros2-fundamentals/code/`.
-- [ ] T029 [P] [US1] Create diagrams or illustrations for Chapter 2 (if applicable) and integrate into `frontend/docs/chapters/02-ros2-fundamentals.mdx`. Store diagrams in `frontend/docs/assets/chapters/02-ros2-fundamentals/diagrams/`.
-
-### Chapter 3: Gazebo Simulation & Digital Twin
-
-- [ ] T030 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 3 in `frontend/docs/chapters/03-gazebo-simulation.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/03-gazebo-simulation/code/`.
-- [ ] T031 [P] [US1] Create diagrams or illustrations for Chapter 3 (if applicable) and integrate into `frontend/docs/chapters/03-gazebo-simulation.mdx`. Store diagrams in `frontend/docs/assets/chapters/03-gazebo-simulation/diagrams/`.
-
-### Chapter 4: Unity for Robot Visualization
-
-- [ ] T032 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 4 (if applicable) in `frontend/docs/chapters/04-unity-visualization.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/04-unity-visualization/code/`.
-- [ ] T033 [P] [US1] Create diagrams or illustrations for Chapter 4 (if applicable) and integrate into `frontend/docs/chapters/04-unity-visualization.mdx`. Store diagrams in `frontend/docs/assets/chapters/04-unity-visualization/diagrams/`.
-
-### Chapter 5: NVIDIA Isaac Sim & Isaac ROS
-
-- [ ] T034 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 5 (if applicable) in `frontend/docs/chapters/05-nvidia-isaac.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/05-nvidia-isaac/code/`.
-- [ ] T035 [P] [US1] Create diagrams or illustrations for Chapter 5 (if applicable) and integrate into `frontend/docs/chapters/05-nvidia-isaac.mdx`. Store diagrams in `frontend/docs/assets/chapters/05-nvidia-isaac/diagrams/`.
-
-### Chapter 6: Vision, Perception, and Navigation
-
-- [ ] T036 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 6 (if applicable) in `frontend/docs/chapters/06-vision-perception.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/06-vision-perception/code/`.
-- [ ] T037 [P] [US1] Create diagrams or illustrations for Chapter 6 (if applicable) and integrate into `frontend/docs/chapters/06-vision-perception.mdx`. Store diagrams in `frontend/docs/assets/chapters/06-vision-perception/diagrams/`.
-
-### Chapter 7: Humanoid Kinematics, Bipedal Locomotion & Balance
-
-- [ ] T038 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 7 (if applicable) in `frontend/docs/chapters/07-humanoid-kinematics.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/07-humanoid-kinematics/code/`.
-- [ ] T039 [P] [US1] Create diagrams or illustrations for Chapter 7 (if applicable) and integrate into `frontend/docs/chapters/07-humanoid-kinematics.mdx`. Store diagrams in `frontend/docs/assets/chapters/07-humanoid-kinematics/diagrams/`.
-
-### Chapter 8: Manipulation & Grasping
-
-- [ ] T040 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 8 (if applicable) in `frontend/docs/chapters/08-manipulation-grasping.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/08-manipulation-grasping/code/`.
-- [ ] T041 [P] [US1] Create diagrams or illustrations for Chapter 8 (if applicable) and integrate into `frontend/docs/chapters/08-manipulation-grasping.mdx`. Store diagrams in `frontend/docs/assets/chapters/08-manipulation-grasping/diagrams/`.
-
-### Chapter 9: Conversational Robotics (GPT integration)
-
-- [ ] T042 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 9 (if applicable) in `frontend/docs/chapters/09-conversational-robotics.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/09-conversational-robotics/code/`.
-- [ ] T043 [P] [US1] Create diagrams or illustrations for Chapter 9 (if applicable) and integrate into `frontend/docs/chapters/09-conversational-robotics.mdx`. Store diagrams in `frontend/docs/assets/chapters/09-conversational-robotics/diagrams/`.
-
-### Chapter 10: Capstone: Autonomous Humanoid Project
-
-- [ ] T044 [P] [US1] Insert code snippets (Python/ROS 2) for Chapter 10 (if applicable) in `frontend/docs/chapters/10-capstone-project.mdx`. Ensure asset paths are relative to `frontend/docs/assets/chapters/10-capstone-project/code/`.
-- [ ] T045 [P] [US1] Create diagrams or illustrations for Chapter 10 (if applicable) and integrate into `frontend/docs/chapters/10-capstone-project.mdx`. Store diagrams in `frontend/docs/assets/chapters/10-capstone-project/diagrams/`.
-
-## Phase 4: Metadata & RAG Preparation
-
-**Goal**: Prepare authored textbook content for seamless ingestion and utilization by a RAG system.
-**Independent Test**: Generate MDX-compatible files for Docusaurus, including all necessary metadata for RAG ingestion (chapter_id, page_number, slug, url), and verify their readiness for ingestion.
-
-### Chapter 1: Foundations of Physical AI & Embodied Intelligence
-
-- [ ] T046 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 1 in `frontend/docs/chapters/01-foundations.mdx`
-- [ ] T047 [US2] Validate MDX formatting for Chapter 1 for Docusaurus compatibility in `frontend/docs/chapters/01-foundations.mdx`
-- [ ] T048 [US2] Ensure RAG metadata for Chapter 1 is ready for ingestion in `frontend/docs/chapters/01-foundations.mdx`
-
-### Chapter 2: ROS 2 Fundamentals
-
-- [ ] T049 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 2 in `frontend/docs/chapters/02-ros2-fundamentals.mdx`
-- [ ] T050 [US2] Validate MDX formatting for Chapter 2 for Docusaurus compatibility in `frontend/docs/chapters/02-ros2-fundamentals.mdx`
-- [ ] T051 [US2] Ensure RAG metadata for Chapter 2 is ready for ingestion in `frontend/docs/chapters/02-ros2-fundamentals.mdx`
-
-### Chapter 3: Gazebo Simulation & Digital Twin
-
-- [ ] T052 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 3 in `frontend/docs/chapters/03-gazebo-simulation.mdx`
-- [ ] T053 [US2] Validate MDX formatting for Chapter 3 for Docusaurus compatibility in `frontend/docs/chapters/03-gazebo-simulation.mdx`
-- [ ] T054 [US2] Ensure RAG metadata for Chapter 3 is ready for ingestion in `frontend/docs/chapters/03-gazebo-simulation.mdx`
-
-### Chapter 4: Unity for Robot Visualization
-
-- [ ] T055 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 4 in `frontend/docs/chapters/04-unity-visualization.mdx`
-- [ ] T056 [US2] Validate MDX formatting for Chapter 4 for Docusaurus compatibility in `frontend/docs/chapters/04-unity-visualization.mdx`
-- [ ] T057 [US2] Ensure RAG metadata for Chapter 4 is ready for ingestion in `frontend/docs/chapters/04-unity-visualization.mdx`
-
-### Chapter 5: NVIDIA Isaac Sim & Isaac ROS
-
-- [ ] T058 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 5 in `frontend/docs/chapters/05-nvidia-isaac.mdx`
-- [ ] T059 [US2] Validate MDX formatting for Chapter 5 for Docusaurus compatibility in `frontend/docs/chapters/05-nvidia-isaac.mdx`
-- [ ] T060 [US2] Ensure RAG metadata for Chapter 5 is ready for ingestion in `frontend/docs/chapters/05-nvidia-isaac.mdx`
-
-### Chapter 6: Vision, Perception, and Navigation
-
-- [ ] T061 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 6 in `frontend/docs/chapters/06-vision-perception.mdx`
-- [ ] T062 [US2] Validate MDX formatting for Chapter 6 for Docusaurus compatibility in `frontend/docs/chapters/06-vision-perception.mdx`
-- [ ] T063 [US2] Ensure RAG metadata for Chapter 6 is ready for ingestion in `frontend/docs/chapters/06-vision-perception.mdx`
-
-### Chapter 7: Humanoid Kinematics, Bipedal Locomotion & Balance
-
-- [ ] T064 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 7 in `frontend/docs/chapters/07-humanoid-kinematics.mdx`
-- [ ] T065 [US2] Validate MDX formatting for Chapter 7 for Docusaurus compatibility in `frontend/docs/chapters/07-humanoid-kinematics.mdx`
-- [ ] T066 [US2] Ensure RAG metadata for Chapter 7 is ready for ingestion in `frontend/docs/chapters/07-humanoid-kinematics.mdx`
-
-### Chapter 8: Manipulation & Grasping
-
-- [ ] T067 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 8 in `frontend/docs/chapters/08-manipulation-grasping.mdx`
-- [ ] T068 [US2] Validate MDX formatting for Chapter 8 for Docusaurus compatibility in `frontend/docs/chapters/08-manipulation-grasping.mdx`
-- [ ] T069 [US2] Ensure RAG metadata for Chapter 8 is ready for ingestion in `frontend/docs/chapters/08-manipulation-grasping.mdx`
-
-### Chapter 9: Conversational Robotics (GPT integration)
-
-- [ ] T070 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 9 in `frontend/docs/chapters/09-conversational-robotics.mdx`
-- [ ] T071 [US2] Validate MDX formatting for Chapter 9 for Docusaurus compatibility in `frontend/docs/chapters/09-conversational-robotics.mdx`
-- [ ] T072 [US2] Ensure RAG metadata for Chapter 9 is ready for ingestion in `frontend/docs/chapters/09-conversational-robotics.mdx`
-
-### Chapter 10: Capstone: Autonomous Humanoid Project
-
-- [ ] T073 [US2] Assign metadata (chapter_id, page_number, slug, URL) for Chapter 10 in `frontend/docs/chapters/10-capstone-project.mdx`
-- [ ] T074 [US2] Validate MDX formatting for Chapter 10 for Docusaurus compatibility in `frontend/docs/chapters/10-capstone-project.mdx`
-- [ ] T075 [US2] Ensure RAG metadata for Chapter 10 is ready for ingestion in `frontend/docs/chapters/10-capstone-project.mdx`
-
-## Phase 5: Review & Ingestion Readiness
-
-- [ ] T076 Consolidate all chapter metadata into `frontend/docs/_data/rag-metadata.json`
-- [ ] T077 Final review of all MDX files for overall consistency (terminology, tone, formatting) across the entire book.
-- [ ] T078 Verify the complete repository structure is ready for frontend (Docusaurus) and RAG system ingestion.
-
-## Dependencies
-
-- Chapter-specific content writing tasks (T006, T008, etc.) are independent and can be parallelized.
-- Code snippet and diagram integration tasks (T026, T027, etc.) depend on the respective chapter content being drafted.
-- Metadata assignment (T046, T049, etc.) depends on the chapter structure being defined and content being present to determine page numbers/markers.
-- Review and editing tasks (T047, T050, etc.) depend on all content and technical assets for that chapter being complete.
-- Final consolidation of metadata (T076) depends on metadata generation for all chapters.
-- Final repository verification (T078) depends on all chapters being finalized and formatted.
-
-## Parallel Execution Examples
-
-- Chapters 1 and 2 content drafting can proceed in parallel (T006-T007 and T008-T009).
-- Code snippet insertion for Chapter 1 (T026) and diagram creation for Chapter 1 (T027) can be parallelized once the content is drafted.
-- Review and editing for different chapters (e.g., T047 and T050) can occur in parallel.
+# Tasks for AI-Native Textbook: Physical AI & Humanoid Robotics
 
 ## Implementation Strategy
+This task list is designed for incremental delivery, focusing on completing each section before moving to the next. The goal is to generate an immediately executable plan for an AI agent or human contributor.
 
-The development will follow an iterative and incremental approach. We will prioritize completing each chapter's content and initial formatting before moving to RAG-specific metadata generation and final validation. An MVP could focus on completing the first few foundational chapters (e.g., Chapters 1-3) through both authoring and RAG readiness phases to establish the full content pipeline.
+## Dependencies
+Chapters can be planned and written largely in parallel once the overall structure is established. Review and refinement tasks for each chapter depend on the writing and technical content tasks for that chapter. Final assembly depends on all chapters being complete and formatted.
+
+---
+
+## Phase 1: Setup
+
+- [ ] T001 Review and validate the generated task list for the AI-Native Textbook project `tasks.md`
+
+## Phase 2: Foundational
+
+- [ ] T002 Establish common guidelines for chapter structure and MDX formatting for `docs/chapter-template.md`
+
+## Phase 3: Chapter Planning & Structure
+
+### User Story: Plan Chapter 1: Foundations of Physical AI & Embodied Intelligence
+
+- [ ] T003 [US1] Outline objectives for Chapter 1: Foundations of Physical AI & Embodied Intelligence `docs/chapter-1.md`
+- [ ] T004 [US1] Define section breakdown for Chapter 1, e.g., Introduction, Embodied Intelligence, Human-Robot Interaction, Practical Examples `docs/chapter-1.md`
+- [ ] T005 [P] [US1] Identify where examples are needed in Chapter 1 `docs/chapter-1.md`
+- [ ] T006 [P] [US1] Identify where diagrams are needed in Chapter 1 `docs/chapter-1.md`
+- [ ] T007 [P] [US1] Identify where code snippets are needed in Chapter 1 `docs/chapter-1.md`
+
+### User Story: Plan Chapter 2: Robotics Operating System (ROS) Fundamentals
+
+- [ ] T008 [US2] Outline objectives for Chapter 2: Robotics Operating System (ROS) Fundamentals `docs/chapter-2.md`
+- [ ] T009 [US2] Define section breakdown for Chapter 2 `docs/chapter-2.md`
+- [ ] T010 [P] [US2] Identify where examples are needed in Chapter 2 `docs/chapter-2.md`
+- [ ] T011 [P] [US2] Identify where diagrams are needed in Chapter 2 `docs/chapter-2.md`
+- [ ] T012 [P] [US2] Identify where code snippets are needed in Chapter 2 `docs/chapter-2.md`
+
+## Phase 4: Writing Tasks
+
+### User Story: Draft Chapter 1 Content
+
+- [ ] T013 [US1] Write introduction for Chapter 1: Foundations of Physical AI & Embodied Intelligence `docs/chapter-1.md`
+- [ ] T014 [US1] Write section on Embodied Intelligence `docs/chapter-1.md`
+- [ ] T015 [US1] Explain Human-Robot Interaction with analogies `docs/chapter-1.md`
+- [ ] T016 [US1] Draft practical examples for Physical AI `docs/chapter-1.md`
+- [ ] T017 [US1] Draft summary and learning outcomes for Chapter 1 `docs/chapter-1.md`
+
+### User Story: Draft Chapter 2 Content
+
+- [ ] T018 [US2] Write introduction for Chapter 2: ROS Fundamentals `docs/chapter-2.md`
+- [ ] T019 [US2] Write section on ROS 2 core concepts `docs/chapter-2.md`
+- [ ] T020 [US2] Explain ROS 2 node communication with diagrams `docs/chapter-2.md`
+- [ ] T021 [US2] Draft key ROS 2 practical examples `docs/chapter-2.md`
+- [ ] T022 [US2] Draft summary and learning outcomes for Chapter 2 `docs/chapter-2.md`
+
+## Phase 5: Technical Content Tasks
+
+### User Story: Create Technical Content for Chapter 1
+
+- [ ] T023 [US1] Create a Python code example for basic sensor data processing `docs/chapter-1.md`
+- [ ] T024 [P] [US1] Generate a system architecture diagram for a simple Physical AI agent `docs/assets/diagrams/ch1-arch-diagram.png`
+- [ ] T025 [US1] Draft pseudo-code for a basic embodied intelligence algorithm `docs/chapter-1.md`
+
+### User Story: Create Technical Content for Chapter 2
+
+- [ ] T026 [US2] Create a ROS 2 Python code snippet for publishing a topic `docs/chapter-2.md`
+- [ ] T027 [US2] Create a ROS 2 XML snippet for a simple URDF model `docs/chapter-2.md`
+- [ ] T028 [P] [US2] Generate a ROS 2 communication pipeline diagram `docs/assets/diagrams/ch2-ros-pipeline.png`
+- [ ] T029 [US2] Draft step-by-step explanation of ROS 2 installation and basic configuration `docs/chapter-2.md`
+
+## Phase 6: MDX Formatting Tasks
+
+### User Story: Format Chapter 1 in MDX
+
+- [ ] T030 [US1] Convert Chapter 1 content to MDX format, adding headings and subheadings `docs/chapter-1.md`
+- [ ] T031 [US1] Insert code blocks for Python examples in Chapter 1 using Docusaurus syntax `docs/chapter-1.md`
+- [ ] T032 [US1] Insert diagrams into Chapter 1 using proper Docusaurus image syntax `docs/chapter-1.md`
+- [ ] T033 [P] [US1] Validate MDX formatting for consistency and readability in Chapter 1 `docs/chapter-1.md`
+
+### User Story: Format Chapter 2 in MDX
+
+- [ ] T034 [US2] Convert Chapter 2 content to MDX format, adding headings and subheadings `docs/chapter-2.md`
+- [ ] T035 [US2] Insert code blocks for ROS 2 examples in Chapter 2 using Docusaurus syntax `docs/chapter-2.md`
+- [ ] T036 [US2] Insert diagrams into Chapter 2 using proper Docusaurus image syntax `docs/chapter-2.md`
+- [ ] T037 [P] [US2] Validate MDX formatting for consistency and readability in Chapter 2 `docs/chapter-2.md`
+
+## Phase 7: Review & Refinement
+
+### User Story: Review Chapter 1
+
+- [ ] T038 [US1] Review Chapter 1 for technical accuracy and correctness `docs/chapter-1.md`
+- [ ] T039 [US1] Rewrite unclear or ambiguous content in Chapter 1 `docs/chapter-1.md`
+- [ ] T040 [P] [US1] Ensure consistent terminology across Chapter 1 and related chapters `docs/chapter-1.md`
+- [ ] T041 [US1] Refine grammar, clarity, and tone for Chapter 1 `docs/chapter-1.md`
+- [ ] T042 [US1] Add internal cross-references to other chapters where relevant in Chapter 1 `docs/chapter-1.md`
+
+### User Story: Review Chapter 2
+
+- [ ] T043 [US2] Review Chapter 2 for technical accuracy and correctness `docs/chapter-2.md`
+- [ ] T044 [US2] Rewrite unclear or ambiguous content in Chapter 2 `docs/chapter-2.md`
+- [ ] T045 [P] [US2] Ensure consistent terminology across Chapter 2 and related chapters `docs/chapter-2.md`
+- [ ] T046 [US2] Refine grammar, clarity, and tone for Chapter 2 `docs/chapter-2.md`
+- [ ] T047 [US2] Add internal cross-references to other chapters where relevant in Chapter 2 `docs/chapter-2.md`
+
+## Phase 8: Metadata Preparation
+
+### User Story: Prepare Metadata for Chapter 1
+
+- [ ] T048 [US1] Assign Chapter 1 ID, title, and slug in frontmatter `docs/chapter-1.md`
+- [ ] T049 [US1] Add basic frontmatter to Chapter 1 MDX file `docs/chapter-1.md`
+- [ ] T050 [P] [US1] Ensure Chapter 1 follows consistent metadata structure `docs/chapter-1.md`
+
+### User Story: Prepare Metadata for Chapter 2
+
+- [ ] T051 [US2] Assign Chapter 2 ID, title, and slug in frontmatter `docs/chapter-2.md`
+- [ ] T052 [US2] Add basic frontmatter to Chapter 2 MDX file `docs/chapter-2.md`
+- [ ] T053 [P] [US2] Ensure Chapter 2 follows consistent metadata structure `docs/chapter-2.md`
+
+## Phase 9: Final Assembly Tasks
+
+- [ ] T054 Compile all completed chapters into the Docusaurus `/docs` folder `docs/`
+- [ ] T055 Verify sidebar structure in `sidebars.js` aligns with book flow `sidebars.js`
+- [ ] T056 Ensure navigation is consistent and all internal links work across chapters `docs/**/*.md`
+- [ ] T057 Perform a final content sweep to ensure overall chapter cohesion and flow `docs/**/*.md`
+
+---
+
+## Output Summary
+
+*   **Total Task Count**: 57
+*   **Task Count per User Story (example for 2 chapters, will scale for all)**:
+    *   Chapter Planning & Structure: 7 tasks (per chapter)
+    *   Writing Tasks: 5 tasks (per chapter)
+    *   Technical Content Tasks: 3-4 tasks (per chapter)
+    *   MDX Formatting Tasks: 4 tasks (per chapter)
+    *   Review & Refinement: 5 tasks (per chapter)
+    *   Metadata Preparation: 3 tasks (per chapter)
+    *   Final Assembly: 4 tasks
+*   **Parallel Opportunities Identified**: Many tasks within planning, technical content creation, MDX formatting, and metadata preparation for different chapters can be parallelized, as indicated by `[P]` markers.
+*   **Independent Test Criteria for each story**: Each user story/chapter section (e.g., "Draft Chapter 1 Content") is designed to be a logically complete unit, allowing for independent review and validation of its output before integration.
+*   **Suggested MVP Scope**: Chapters could be considered individually deliverable MVPs. A foundational MVP would be completing Chapter 1 through all phases.
