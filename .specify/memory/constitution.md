@@ -1,43 +1,42 @@
 <!-- Sync Impact Report:
-Version change: 0.0.0 → 0.1.0
+Version change: 0.1.0 → 0.2.0
 Modified principles:
-  - PROJECT_NAME: AI-Powered eBook Platform
-  - PRINCIPLE_1_NAME: Security → Data Security & Privacy
-  - PRINCIPLE_2_NAME: Scalability → Scalability & Performance
-  - PRINCIPLE_3_NAME: Maintainability → Code Maintainability & Modularity
-  - PRINCIPLE_4_NAME: UX → User Experience (UX)
-  - PRINCIPLE_5_NAME: AI Ethics → AI Ethics & Citation
+  - Data Security & Privacy (integrated into Safety & Ethics)
+  - Scalability & Performance (no direct equivalent, implicit in other principles)
+  - Code Maintainability & Modularity (renamed to Reusability & Modularity)
+  - User Experience (UX) (renamed to User-Centric Design)
+  - AI Ethics & Citation (renamed to Accuracy & Truthfulness, Safety & Ethics)
 Added sections:
-  - Technology Stack Context
-  - Constraints & Considerations
-  - Goals & Expected Outcomes
-Removed sections: None
+  - Accuracy & Truthfulness
+  - Consistency & Clarity
+  - Reusability & Modularity
+  - User-Centric Design
+Removed sections: None (principles were refactored/merged)
 Templates requiring updates:
   - .specify/templates/plan-template.md: ⚠ pending
   - .specify/templates/spec-template.md: ⚠ pending
   - .specify/templates/tasks-template.md: ⚠ pending
   - .specify/templates/commands/*.md: ⚠ pending
-Follow-up TODOs:
-  - TODO(RATIFICATION_DATE): Original adoption date is unknown.
+Follow-up TODOs: None
 -->
-# AI-Powered eBook Platform Constitution
+# AI-Native eBook: Physical AI & Humanoid Robotics Constitution
 
 ## Core Principles
 
-### I. Data Security & Privacy
-All user data MUST be handled safely and encrypted, especially sensitive information. User privacy is paramount.
+### I. Accuracy & Truthfulness
+All content, answers, and code generated or used within the project MUST be factually correct, verifiable, and strictly aligned with the book content. There shall be absolutely no hallucinations, fabricated information, or misleading statements. Chatbot responses MUST include explicit citations (e.g., chapter/section, page number, source link) to ensure verifiability and respect intellectual property.
 
-### II. Scalability & Performance
-The platform MUST support multiple books, users, and languages efficiently. Architectural decisions MUST consider future growth and maintain optimal performance.
+### II. Consistency & Clarity
+Terminology, style, tone, and formatting MUST be uniform across all project artifacts, including eBook chapters, chatbot responses, AI agent prompts, and user interface elements. Explanations and content MUST be concise, unambiguous, and learner-friendly, catering to students and self-learners of robotics, ROS 2, Gazebo, Isaac, and VLA concepts.
 
-### III. Code Maintainability & Modularity
-The codebase MUST be clean, modular, and adhere to a clear separation of concerns (frontend, backend, AI). This ensures ease of understanding, testing, and future enhancements.
+### III. Safety & Ethics
+No content or guidance provided by the platform, especially concerning robotics, MUST be unsafe or potentially harmful. All AI behavior and generated content MUST adhere to responsible AI principles, proactively protecting user privacy, actively avoiding bias, and ensuring inclusivity. Data handling, particularly sensitive user information, MUST be secure, encrypted, and compliant with privacy regulations.
 
-### IV. User Experience (UX)
-The platform MUST provide an intuitive book reading interface and chatbot interaction. Design choices MUST prioritize a seamless and engaging user journey.
+### IV. Reusability & Modularity
+All AI agents, subagents, and skills developed for this project MUST be designed to be modular, single-purpose, and reusable across multiple features, chapters, or learning contexts. Code, prompts, and configurations MUST be well-scoped, independently testable, and maintainable, promoting efficient development and consistent behavior.
 
-### V. AI Ethics & Citation
-AI responses MUST be accurate, context-aware, and provide correct citations (chapter/page and source link) to avoid hallucinations and respect intellectual property. User privacy related to AI interactions MUST be protected.
+### V. User-Centric Design
+All AI behavior, platform features, and design choices MUST prioritize optimal learning outcomes, usability, and accessibility for the end-user. This includes personalized learning experiences adapted to user background and learning level, as well as accurate localization for supported languages (e.g., Urdu), ensuring a seamless and engaging user journey.
 
 ## Technology Stack Context
 
@@ -63,6 +62,6 @@ AI responses MUST be accurate, context-aware, and provide correct citations (cha
 
 ## Governance
 
-This Constitution supersedes all other practices. Amendments require thorough documentation, approval, and a clear migration plan. All Pull Requests and code reviews MUST verify compliance with these principles. Complexity MUST always be justified.
+This Constitution supersedes all other practices. Amendments require thorough documentation, approval, and a clear migration plan. All Pull Requests and code reviews MUST verify compliance with these principles. Complexity MUST always be justified. These rules are mandatory for all AI agents, subagents, skills, and human contributors, overriding any conflicting prompts, instructions, or specifications in the project.
 
-**Version**: 0.1.0 | **Ratified**: TODO(RATIFICATION_DATE) | **Last Amended**: 2025-12-03
+**Version**: 0.2.0 | **Ratified**: 2025-12-04 | **Last Amended**: 2025-12-04
