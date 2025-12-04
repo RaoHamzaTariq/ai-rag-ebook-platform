@@ -133,3 +133,44 @@ Quality & Standards:
 
 Ensure content clarity, consistency, and factual accuracy.
 Confirm code snippets and examples are correct and executable where applicable.
+
+
+Create a detailed task list for developing the AI-native textbook “Physical AI & Humanoid Robotics”, based on the specification and plan. Each task should be actionable, assigned a priority, and include expected output.
+
+Requirements:
+
+Chapter-Wise Tasks:
+
+Break the book into chapters corresponding to the course modules:
+
+Foundations of Physical AI & Embodied Intelligence
+ROS 2 Fundamentals
+Gazebo Simulation & Digital Twin
+Unity for Robot Visualization
+NVIDIA Isaac Sim & Isaac ROS
+Vision, Perception, and Navigation
+Humanoid Kinematics, Bipedal Locomotion & Balance
+Manipulation & Grasping
+Conversational Robotics (GPT integration)
+Capstone: Autonomous Humanoid Project
+
+Section-Wise Subtasks:
+
+For each chapter, create subtasks for:
+Writing content and explanations
+Adding examples and analogies
+Inserting code snippets (Python/ROS 2)
+Creating diagrams or illustrations
+Assigning metadata for RAG (chapter_id, page_number, slug, URL)
+
+Task Attributes:
+
+Include priority (High/Medium/Low)
+Include expected output (e.g., MDX file, metadata JSON, diagram image)
+Include dependencies (e.g., code snippets depend on ROS 2 explanation being written first)
+
+Final Tasks:
+
+Review and edit each chapter for clarity and accuracy
+Validate MDX formatting for Docusaurus
+Ensure metadata is ready for RAG ingestion
