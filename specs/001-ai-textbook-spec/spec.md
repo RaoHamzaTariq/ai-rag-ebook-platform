@@ -44,22 +44,30 @@ A developer needs to prepare the authored textbook content so it can be seamless
 - What happens if code snippets are not correctly formatted or are in an unsupported language?
 - How does the system manage large diagrams or images within the MDX files for display and RAG processing?
 
+## Clarifications
+
+### Session 2025-12-04
+
+- Q: What is the level of detail expected for each chapter (introductory vs advanced)? → A: Introductory
+- Q: Should code snippets and diagrams be included in every chapter, or only in technical sections? → A: Technical sections only
+- Q: How should chapter metadata (ID, page numbers, slug, URL) be structured for RAG ingestion? → A: YAML Frontmatter
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
 - **FR-001**: The textbook content MUST cover all modules of the Physical AI & Humanoid Robotics course as specified in the scope.
-- **FR-002**: Each chapter MUST have a unique Chapter ID, Title, and associated Metadata (chapter_id, page_number, slug, url).
+- **FR-002**: Each chapter MUST have a unique Chapter ID, Title, and associated Metadata (chapter_id, page_number, slug, url) defined in YAML frontmatter.
 - **FR-003**: Chapters MUST be structured with Learning Objectives, Sections with headings and subheadings, Explanations, examples, and diagrams.
-- **FR-004**: Code snippets in Python or ROS 2 MUST be included where applicable within the chapter content.
+- **FR-004**: Code snippets in Python or ROS 2, and diagrams, MUST be included in technical sections where applicable within the chapter content.
 - **FR-005**: Page numbers or markers MUST be included for RAG retrieval purposes.
-- **FR-006**: The content MUST be clear, structured, and educational.
+- **FR-006**: The content MUST be clear, structured, educational, and at an introductory level.
 - **FR-007**: Consistent terminology and tone MUST be maintained throughout the textbook.
 - **FR-008**: Jargon MUST be avoided where possible.
 - **FR-009**: Factual accuracy aligned with robotics and AI principles MUST be ensured.
 - **FR-010**: The output format MUST be MDX-compatible files for Docusaurus.
 - **FR-011**: Each chapter MUST be a separate MDX file.
-- **FR-012**: Metadata required for RAG ingestion (chapter_id, page_number, slug, url) MUST be included in each MDX file.
+- **FR-012**: Metadata required for RAG ingestion (chapter_id, page_number, slug, url) MUST be included in YAML frontmatter within each MDX file.
 
 ### Key Entities *(include if feature involves data)*
 
