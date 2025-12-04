@@ -1,0 +1,3 @@
+chapter_ids = ["01-foundations", "02-ros2-fundamentals", "03-gazebo-simulation", "04-unity-visualization", "05-nvidia-isaac", "06-vision-perception", "07-humanoid-kinematics", "08-manipulation-grasping", "09-conversational-robotics", "10-capstone-project"]
+chapter_slugs = ["foundations", "ros2-fundamentals", "gazebo-simulation", "unity-visualization", "nvidia-isaac", "vision-perception", "humanoid-kinematics", "manipulation-grasping", "conversational-robotics", "capstone-project"]
+chapter_urls = ["/docs/foundations", "/docs/ros2-fundamentals", "/docs/gazebo-simulation", "/docs/unity-visualization", "/docs/nvidia-isaac", "/docs/vision-perception", "/docs/humanoid-kinematics", "/docs/manipulation-grasping", "/docs/conversational-robotics", "/docs/capstone-project"]
