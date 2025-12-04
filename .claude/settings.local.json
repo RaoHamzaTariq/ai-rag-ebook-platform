@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(.specify/scripts/bash/check-prerequisites.sh:*)"
+      "Bash(.specify/scripts/bash/check-prerequisites.sh:*)",
+      "SlashCommand(/sp.implement)",
+      "Bash(.\\specify\\scripts\\bash\\check-prerequisites.sh:*)"
     ],
     "deny": [],
     "ask": []
