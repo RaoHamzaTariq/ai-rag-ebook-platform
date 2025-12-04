@@ -53,3 +53,50 @@ Fully functional AI-powered eBook platform.
 Accurate, context-aware chatbot responses.
 Seamless, multilingual user experience.
 Secure and scalable system architecture.
+
+
+Create the specification for the AI-native textbook titled “Physical AI & Humanoid Robotics”. This specification defines how the book content should be structured, authored, and prepared for integration with a RAG system.
+
+Requirements:
+
+Scope:
+Cover all modules of the Physical AI & Humanoid Robotics course:
+Foundations of Physical AI & Embodied Intelligence
+ROS 2 Fundamentals
+Gazebo Simulation & Digital Twin
+Unity for Robot Visualization
+NVIDIA Isaac Sim & Isaac ROS
+Vision, Perception, and Navigation (VSLAM, Sensors)
+Humanoid Kinematics, Bipedal Locomotion & Balance
+Manipulation & Grasping
+Conversational Robotics (GPT integration)
+Capstone: Autonomous Humanoid Project
+
+Content Structure:
+
+Chapters must have:
+Chapter ID, Title, and Metadata
+Learning Objectives
+Sections with headings and subheadings
+Explanations, examples, and diagrams.
+Code snippets in Python or ROS 2 where applicable
+Page numbers or markers for RAG retrieval
+
+Standards:
+
+Clear, structured, and educational content
+Consistent terminology and tone
+Avoid jargon where possible
+Ensure factual accuracy aligned with robotics and AI principles
+
+Output Format:
+
+MDX-compatible files for Docusaurus
+Each chapter as a separate MDX file
+Include metadata required for RAG ingestion (chapter_id, page_number, slug, url)
+
+Acceptance Criteria:
+
+Full set of chapters covering all modules
+Properly formatted for Docusaurus
+Ready for ingestion into the RAG system
