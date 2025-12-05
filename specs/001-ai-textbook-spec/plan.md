@@ -13,7 +13,7 @@ Develop a detailed development plan for the AI-native textbook “Physical AI & 
 
 The goal is to create a detailed development plan for the AI-native textbook “Physical AI & Humanoid Robotics”. This involves structuring content, defining authoring workflows, and preparing content for RAG system integration.
 
-**Language/Version**: Markdown, MDX, Python 3.x, ROS 2
+**Language/Version**: Markdown, MDX, Python 3.x
 **Primary Dependencies**: Docusaurus for frontend rendering, RAG system for AI integration.
 **Storage**: Git repository for MDX files and assets.
 **Testing**: Manual content review, automated code snippet testing, RAG metadata validation scripts.
@@ -91,13 +91,35 @@ specs/001-ai-textbook-spec/
 
 ```text
 content/
-├── chapters/
-│   ├── 01-foundations.mdx
-│   ├── 02-ros2-fundamentals.mdx
-│   └── ... (one .mdx file per chapter)
+├── docs/
+│   ├── 01-foundations/
+│   │   ├── _index.mdx # Chapter overview/landing page
+│   │   ├── 1-1-embodied-intelligence.mdx
+│   │   ├── 1-2-real-time.mdx
+│   │   ├── 1-3-perception-systems.mdx
+│   │   └── 1-4-internal-sensors.mdx
+│   ├── 02-ros2/
+│   │   ├── _index.mdx # Chapter overview/landing page
+│   │   ├── 2-1-ros2-architecture.mdx
+│   │   ├── 2-2-rclpy-packages.mdx
+│   │   └── 2-3-urdf-kinematics.mdx
+│   ├── 03-simulation/
+│   │   ├── _index.mdx # Chapter overview/landing page
+│   │   ├── 3-1-gazebo-physics.mdx
+│   │   └── 3-2-unity-visualization.mdx
+│   ├── 04-isaac/
+│   │   ├── _index.mdx # Chapter overview/landing page
+│   │   ├── 4-1-isaac-sim-data.mdx
+│   │   └── 4-2-vslam-pipelines.mdx
+│   └── 05-humanoid/
+│       ├── _index.mdx # Chapter overview/landing page
+│       ├── 5-1-locomotion-balance.mdx
+│       ├── 5-2-manipulation-grasping.mdx
+│       └── 5-3-vla-cognitive.mdx
 ├── assets/
 │   ├── diagrams/
-│   └── images/
+│   ├── images/
+│   └── code/ # For storing external, testable code snippets
 └── _data/
     └── rag-metadata.json # Consolidated RAG metadata
 ```
