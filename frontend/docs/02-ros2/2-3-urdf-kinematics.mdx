@@ -1,0 +1,138 @@
+---
+id: lesson-2-3-urdf-kinematics
+title: Robot Description - URDF/SDF for Humanoid Kinematics
+sidebar_label: URDF/SDF Kinematics
+chapter_id: 02
+page_number: 10
+slug: /02-ros2/2-3-urdf-kinematics
+---
+
+# Lesson 2.3: Robot Description: URDF/SDF for Humanoid Kinematics
+
+To control a robot, the software needs a **precise mathematical model** of the robot's body. This lesson explains **URDF** and **SDF**, the key file formats used to define a robot’s structure, mass, and movement capabilities.
+
+---
+
+## Introduction & Hook
+
+If a human wants to pick up a cup, the brain knows the **length of the forearm, elbow position, and wrist angle**.  
+
+A robot's AI requires the same information in a **digital blueprint** stored in an XML file, defining **geometry, sensors, and actuators**.
+
+---
+
+## Defining the Robot's Body: URDF
+
+**URDF (Unified Robot Description Format)** is the standard in ROS for describing a robot.  
+
+### 1. Links (The Bones)
+
+- A **Link** is a rigid, non-moving part (e.g., torso, upper arm, hand).  
+- Each link has:
+  - **Geometry** (shape)  
+  - **Mass** ($m$)  
+  - **Inertia** (resistance to rotation)  
+
+### 2. Joints (The Hinges)
+
+- Connect two links and define **Degrees of Freedom (DOF)**.  
+- Types of joints:
+  - **Revolute**: Rotation around a single axis (common in elbows/knees)  
+  - **Prismatic**: Linear movement along an axis  
+
+---
+
+## SDF: The Simulation Blueprint
+
+- **SDF (Simulation Description Format)** is used for more complex simulations (Gazebo).  
+- Can handle **loops** and define **environmental properties** like friction and lighting.  
+
+---
+
+## Coordinate Frames and Kinematics
+
+### The Coordinate Frame System
+
+- Every link and joint has a **local $x, y, z$ axis system**.  
+- Frames are **chained**: shoulder → torso, elbow → shoulder, etc.  
+- Global position is calculated by combining all transformations from the **base frame**.
+
+### Kinematics: The Math of Motion
+
+- **Forward Kinematics (FK)**: Given joint angles, calculates the position of the end-effector.  
+- **Inverse Kinematics (IK)**: Given the desired end-effector position, calculates the required joint angles.  
+
+> IK is computationally complex for robots with many DOFs.
+
+---
+
+## Conceptual Code Example: URDF Snippet
+
+```xml
+<!-- 1. Define the first Link (shoulder) -->
+<link name="shoulder_link">
+  <visual>
+    <geometry><box size="0.1 0.2 0.1"/></geometry>
+  </visual>
+  <inertial>
+    <mass value="5.0"/> 
+    <inertia ixx="0.1" iyy="0.1" izz="0.1"/> 
+  </inertial>
+</link>
+
+<!-- 2. Define the second Link (upper arm) -->
+<link name="upper_arm_link">
+  <visual>
+    <geometry><cylinder radius="0.05" length="0.3"/></geometry>
+  </visual>
+</link>
+
+<!-- 3. Define the Joint (connection between them) -->
+<joint name="shoulder_roll_joint" type="revolute">
+  <parent link="shoulder_link"/>
+  <child link="upper_arm_link"/>
+  <axis xyz="1 0 0"/> 
+  <limit lower="-1.57" upper="1.57"/> 
+</joint>
+````
+
+---
+
+## Brainstorming Challenge: Kinematics vs. Dynamics
+
+A robotics engineer is asked to write two programs for a robot hand:
+
+1. Calculate the exact path a fingertip travels given joint angles.
+2. Determine the **minimum torque** required by motors to lift a 1 kg weight.
+
+**Question:** Which program uses **Kinematics** and which uses **Dynamics** (motion *with forces*)?
+
+---
+
+## Key Concepts in Action
+
+| Concept                     | Definition                                                | Importance                                                   |
+| :-------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------- |
+| **URDF/SDF**                | XML format defining robot structure (links, joints, mass) | Essential for AI to know robot geometry and limits           |
+| **Link**                    | Rigid body part (bone) with mass and inertia              | Used to calculate forces and stability (CoM)                 |
+| **Joint**                   | Connection between two links defining DOFs                | Determines how the robot can move                            |
+| **Inverse Kinematics (IK)** | Calculates joint angles for a target position             | Crucial for goal-oriented tasks (walking, grabbing, pushing) |
+
+---
+
+## Self-Test Q&A
+
+**Q1:** Primary XML file in ROS 2 for robot structure?
+**A1:** **URDF**.
+
+**Q2:** Difference between a **Link** and a **Joint**?
+**A2:** Link: rigid segment; Joint: connection allowing movement.
+
+**Q3:** Known joint angles → find hand position. FK or IK?
+**A3:** **Forward Kinematics (FK)**.
+
+**Q4:** Why define mass and inertia for every Link?
+**A4:** Ensures accurate **physics and dynamics** calculations in simulation.
+
+**Q5:** Joint type for rotating connections like elbow/knee?
+**A5:** **Revolute Joint**.

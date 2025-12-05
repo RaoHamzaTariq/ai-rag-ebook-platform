@@ -1,0 +1,8 @@
+{
+"label": "The Robotic Nervous System (ROS 2)",
+"position": 3,
+"link": {
+"type": "generated-index",
+"description": "The foundation of robot software. Learn the core architecture of ROS 2, including Nodes, Topics, Services, and Actions, and how to build kinematic models using URDF/SDF for simulation and control."
+}
+}

@@ -1,0 +1,137 @@
+---
+id: lesson-2-1-ros2-architecture
+title: ROS 2 Architecture - Nodes, Topics, Services, and Actions
+sidebar_label: ROS 2 Architecture
+chapter_id: 02
+page_number: 8
+slug: /02-ros2/2-1-ros2-architecture
+---
+
+# Lesson 2.1: ROS 2 Architecture: Nodes, Topics, Services, and Actions
+
+Every complex robot needs a way to manage its sensors, planning algorithms, and motors.  
+It requires a software framework to connect all pieces. This lesson introduces **ROS 2** and its core communication elements: **Nodes, Topics, Services, and Actions**.
+
+---
+
+## Introduction & Hook
+
+Imagine a **symphony orchestra**. Each instrument must play its part while staying coordinated with others.  
+
+> ROS 2 acts as the **conductor and sheet music** for a robot. It allows hundreds of independent programs to work together as a cohesive system—the robot's **Robotic Nervous System**.
+
+---
+
+## Nodes and Topics: The Data Streams
+
+### Nodes: Independent Programs
+
+A **Node** is a single executable process. Breaking the robot's brain into many nodes keeps the system **organized and robust**.  
+
+**Examples of Nodes:**
+
+- `/camera_driver_node`: Reads raw image data from the camera  
+- `/balance_controller_node`: Calculates forces to maintain balance  
+- `/motor_commander_node`: Converts force commands into motor signals  
+
+### Topics: Asynchronous Broadcasts
+
+A **Topic** is a named stream of data. Nodes communicate over Topics using a **publish/subscribe model**:
+
+- **Publisher:** Sends data (e.g., camera images to `/camera/image`)  
+- **Subscriber:** Receives data (e.g., balance controller subscribes to `/imu/data`)  
+
+> This is ideal for continuous, high-speed data like sensor readings or motor commands.
+
+---
+
+## Services and Actions: Request and Goal-Oriented Communication
+
+While Topics handle continuous streams, robots need **single tasks or long-running goals**:
+
+### Services: Synchronous Request/Response
+
+A **Service** handles a single, immediate request:
+
+- Synchronous pattern: client sends a request and waits for a response  
+- **Analogy:** Asking a question and waiting for an answer  
+- **Example:** Request the serial number of a motor from `/motor_commander_node`
+
+### Actions: Long-Running, Cancellable Goals
+
+An **Action** handles tasks that take time and require status updates:
+
+- **Analogy:** "Go walk to the door" (10 seconds)  
+- **Process:**  
+  1. Send **Goal** (e.g., walk to `(5.0, 0.0)`)  
+  2. Node sends continuous **Feedback** ("50% done")  
+  3. AI can **Cancel** the goal if needed  
+  4. Node sends **Result** ("Goal reached" or "Failed")  
+
+---
+
+## Conceptual Python Example: ROS 2 Node Structure
+
+```python
+# Conceptual ROS 2 structure (simplified rclpy logic)
+
+class CameraNode:
+    def __init__(self, node_name='camera_driver'):
+        print(f"Node '{node_name}' initialized.")
+        self.publisher = self.create_publisher('camera/image', max_queue_size=10)
+
+    def publish_image_data(self, data):
+        print(f"[{self.node_name}] PUBLISHED image data: {data}")
+
+class BalanceNode:
+    def __init__(self, node_name='balance_controller'):
+        print(f"Node '{node_name}' initialized.")
+        self.subscriber = self.create_subscriber('imu/data', self.imu_callback)
+
+    def imu_callback(self, imu_message):
+        print(f"[{self.node_name}] SUBSCRIBED to IMU data: {imu_message}")
+        # Logic to calculate balance adjustment goes here
+
+# Running the nodes independently:
+# driver = CameraNode()
+# controller = BalanceNode()
+````
+
+---
+
+## Brainstorming Challenge: Real-World Communication
+
+A humanoid robot is walking, and someone yells, "STOP!":
+
+1. Which communication pattern (Topic, Service, or Action) is best for **continuous motor commands** to keep walking?
+2. Which pattern is best for the sudden, immediate "STOP!" command, and why?
+
+---
+
+## Key Concepts in Action
+
+| Concept     | Communication Type          | Use Case                                                                             |
+| :---------- | :-------------------------- | :----------------------------------------------------------------------------------- |
+| **Node**    | Independent Process         | Self-contained programs (e.g., camera driver, motor controller)                      |
+| **Topic**   | Asynchronous (Broadcast)    | Continuous sensor or velocity data streams                                           |
+| **Service** | Synchronous (Request/Reply) | Immediate requests needing a definite answer (e.g., battery level)                   |
+| **Action**  | Goal-Oriented (Feedback)    | Long-running tasks that need updates and can be cancelled (e.g., "Go open the door") |
+
+---
+
+## Self-Test Q&A
+
+**Q1:** What is a program in ROS 2 that performs a single, specific job?
+**A1:** A **Node**.
+
+**Q2:** What is a Node that receives data from a Topic called?
+**A2:** A **Subscriber**.
+
+**Q3:** Which communication type is suitable for a long task like walking down a corridor with progress updates?
+**A3:** An **Action**.
+
+**Q4:** What is the fundamental difference between Topics and Services?
+**A4:** Topics are **asynchronous**; Services are **synchronous**.
+
+**Q5:** Why split the robot's brain into many small Nodes instead of one program?
+**A5:** It improves **organization, debugging, and robustness** (one Node crash won’t stop the whole system).

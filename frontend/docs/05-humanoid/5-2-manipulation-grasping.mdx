@@ -1,0 +1,119 @@
+---
+id: lesson-5-2-manipulation-grasping
+title: Manipulation & Grasping with Humanoid Hands
+sidebar_label: Manipulation & Grasping
+chapter_id: 05
+page_number: 19
+slug: /05-humanoid/5-2-manipulation-grasping
+---
+
+# Lesson 5.2: Manipulation & Grasping with Humanoid Hands
+
+This lesson covers the principles of robotic **manipulation**, the role of **Degrees of Freedom (DoF)** in complex arm movements, and how **force control** is used for delicate grasping tasks.
+
+---
+
+## Introduction & Hook
+
+- If locomotion (Lesson 5.1) is the ultimate balancing act, **manipulation** is the ultimate precision act.  
+- Even the best walking robot is useless in human environments if it **cannot interact with objects**.  
+- Manipulation involves moving a robot’s arm into a position and applying **exact force** to interact with objects without dropping or crushing them.
+
+---
+
+## The Kinematics of Manipulation
+
+### Degrees of Freedom (DoF)
+
+- **DoF** defines the number of independent joint movements.  
+- Human-like robot arms often mimic the shoulder, elbow, and wrist:
+
+| Component | Typical DoF | Description |
+| :--- | :--- | :--- |
+| Arm | 7 DoF | Allows reaching any point around the shoulder; redundant manipulator |
+| Hand/Gripper | 1–12+ DoF | Simple grippers have 1 DoF; complex hands have many for fine manipulation |
+
+- A **redundant manipulator** has more joints than the 6 required to position a point (3 for position, 3 for orientation).
+
+---
+
+## Position Control vs. Force Control
+
+| Control Type | Function | Use Case |
+| :--- | :--- | :--- |
+| **Position Control** | Moves the hand/joint to a target location | Free-space motion (approaching an object) |
+| **Force Control** | Maintains/apply a specific force | Contact tasks (grasping, pushing, sanding) |
+
+---
+
+## Grasping: Applying Just Enough Force
+
+- **Grasping**: Picking up an object while controlling the applied force.  
+- Key decisions:
+  1. **Grasp type**  
+  2. **Applied force**
+
+### Grasping Types
+
+| Type | Description | Example |
+| :--- | :--- | :--- |
+| **Power Grasp** | For heavy/large objects; uses full hand strength | Holding a soda bottle |
+| **Precision Grasp** | For delicate/small objects; fingertips only | Picking up a screw or pen |
+
+---
+
+## The Role of Force Control
+
+- To counteract gravity, gripping force must satisfy:  
+  F (friction) ​≥ W  
+- **F/T sensors** in wrist/fingers provide real-time feedback.  
+- The controller adjusts motor current continuously to maintain **perfect pressure**.
+
+---
+
+## Conceptual Grasping Pipeline
+
+1. Detect object and determine position (vision system).  
+2. Plan arm trajectory using **Inverse Kinematics (IK)**.  
+3. Move hand using **Position Control** to target.  
+4. Apply **Force Control** for stable grasp.  
+5. Lift and manipulate object as needed.
+
+---
+
+## Brainstorming Challenge: Grasping the Raw Egg
+
+- Task: Pick up a raw egg and place it in a carton without breaking it.  
+- Questions:  
+  1. Which **grasp type** should the robot use?  
+  2. Why combine **Position Control** for approach with **Force Control** for gripping?
+
+---
+
+## Key Concepts in Action
+
+| Concept | Function | Example |
+| :--- | :--- | :--- |
+| **Manipulation** | Use arms and hands to interact with the environment | Opening a door, picking up a cup |
+| **Degrees of Freedom (DoF)** | Number of independent joint movements | 7 DoF arm enables dexterity |
+| **Force Control** | Apply precise force against an object | Grasping fragile objects |
+| **Precision Grasp** | Fingertip-only hold for delicate objects | Picking up a key or egg |
+
+---
+
+## Self-Test Q&A
+
+**Q1:** What does DoF stand for, and what does it measure?  
+**A1:** **Degrees of Freedom**; measures independent joints/movements in the arm or hand.
+
+**Q2:** What is the primary difference between Position Control and Force Control?  
+**A2:** Position Control moves the hand to a location; Force Control regulates the applied force when in contact with an object.
+
+**Q3:** Which type of grasp is most suitable for picking up a heavy bag of concrete?  
+**A3:** **Power Grasp**.
+
+**Q4:** What sensor measures the force applied to prevent crushing an object?  
+**A4:** **Force/Torque (F/T) Sensor**.
+
+**Q5:** Why is a 7 DoF arm considered a redundant manipulator?  
+**A5:** It has more joints than the 6 needed to position and orient the hand in 3D space, allowing obstacle avoidance.

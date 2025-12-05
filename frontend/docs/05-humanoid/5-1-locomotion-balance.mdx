@@ -1,0 +1,98 @@
+---
+id: lesson-5-1-locomotion-balance
+title: Bipedal Locomotion and Balance Control
+sidebar_label: Locomotion & Balance
+chapter_id: 05
+page_number: 18
+slug: /05-humanoid/5-1-locomotion-balance
+---
+
+# Lesson 5.1: Bipedal Locomotion and Balance Control
+
+Bipedal locomotion is the complex engineering challenge of creating a **stable, controlled walking motion on two legs**, managed primarily by the **Zero Moment Point (ZMP) control method**.
+
+---
+
+## Introduction & Hook
+
+- Walking seems effortless for humans but is mathematically complex for robots.  
+- Unlike four-legged robots (naturally stable), humanoids are constantly in **controlled falling**.  
+- The **IMUs, motors, and real-time control loop** must work in harmony to solve:  
+  > How to keep a tall, heavy object balanced on a constantly shifting, tiny base?
+
+This is the core challenge of **Bipedal Locomotion**.
+
+---
+
+## Bipedal Locomotion: The Challenge of Instability
+
+Bipedal robots transition between two phases:
+
+| Phase | Description | Stability |
+| :--- | :--- | :--- |
+| **Double Support Phase** | Both feet on the ground | Momentarily stable; CoM inside large Support Polygon |
+| **Single Support Phase (Swing)** | One foot lifted forward | Most unstable; CoM must be carefully managed |
+
+- The overall walking pattern is called the **Gait**.  
+- A well-designed gait **minimizes time in the unstable single support phase** and ensures smooth transitions.
+
+---
+
+## The Zero Moment Point (ZMP) Control
+
+- The **ZMP** is the point on the ground where the total forces (gravity + robot accelerations) create **zero torque**.  
+- **Why ZMP Matters:**
+  - **Static vs Dynamic Balance:** When standing still, ZMP ≈ CoM projection.  
+  - During movement, the **desired ZMP trajectory** predicts where feet must be placed.  
+  - Motor controllers adjust joint torques to follow this trajectory closely.
+
+---
+
+## Locomotion Planning Pipeline
+
+Walking requires real-time calculations. The pipeline is:
+
+1. **Gait Planning:** Determine footstep sequence and placement.  
+2. **ZMP Trajectory Generation:** Calculate the ideal ZMP path for the gait.  
+3. **Inverse Kinematics (IK) Generation:** Compute required joint angles (hips, knees, ankles) for balance.  
+4. **Motor Execution:** Send joint commands to actuators.  
+5. **Feedback:** IMU and Force/Torque sensors measure actual balance and correct subsequent steps.
+
+---
+
+## Brainstorming Challenge: ZMP and Environmental Changes
+
+- Scenario: Robot walks on a **soft, compliant carpet**.  
+- Questions:  
+  1. How does the carpet affect F/T sensor readings and calculated ZMP?  
+  2. Why is sensor feedback essential for completing steps on unpredictable surfaces?
+
+---
+
+## Key Concepts in Action
+
+| Concept | Function | Importance in Locomotion |
+| :--- | :--- | :--- |
+| **Bipedal Locomotion** | Walking on two legs | Enables mobility in human environments (stairs, narrow spaces) |
+| **Zero Moment Point (ZMP)** | Point where inertial and gravitational forces balance | Must stay inside Support Polygon to prevent falling |
+| **Support Polygon (SP)** | Area enclosed by foot contact points | Defines the stable zone for the ZMP |
+| **Gait** | Specific walking pattern (foot timing, step length) | Pre-planned for smooth, efficient motion |
+
+---
+
+## Self-Test Q&A
+
+**Q1:** What are the two main phases of bipedal locomotion, and which one is the most unstable?  
+**A1:** **Double Support** and **Single Support** (most unstable).  
+
+**Q2:** Where must the ZMP always fall for the robot to maintain balance?  
+**A2:** Inside the **Support Polygon (SP)**.  
+
+**Q3:** What is the primary role of the IMU in locomotion?  
+**A3:** Provides real-time feedback on acceleration and tilt to detect and correct errors.  
+
+**Q4:** When standing still, what is the relationship between ZMP and CoM?  
+**A4:** The **ZMP and CoM projection are essentially the same point**.  
+
+**Q5:** After generating the ZMP trajectory, what calculation must be done before sending commands to motors?  
+**A5:** **Inverse Kinematics (IK) Generation** (calculating joint angles).

@@ -1,0 +1,148 @@
+---
+id: lesson-1-2-real-time
+title: Latency, Real-Time Systems, and the Control Loop
+sidebar_label: Real-Time Systems
+chapter_id: 01
+page_number: 04
+slug: /01-foundations/1-2-real-time
+---
+
+#  Latency, Real-Time Systems, and the Control Loop
+
+In the digital world, speed is usually measured by how fast a task completes.  
+In **physical robotics**, speed is about **consistency and timing**.  
+
+> A robot that is fast but occasionally pauses for a second can fall over.  
+
+This lesson explores the **critical role of time** in Physical AI.
+
+---
+
+## The Problem of Latency
+
+**Latency** is the time delay between when an event occurs and when the system reacts.
+
+Example:  
+- Event: The robot’s foot hits a slippery patch  
+- Reaction: Motors adjust the ankle angle to maintain balance  
+
+### Why Latency Matters
+
+Low latency is **critical for safety and stability**.  
+
+If latency is too high:
+
+- **Instability:** Sensor data becomes outdated. By the time the AI reacts, the robot may have already passed the point of no return.  
+- **Poor Control:** Movements become jerky and inaccurate. Commands arrive too late, causing overshoot or undershoot.
+
+---
+
+## Hard vs. Soft Real-Time Systems
+
+In computing, *real-time* does **not** mean "fast"; it means **predictable**.  
+A real-time system guarantees tasks complete within a specific time window.
+
+### Hard Real-Time Systems
+
+- Missing a deadline can be **catastrophic** (system failure, crash, or physical damage).  
+- **Example:** Self-driving car brakes. A late brake command can cause an accident.  
+- **In Humanoid Robotics:** Balance control, joint limits, and emergency stops are typically handled by hard real-time controllers.
+
+### Soft Real-Time Systems
+
+- Missing a deadline reduces performance but is **not catastrophic**.  
+- **Example:** Loading textures in a video game. A late frame may cause stutter but not crash.  
+- **In Humanoid Robotics:** High-level planning, status reporting, or complex vision algorithms.
+
+---
+
+## The Sense-Plan-Act Control Loop
+
+All autonomous robots operate with a **continuous feedback system** called the **Control Loop**.  
+The **speed of this loop** determines the robot's ability to react safely.
+
+### Basic Loop Stages
+
+1. **Sense (Perception)**  
+   - Gather data from sensors: IMUs, cameras, force plates  
+   - Example: Measure current position, velocity, or angles  
+
+2. **Plan (Decision)**  
+   - Compute the next action based on sensor data  
+   - Example: "If leaning left, move right ankle to compensate"  
+
+3. **Act (Execution)**  
+   - Send control signals to actuators (motors) to execute planned action  
+
+### Feedback Mechanism
+
+The “Act” phase changes the robot's state.  
+The “Sense” phase immediately measures the new state.  
+This **continuous feedback** maintains stability.  
+
+> The cycle time (loop size) directly affects maximum latency.  
+> In hard real-time systems, the cycle time must be guaranteed.
+
+---
+
+Ah! I see the issue. The **problem comes from two things in MDX**:
+
+1. **Tables immediately following headings or code blocks** without a separating blank line sometimes cause parsing errors.
+2. **The numbered comments in the Python code (`# 1. SENSE`, `# 2. PLAN`)** may confuse the MDX parser when inside a code block, if the code block is not properly fenced or if there’s an extra backtick at the end.
+
+Here’s a **fixed version of that section**:
+
+
+## Control Loop Example: Ankle Stabilization
+
+Imagine a humanoid robot stepping on a small pebble:
+
+<!-- Add a blank line before the table -->
+| Stage | Action | Real-Time Requirement |
+| --- | --- | --- |
+| Sense | Force-Torque sensor detects sudden tilt | Hard Real-Time: Must detect before tilt becomes irreversible |
+| Plan | Control algorithm calculates corrective torque | Hard Real-Time: Compute quickly to stabilize |
+| Act | Motor applies torque to the ankle joint | Hard Real-Time: Act within the deadline |
+
+> If the **Plan** and **Act** stages are too slow (high latency), the robot may fall before the motor reacts.
+
+---
+
+## Conceptual Python Example: Simulating Loop Latency
+
+```python
+import time
+
+# Target rate: 100 Hz (10 ms per cycle)
+TARGET_CYCLE_TIME_MS = 10
+TARGET_CYCLE_TIME_S = TARGET_CYCLE_TIME_MS / 1000.0
+
+def execute_control_loop(cycle_id, computation_time_ms):
+    start_time = time.monotonic()
+
+    # 1. SENSE: Simulate sensor reading
+    sensor_data = f"Data-{cycle_id}"
+
+    # 2. PLAN: Simulate computation delay
+    time.sleep(computation_time_ms / 1000.0)
+
+    # 3. ACT: Simulate motor command execution
+    action = f"Command-{cycle_id}"
+
+    end_time = time.monotonic()
+    actual_duration = (end_time - start_time) * 1000  # Convert to ms
+
+    status = "OK" if actual_duration <= TARGET_CYCLE_TIME_MS else "MISSED DEADLINE"
+    print(f"Cycle {cycle_id}: Duration: {actual_duration:.2f} ms | Status: {status}")
+
+
+# --- Simulation Run ---
+print("--- Running at 100Hz with Low Latency ---")
+execute_control_loop(1, 1)  # 1ms computation
+execute_control_loop(2, 3)  # 3ms computation
+
+print("\n--- Running at 100Hz with High Latency ---")
+execute_control_loop(3, 12)  # 12ms computation (misses deadline)
+````
+
+

@@ -1,0 +1,8 @@
+{
+"label": "Foundations",
+"position": 2,
+"link": {
+"type": "generated-index",
+"description": "Explore the core principles of Embodied Intelligence, including physics, real-time control loops, and the full suite of external (LIDAR, cameras) and internal (IMU, F/T) sensing systems that enable a robot to perceive and balance in the physical world."
+}
+}

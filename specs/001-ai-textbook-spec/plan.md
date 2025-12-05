@@ -90,7 +90,7 @@ specs/001-ai-textbook-spec/
 ### Source Code (repository root)
 
 ```text
-content/
+frontend/
 ├── docs/
 │   ├── 01-foundations/
 │   │   ├── _index.mdx # Chapter overview/landing page
@@ -120,8 +120,7 @@ content/
 │   ├── diagrams/
 │   ├── images/
 │   └── code/ # For storing external, testable code snippets
-└── _data/
-    └── rag-metadata.json # Consolidated RAG metadata
+
 ```
 
 **Structure Decision**: The content will reside in a `content/` directory at the repository root, structured with `chapters/` for MDX files, `assets/` for diagrams and images, and `_data/` for RAG metadata. This aligns with Docusaurus content organization principles.

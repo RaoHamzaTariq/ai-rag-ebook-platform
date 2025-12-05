@@ -1,0 +1,132 @@
+---
+id: lesson-2-2-rclpy-packages
+title: Building ROS 2 Packages with Python (rclpy)
+sidebar_label: Python Packages (rclpy)
+chapter_id: 02
+page_number: 9
+slug: /02-ros2/2-2-rclpy-packages
+---
+
+# Lesson 2.2: Building ROS 2 Packages with Python (rclpy)
+
+Now that we understand **Nodes and Topics**, this lesson covers how to **turn Python code into a runnable ROS 2 package** using the official Python client library, **rclpy**.
+
+---
+
+## Introduction & Hook
+
+Think of a robot project as a **giant puzzle**. ROS 2 provides the "table" and the "rules," but the **Nodes** are the puzzle pieces.  
+
+> Organizing nodes into **Packages** inside a **Workspace** ensures everything fits together and can be shared easily.
+
+---
+
+## The ROS 2 Workspace
+
+A **Workspace** is the main directory for all robot projects. It provides a structured environment for compiling, installing, and running software.
+
+Typical Workspace directories:
+
+- **`src/`** – Source code for all packages (where you'll write most of your code)  
+- **`build/`** – Temporary files generated during compilation  
+- **`install/`** – Final, runnable executables and libraries  
+- **`log/`** – Build logs  
+
+---
+
+## Packages: The Building Blocks
+
+A **Package** is the smallest buildable unit in ROS 2. It contains:
+
+1. **`setup.py`** – Python build configuration; defines how scripts are installed and made runnable as Nodes  
+2. **`package.xml`** – Metadata: package name, author, and dependencies (e.g., `rclpy`, `std_msgs`)  
+
+---
+
+## Writing a Python Node with rclpy
+
+Every Python Node follows this basic template:
+
+1. **Import** rclpy and message types  
+2. **Define Node Class** inheriting from `rclpy.node.Node`  
+3. **Initialize Node** in `__init__` with `super().__init__('node_name')`  
+4. **Setup Communication**: publishers, subscribers, services, actions  
+5. **Main Function**: `rclpy.init()` and `rclpy.spin()` to start and run the Node  
+
+---
+
+## Conceptual Code Example: The Simple Publisher
+
+```python
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String  # Simple message type
+
+class SimplePublisher(Node):
+    """
+    A Node that publishes a "Hello World" message every 0.5 seconds.
+    """
+    def __init__(self):
+        super().__init__('simple_publisher_node')
+        self.publisher_ = self.create_publisher(String, 'chatter', 10)
+        timer_period_s = 0.5  # seconds
+        self.timer = self.create_timer(timer_period_s, self.publish_message)
+        self.i = 0
+
+    def publish_message(self):
+        msg = String()
+        msg.data = f'Hello ROS 2 World: {self.i}'
+        self.publisher_.publish(msg)
+        self.get_logger().info(f'Publishing: "{msg.data}"')
+        self.i += 1
+
+def main(args=None):
+    rclpy.init(args=args)
+    publisher_node = SimplePublisher()
+    rclpy.spin(publisher_node)
+    publisher_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+````
+
+---
+
+## Brainstorming Challenge: Package Dependencies
+
+A new package needs **`rclpy`** and **`std_msgs`**:
+
+1. Which configuration file declares these dependencies?
+2. What happens if `std_msgs` is not listed when building the package?
+
+---
+
+## Key Concepts in Action
+
+| Concept           | File/Component                           | Function                                         |
+| :---------------- | :--------------------------------------- | :----------------------------------------------- |
+| **Workspace**     | Top-level directory (`src/`, `install/`) | Holds all packages and build artifacts           |
+| **Package**       | Directory inside `src/`                  | Smallest unit of a robot application             |
+| **`rclpy`**       | Python library                           | Client library to program ROS 2 Nodes in Python  |
+| **`package.xml`** | Metadata file                            | Lists dependencies and defines package name/type |
+| **`setup.py`**    | Build file                               | Declares runnable entry points for ROS 2 Nodes   |
+
+---
+
+## Self-Test Q&A
+
+**Q1:** Where do you place source code for all ROS 2 packages?
+**A1:** In the **`src/`** directory within the workspace.
+
+**Q2:** Which Python library is used to write ROS 2 Nodes?
+**A2:** **`rclpy`**
+
+**Q3:** Which file defines dependencies like `std_msgs`?
+**A3:** **`package.xml`**
+
+**Q4:** What is the purpose of `rclpy.spin()`?
+**A4:** Keeps the Node **running, listening for messages, and processing timers** until shutdown.
+
+**Q5:** What is the ROS 2 build tool that processes `setup.py` files?
+**A5:** **`colcon`**

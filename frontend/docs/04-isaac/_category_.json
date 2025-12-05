@@ -1,0 +1,8 @@
+{
+  "label": "Advanced AI & Control (NVIDIA Isaac)",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Explore high-speed, GPU-accelerated robotics with NVIDIA's Isaac platform."
+  }
+}

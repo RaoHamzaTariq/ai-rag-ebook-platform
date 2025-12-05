@@ -1,0 +1,119 @@
+---
+id: lesson-1-4-internal-sensors
+title: Tactile and Internal Sensors - IMUs, Force/Torque, and Temperature
+sidebar_label: Internal Sensors
+chapter_id: 01
+page_number: 6
+slug: /01-foundations/1-4-internal-sensors
+---
+
+# Lesson 1.4: Tactile and Internal Sensors: IMUs, Force/Torque, and Temperature
+
+In the last lesson, we learned how a robot **sees the world** (external perception).  
+Now, we will look inside the robot. This lesson focuses on **internal sensors**, which are crucial for stable movement and safe interaction.
+
+---
+
+## Introduction & Hook
+
+If cameras are the robot's **eyes**, internal sensors are its **inner ear, sense of touch, and temperature regulation**.  
+These sensors tell the robot about its own state:
+
+- Am I accelerating?  
+- Am I tilted?  
+- Am I pushing too hard?
+
+> Roboticists call these internal senses **Proprioception**—the robot's awareness of its body's position and movement.  
+> Without these internal sensors, a robot cannot maintain balance, walk straight, or safely manipulate fragile objects.
+
+---
+
+## Inertial Measurement Units (IMUs)
+
+The **IMU** is the most vital internal sensor for movement—it acts as the robot's **inner ear**.  
+
+### Components of an IMU
+
+1. **Accelerometers:** Measure non-gravitational acceleration (how quickly the robot is speeding up or slowing down).  
+2. **Gyroscopes:** Measure angular velocity (rotation around the x, y, z axes).  
+3. **Magnetometers:** Measure the magnetic field (like a compass, for orientation).
+
+### Why the IMU is Essential for Balance
+
+IMUs are often placed in the **torso near the Center of Mass (CoM)**. They feed data into the **control loop**:
+
+- **Gravity:** Detects which way is down.  
+- **Orientation:** Combines gyro and accelerometer data to estimate tilt.  
+- **Velocity Estimation:** Acceleration is integrated over time to compute speed and position.  
+
+> IMU data is noisy, so filters like **Kalman Filters** are used to produce stable estimates.
+
+---
+
+## Force/Torque Sensors and Tactile Sensors
+
+Robots need to **feel the environment** using contact sensors.
+
+### Force/Torque (F/T) Sensors
+
+- Placed on **wrists** and **ankles**.  
+- Measure 3 forces (`F_x, F_y, F_z`) and 3 torques (`τ_x, τ_y, τ_z`).  
+
+| Location | Purpose |
+| --- | --- |
+| Ankles | Measure ground reaction to control CoM and balance |
+| Wrists | Prevent crushing objects when grasping |
+
+### Tactile (Touch) Sensors
+
+- Arrays of small pressure sensors covering hands or arms (artificial skin).  
+- Enable **delicate manipulation**, e.g., handling an egg or assembling small components.
+
+---
+
+## Internal Health Monitoring (Temperature)
+
+Motors generate heat when running. **Temperature sensors** monitor motors and batteries.  
+
+- **Thermal Policy:** If temperature exceeds a threshold (e.g., 80°C), the AI reduces power or stops movement to prevent damage.  
+
+> Critical for **safety and longevity** of the robot.
+
+---
+
+## Brainstorming Challenge: The Slippery Floor
+
+A robot is walking across an icy, slippery floor:
+
+1. Which **external sensor** (from Lesson 1.3) is useless for detecting the slip?  
+2. Which **internal sensor** (from this lesson) would detect it first, and how?
+
+---
+
+## Key Concepts in Action
+
+| Concept | Function | Example |
+| --- | --- | --- |
+| IMU | Measures acceleration, rotation, and gravity | Used as the robot's "inner ear" for tilt and balance |
+| Proprioception | Robot's awareness of its own body state | Knowing elbow is bent at 90° and motors are warm |
+| F/T Sensor | Measures forces and torques | Controls pressure on ground to maintain CoM stability |
+| Thermal Policy | Manages motor and battery heat | AI reduces motor speed to prevent overheating |
+
+---
+
+## Self-Test Questions
+
+**Q1:** What three components are combined inside an IMU?  
+**A1:** Accelerometers, Gyroscopes, and Magnetometers.
+
+**Q2:** What does a Force/Torque (F/T) sensor on a wrist measure?  
+**A2:** Forces and torques applied to an object, preventing damage.
+
+**Q3:** What is the technical term for a robot's awareness of its body state?  
+**A3:** Proprioception.
+
+**Q4:** If a motor's temperature sensor reports 100°C, what should the AI do?  
+**A4:** Trigger a **Thermal Policy**: reduce power or stop the motor to prevent damage.
+
+**Q5:** Why is integrating accelerometer data alone insufficient for precise positioning?  
+**A5:** Raw data is noisy, and errors accumulate (drift); fusion with gyroscope data is needed for accuracy.
