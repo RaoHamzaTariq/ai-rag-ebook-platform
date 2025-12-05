@@ -27,9 +27,9 @@ description: "Task list for creating a Docusaurus book on Physical AI and Humano
 ## Purpose  
 Ensure folder structure and sidebar navigation exist.
 
-- [ ] T005 Create main intro page → `frontend/docs/intro.md`
-- [ ] T006 [P] Build sidebar nav in `frontend/sidebars.ts` using **01–05** chapter folders
-- [ ] T007 [P] Verify placeholder `_index.mdx` exists in all chapters:
+- [x] T005 Create main intro page → `frontend/docs/intro.md`
+- [x] T006 [P] Build sidebar nav in `frontend/sidebars.ts` using **01–05** chapter folders
+- [x] T007 [P] Verify placeholder `_index.mdx` exists in all chapters:
 
     ```
 
@@ -56,16 +56,16 @@ This story includes 4 files:
 
 ### Tasks
 
-- [ ] T008 [FND1] Write: Embodied Intelligence  
+- [x] T008 [FND1] Write: Embodied Intelligence  
   → `frontend/docs/01-foundations/1-1-embodied-intelligence.mdx`
 
-- [ ] T009 [FND2] Write: Real-Time Systems  
+- [x] T009 [FND2] Write: Real-Time Systems  
   → `frontend/docs/01-foundations/1-2-real-time.mdx`
 
-- [ ] T010 [FND3] Write: Perception Systems  
+- [x] T010 [FND3] Write: Perception Systems  
   → `frontend/docs/01-foundations/1-3-perception-systems.mdx`
 
-- [ ] T011 [FND4] Write: Internal Sensors  
+- [x] T011 [FND4] Write: Internal Sensors  
   → `frontend/docs/01-foundations/1-4-internal-sensors.mdx`
 
 ---
@@ -82,13 +82,13 @@ Files:
 
 ### Tasks
 
-- [ ] T012 [ROS2-1] Write ROS2 Architecture  
+- [x] T012 [ROS2-1] Write ROS2 Architecture  
   → `frontend/docs/02-ros2/2-1-ros2-architecture.mdx`
 
-- [ ] T013 [ROS2-2] Write rclpy Packages  
+- [x] T013 [ROS2-2] Write rclpy Packages  
   → `frontend/docs/02-ros2/2-2-rclpy-packages.mdx`
 
-- [ ] T014 [ROS2-3] Write URDF & Kinematics  
+- [x] T014 [ROS2-3] Write URDF & Kinematics  
   → `frontend/docs/02-ros2/2-3-urdf-kinematics.mdx`
 
 ---
@@ -104,10 +104,10 @@ Files:
 
 ### Tasks
 
-- [ ] T015 [SIM1] Write Gazebo Physics  
+- [x] T015 [SIM1] Write Gazebo Physics  
   → `frontend/docs/03-simulation/3-1-gazebo-physics.mdx`
 
-- [ ] T016 [SIM2] Write Unity Visualization  
+- [x] T016 [SIM2] Write Unity Visualization  
   → `frontend/docs/03-simulation/3-2-unity-visualization.mdx`
 
 ---
@@ -123,10 +123,10 @@ Files:
 
 ### Tasks
 
-- [ ] T017 [ISAAC1] Write: Isaac Sim Data  
+- [x] T017 [ISAAC1] Write: Isaac Sim Data  
   → `frontend/docs/04-isaac/4-1-isaac-sim-data.mdx`
 
-- [ ] T018 [ISAAC2] Write: VSLAM Pipelines  
+- [x] T018 [ISAAC2] Write: VSLAM Pipelines  
   → `frontend/docs/04-isaac/4-2-vslam-pipelines.mdx`
 
 
@@ -142,23 +142,23 @@ Files:
 
 ### Tasks
 
-- [ ] T019 [HUM1] Write Locomotion & Balance  
+- [x] T019 [HUM1] Write Locomotion & Balance  
   → `frontend/docs/05-humanoid/5-1-locomotion-balance.mdx`
 
-- [ ] T020 [HUM2] Write Manipulation & Grasping  
+- [x] T020 [HUM2] Write Manipulation & Grasping  
   → `frontend/docs/05-humanoid/5-2-manipulation-grasping.mdx`
 
-- [ ] T021 [HUM3] Write VLA & Cognitive Models  
+- [x] T021 [HUM3] Write VLA & Cognitive Models  
   → `frontend/docs/05-humanoid/5-3-vla-cognitive.mdx`
 
 
 # Phase 8: Polish & Cross-Cutting Tasks
 
-- [ ] T022 [P] Edit/Review all `.mdx` files
-- [ ] T023 [P] Add diagrams/images  
+- [x] T022 [P] Edit/Review all `.mdx` files
+- [x] T023 [P] Add diagrams/images  
   → Add to: `frontend/assets/diagrams/` or `frontend/assets/images/`
-- [ ] T024 Build the Docusaurus site and fix errors
-- [ ] T025 Deploy (GitHub Pages / Cloudflare / Netlify)
+- [x] T024 Build the Docusaurus site and fix errors
+- [x] T025 Deploy (GitHub Pages / Cloudflare / Netlify)
 
 
 
