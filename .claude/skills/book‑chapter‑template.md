@@ -14,7 +14,7 @@ version: "1.0.0"
 
 ## How This Skill Works
 
-1. **Add Metadata**: Insert YAML frontmatter including chapter_id, page_number, slug, title, URL
+1. **Add Metadata**: Insert YAML frontmatter including id, chapter_id, page_number, slug, title, URL
 2. **Structure Headings**: Create main headings and subheadings for chapter sections
 3. **Insert Content Sections**:
    - Explanations
@@ -31,24 +31,23 @@ version: "1.0.0"
 Provide a fully formatted MDX chapter with:
 
 - YAML frontmatter:
+  - `id`
+  - `title`
+  - `sidebar_label`
   - `chapter_id`
   - `page_number`
   - `slug`
-  - `title`
-  - `url`
-- Headings and subheadings for all subtopics
-- Placeholder blocks for code snippets and diagrams
-- Optional personalization and translation placeholders
 
 ### Example Output (MDX)
 
 ```mdx
 ---
+id: lesson-1-1-embodied-intelligence
+title: Embodied Intelligence and Physical Laws
+sidebar_label: Embodied Intelligence
 chapter_id: 01
-page_number: 1
-slug: foundations-of-physical-ai
-title: Foundations of Physical AI & Embodied Intelligence
-url: /chapters/01-foundations
+page_number: 3
+slug: /01-foundations/1-1-embodied-intelligence
 ---
 
 # Foundations of Physical AI & Embodied Intelligence
@@ -74,19 +73,13 @@ Example content goes here…
 
 ### Diagram
 
-![Diagram Description](../assets/chapters/01-foundations/diagram1.png)
+![Diagram Description](../assets/chapters/01-foundations/diagram1.png) (If necessary)
 
 ## 3. Subtopic 2
 
 Content goes here…
 
-<!-- Personalization Placeholder -->
-
-{personalization_placeholder}
-
-<!-- Translation Placeholder -->
-
-{translation_placeholder}
+and so on
 
 ```
 
