@@ -70,11 +70,11 @@ function HomepageHeader() {
         <p className={styles.siteTagline}>{siteConfig.tagline}</p>
 
         <div className={styles.headerButtons}>
-          <a href="/physical-ai-ebook/01-foundations/1-1-embodied-intelligence" className={styles.primaryButton}>
+          <a href="/01-foundations/1-1-embodied-intelligence" className={styles.primaryButton}>
             Start Reading: Chapter 1 →
           </a>
 
-          <a href="/physical-ai-ebook/intro" className={styles.secondaryButton}>
+          <a href="/intro" className={styles.secondaryButton}>
             View Syllabus
           </a>
         </div>
