@@ -650,3 +650,97 @@ Response: {"agent_response": "..."}
    * Highlight integration for user-selected text
    * Current page chunk prioritization
    * Top-N additional chunk retrieval
+
+
+
+
+
+
+# RAG Backend System — Plan Prompt
+
+We are building a **RAG backend** for an AI-native textbook using **FastAPI, Qdrant, and OpenAI Agents SDK**. Follow the steps in order.
+
+## 1. FastAPI Setup
+- Create modular app with routers: `/chunks`, `/rag`, `/agents`
+- Configure environment variables for Gemini/OpenAI & Qdrant
+
+## 2. Qdrant Setup
+- Create collection: `textbook_chunks`
+- Metadata: `slug`, `chapter_number`, `chapter_title`, `lesson_id`, `section_heading`, `source_file_path`
+- Functions: `upsert_chunks()`, `clear_collection()`
+
+## 3. MDX Loader & Metadata Extraction
+- Recursively scan `frontend/docs/**/*.mdx`
+- Extract frontmatter, headings, content, slug, chapter_number, chapter_title, lesson_id
+- Return structured objects per file
+
+## 4. Chunking & Embedding
+- Split text into 500–1000 token chunks
+- Preserve code blocks and context
+- Embed using Gemini/OpenAI embeddings
+
+## 5. Ingestion Pipeline
+- Load → Extract → Chunk → Embed → Store in Qdrant
+- Route: `POST /chunks/rebuild` → returns number of indexed chunks
+
+## 6. Retriever
+- Retrieval priority: 
+  1. Highlighted text
+  2. Current page chunks
+  3. Global top 3 relevant chunks
+- Function: `retrieve_context(query, highlighted_text=None, slug=None)`
+
+## 7. AI Agents
+- **Summarizer**: summarize input text  
+- **RAG Agent**: generate answers using retriever tool, cite sources  
+- **Reviewer**: check new content vs existing MDX
+
+## 8. Routes
+- `/rag/query` → query + optional highlighted text + slug → returns answer + sources
+- `/agents/summarize` → returns summary
+- `/agents/run` → run selected agent with payload
+
+---
+
+**Implementation Phases**:  
+1️⃣ FastAPI Setup → 2️⃣ Qdrant → 3️⃣ MDX Loader → 4️⃣ Chunking → 5️⃣ Embedding → 6️⃣ Ingestion → 7️⃣ Retriever → 8️⃣ Agents → 9️⃣ Routes
+
+
+You are required to generate **detailed step-by-step tasks** for building a RAG backend system for the AI-native textbook. Follow the instructions below carefully.
+
+## Instructions for AI
+
+1. **Focus**: Generate tasks for the **backend flow** only (FastAPI, Qdrant, OpenAI Agents SDK).  
+
+3. **System Flow**: Tasks should follow this **logical order**:
+   1. Setup FastAPI project and environment  
+   2. Setup Qdrant client and collections  
+   3. Scan MDX files, extract content and metadata (`slug`, `chapter_number`, `chapter_title`, `lesson_id`, `section_headings`)  
+   4. Chunk the content (500–1000 tokens) while preserving code blocks  
+   5. Generate embeddings for each chunk using Gemini/OpenAI API  
+   6. Store chunks with embeddings and metadata into Qdrant  
+   7. Build retriever with prioritization logic:
+      - Highlighted text first
+      - Current page chunks next
+      - Top 3 global chunks after  
+   8. Implement RAG AI agent using the retriever  
+   9. Implement Summarizer agent  
+   10. Implement Reviewer/Enhance agent  
+   11. Create endpoints:
+       - `POST /chunks/rebuild` → trigger full ingestion  
+       - `POST /rag/query` → query content  
+       - `POST /agents/run` → run AI agents  
+4. **Dependencies**: Ensure tasks respect dependencies (e.g., embeddings require chunking; retriever requires stored embeddings).  
+5. **Outputs**: Every task should clearly state the deliverable (e.g., function, module, endpoint, Qdrant collection).  
+6. **Testing**: Specify how each task can be tested or verified.
+
+
+## Additional Requirements
+
+- Prioritize **current page chunks and highlighted text** in retrieval logic  
+- Ensure **FastAPI project structure** is modular: `routers`, `services`, `models`, `utils`  
+- Provide clear logging and error handling for all ingestion and agent pipelines  
+- Use **OpenAI Agents SDK with Gemini API key** for all AI interactions  
+- Store Qdrant collection as `textbook_chunks` with proper metadata fields  
+
+Generate a **complete list of tasks** following this structure and logical order. Each task should be actionable and ready for implementation.

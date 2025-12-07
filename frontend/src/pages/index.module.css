@@ -1,23 +1,160 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+/* Page Background */
+.page {
+  min-height: 100vh;
+  background: #0a0a0f;
+}
 
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
+/* Header */
+.header {
   position: relative;
+  padding: 5rem 1rem;
+  background: #111827;
+  border-bottom: 2px solid #4338ca;
   overflow: hidden;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.headerOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #1e1b4b, black);
+  opacity: 0.15;
 }
 
-.buttons {
+.headerInner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.siteTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0px 4px 10px rgba(0,0,0,0.6);
+}
+
+.siteTagline {
+  font-size: 1.3rem;
+  color: #a5b4fc;
+  margin-top: 1rem;
+}
+
+/* Header Buttons */
+.headerButtons {
   display: flex;
-  align-items: center;
   justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.primaryButton {
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background: #4f46e5;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.primaryButton:hover {
+  background: #6366f1;
+}
+
+.secondaryButton {
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 2px solid #4f46e5;
+  background: transparent;
+  color: #a5b4fc;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* Chapters Section */
+.chaptersSection {
+  padding: 5rem 1rem;
+  background: #030712;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2.3rem;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+/* Chapters Grid */
+.chapterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Chapter Card */
+.chapterCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 1.5rem;
+  text-decoration: none;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.chapterCard:hover {
+  transform: scale(1.03);
+  background: rgba(55, 65, 81, 0.8);
+}
+
+.chapterIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.chapterTitle {
+  font-size: 1.2rem;
+  color: #818cf8;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.chapterDescription {
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.chapterStart {
+  margin-top: 1rem;
+  color: #a5b4fc;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.chapterStart:hover {
+  color: white;
+}
+
+/* Footer text */
+.footerNote {
+  max-width: 600px;
+  margin: 3rem auto;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.9rem;
 }

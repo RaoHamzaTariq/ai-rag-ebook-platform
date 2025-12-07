@@ -3,6 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+// const tailwindPlugin = require("@tailwindcss/postcss"); // Update this line
 
 const config: Config = {
   title: 'Physical AI and Humanoid Robotics',
@@ -69,6 +70,27 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  // docusaurus.config.js
+
+  // docusaurus.config.js
+
+
+  // plugins: [
+  //   async function myPlugin(context, options) {
+  //     return {
+  //       name: "docusaurus-tailwindcss",
+  //       configurePostCss(postcssOptions) {
+  //         // Change 'tailwindcss' to '@tailwindcss/postcss' here
+  //         postcssOptions.plugins.push(tailwindPlugin); 
+  //         postcssOptions.plugins.push(require("autoprefixer"));
+  //         return postcssOptions;
+  //       },
+  //     };
+  //   },
+  // ],
+
+
 
   themeConfig: {
     // Replace with your project's social card
