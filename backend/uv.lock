@@ -165,6 +165,7 @@ dependencies = [
     { name = "numpy" },
     { name = "openai-agents" },
     { name = "python-frontmatter" },
+    { name = "pyyaml" },
     { name = "qdrant-client" },
 ]
 
@@ -177,6 +178,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.3.5" },
     { name = "openai-agents", specifier = ">=0.6.2" },
     { name = "python-frontmatter", specifier = ">=1.1.0" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "qdrant-client", specifier = ">=1.16.1" },
 ]
 

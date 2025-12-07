@@ -11,7 +11,7 @@ description: "Task list for RAG Backend System"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 P1 Setup FastAPI Project: Initialize a new FastAPI project, set up a virtual environment, install necessary dependencies (FastAPI, Uvicorn, Qdrant-client, OpenAI, Pydantic), and configure basic project structure (`routers`, `services`, `models`, `utils`). (backend/src/main.py, backend/src/requirements.txt)
+- [x] T001 P1 Setup FastAPI Project: Initialize a new FastAPI project, set up a virtual environment, install necessary dependencies (FastAPI, Uvicorn, Qdrant-client, OpenAI, Pydantic), and configure basic project structure (`routers`, `services`, `models`, `utils`). (backend/src/main.py, backend/src/requirements.txt)
   *   **Dependencies**: None
   *   **Expected Output / Deliverable**: A running FastAPI application with a basic `main.py` and structured directories.
   *   **Endpoint / Route**: `/` (root endpoint for basic health check)
@@ -21,7 +21,7 @@ description: "Task list for RAG Backend System"
 
 **Purpose**: Core vector database setup
 
-- [ ] T002 P1 Configure Qdrant Client and Collection: Initialize Qdrant client, create a new collection named `textbook_chunks` with appropriate vector size (e.g., 1536 for Gemini embeddings) and schema for metadata fields (`slug`, `chapter_number`, `chapter_title`, `lesson_id`, `page_number`). (backend/src/services/qdrant_service.py)
+- [x] T002 P1 Configure Qdrant Client and Collection: Initialize Qdrant client, create a new collection named `textbook_chunks` with appropriate vector size (e.g., 1536 for Gemini embeddings) and schema for metadata fields (`slug`, `chapter_number`, `chapter_title`, `lesson_id`, `page_number`). (backend/src/services/qdrant_service.py)
   *   **Dependencies**: T001
   *   **Expected Output / Deliverable**: Qdrant client initialized and `textbook_chunks` collection created.
   *   **Endpoint / Route**: None (internal service)
@@ -31,7 +31,7 @@ description: "Task list for RAG Backend System"
 
 **Purpose**: Data ingestion - content extraction
 
-- [ ] T003 P1 MDX Content and Metadata Extraction: Develop a service to scan MDX files from a specified directory, parse their content, and extract structured metadata: `slug`, `chapter_number`, `chapter_title`, `lesson_id`, `page_number`. Implement error handling for file parsing. (backend/services/mdx_parser.py)
+- [x] T003 P1 MDX Content and Metadata Extraction: Develop a service to scan MDX files from a specified directory, parse their content, and extract structured metadata: `slug`, `chapter_number`, `chapter_title`, `lesson_id`, `page_number`. Implement error handling for file parsing. (backend/services/mdx_parser.py)
   *   **Dependencies**: T001
   *   **Expected Output / Deliverable**: A Python function/service that takes an MDX file path and returns content and a dictionary of extracted metadata.
   *   **Endpoint / Route**: None (internal service for ingestion pipeline)
@@ -41,7 +41,7 @@ description: "Task list for RAG Backend System"
 
 **Purpose**: Data ingestion - content preparation
 
-- [ ] T004 P1 Content Chunking with Code Preservation: Implement a chunking mechanism that breaks down the extracted content into chunks of 500-1000 tokens. Crucially, ensure that code blocks are identified and kept intact within single chunks, or at least handled gracefully to prevent splitting within a code block. (backend/services/chunker.py)
+- [x] T004 P1 Content Chunking with Code Preservation: Implement a chunking mechanism that breaks down the extracted content into chunks of 500-1000 tokens. Crucially, ensure that code blocks are identified and kept intact within single chunks, or at least handled gracefully to prevent splitting within a code block. (backend/services/chunker.py)
   *   **Dependencies**: T003
   *   **Expected Output / Deliverable**: A Python function that takes raw content and returns a list of text chunks.
   *   **Endpoint / Route**: None (internal service for ingestion pipeline)
@@ -51,7 +51,7 @@ description: "Task list for RAG Backend System"
 
 **Purpose**: Data ingestion - vector representation
 
-- [ ] T005 P1 Generate Embeddings: Integrate with the Gemini/OpenAI API to generate vector embeddings for each text chunk. Handle API key management securely (e.g., environment variables) and implement retry mechanisms for API calls. (backend/src/services/embedding_generator.py)
+- [x] T005 P1 Generate Embeddings: Integrate with the Gemini/OpenAI API to generate vector embeddings for each text chunk. Handle API key management securely (e.g., environment variables) and implement retry mechanisms for API calls. (backend/src/services/embedding_generator.py)
   *   **Dependencies**: T004
   *   **Expected Output / Deliverable**: A Python function that takes a list of text chunks and returns a list of corresponding embedding vectors.
   *   **Endpoint / Route**: None (internal service for ingestion pipeline)
@@ -61,7 +61,7 @@ description: "Task list for RAG Backend System"
 
 **Purpose**: Data ingestion - persistence
 
-- [ ] T006 P1 Store Chunks in Qdrant: Develop a service to store the generated chunks, their embeddings, and associated metadata (from Task T003) into the `textbook_chunks` Qdrant collection. Ensure metadata fields are correctly indexed for efficient filtering during retrieval. (backend/src/services/qdrant_ingestor.py)
+- [x] T006 P1 Store Chunks in Qdrant: Develop a service to store the generated chunks, their embeddings, and associated metadata (from Task T003) into the `textbook_chunks` Qdrant collection. Ensure metadata fields are correctly indexed for efficient filtering during retrieval. (backend/src/services/qdrant_ingestor.py)
   *   **Dependencies**: T002, T005
   *   **Expected Output / Deliverable**: A Python function/service to ingest a chunk with its embedding and metadata into Qdrant.
   *   **Endpoint / Route**: None (internal service for ingestion pipeline)

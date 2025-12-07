@@ -1,53 +1,95 @@
+# backend/src/services/mdx_parser.py
+
 import os
-import frontmatter
-from typing import List, Dict
+import re
+import yaml
+from typing import List, Dict, Tuple
 
-class MDXParser:
-    def __init__(self, base_dir: str):
-        self.base_dir = base_dir
 
-    def scan_files(self) -> List[str]:
+class MDXParserService:
+    """
+    Service to parse MDX files, extract frontmatter metadata and content.
+    """
+
+    def __init__(self, docs_root: str = "../../frontend/docs"):
+        self.docs_root = os.path.abspath(docs_root)
+        self.mdx_files: List[str] = []
+
+    def scan_mdx_files(self) -> List[str]:
+        """
+        Recursively scan the docs directory for all .mdx files.
+        """
         mdx_files = []
-        for root, _, files in os.walk(self.base_dir):
+        for root, _, files in os.walk(self.docs_root):
             for file in files:
                 if file.endswith(".mdx"):
                     mdx_files.append(os.path.join(root, file))
+        self.mdx_files = mdx_files
+        print(f"✅ Found {len(mdx_files)} MDX files")
         return mdx_files
 
-    def parse_file(self, file_path: str) -> Dict:
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                post = frontmatter.load(f)
-        except Exception as e:
-            print(f"Error reading {file_path}: {e}")
-            return {}
+    def parse_frontmatter(self, text: str) -> Tuple[Dict[str, str], str]:
+        """
+        Extract frontmatter metadata and content body from an MDX file.
+        """
+        frontmatter_pattern = re.compile(r"^---(.*?)---", re.DOTALL | re.MULTILINE)
+        match = frontmatter_pattern.match(text)
 
-        metadata = {
-            "id": post.get("id", ""),
-            "title": post.get("title", ""),
-            "sidebar_label": post.get("sidebar_label", ""),
-            "chapter_id": post.get("chapter_id", ""),
-            "page_number": post.get("page_number", None),
-            "slug": post.get("slug", ""),
-            "source_file_path": file_path
+        if match:
+            frontmatter_block = match.group(1).strip()
+            try:
+                metadata = yaml.safe_load(frontmatter_block)
+            except yaml.YAMLError as e:
+                raise ValueError(f"Failed to parse YAML frontmatter: {e}")
+            content = text[match.end():].strip()
+        else:
+            metadata = {}
+            content = text
+
+        return metadata, content
+
+    def parse_mdx_file(self, file_path: str) -> Dict:
+        """
+        Parse a single MDX file and return metadata + content.
+        """
+        with open(file_path, "r", encoding="utf-8") as f:
+            text = f.read()
+
+        metadata, content = self.parse_frontmatter(text)
+
+        # Add file path to metadata for reference
+        metadata["source_file_path"] = file_path
+
+        return {
+            "metadata": metadata,
+            "content": content
         }
 
-        content = post.content
-        return {"metadata": metadata, "content": content}
-
     def parse_all_files(self) -> List[Dict]:
-        results = []
-        for file_path in self.scan_files():
-            data = self.parse_file(file_path)
-            if data:
-                results.append(data)
-        return results
+        """
+        Parse all MDX files and return a list of dicts with metadata and content.
+        """
+        if not self.mdx_files:
+            self.scan_mdx_files()
 
+        all_data = []
+        for mdx_file in self.mdx_files:
+            try:
+                parsed = self.parse_mdx_file(mdx_file)
+                all_data.append(parsed)
+            except Exception as e:
+                print(f"❌ Error parsing {mdx_file}: {e}")
+        print(f"✅ Total MDX files parsed: {len(all_data)}")
+        return all_data
+
+
+# -----------------------------
+# Test parser independently
+# -----------------------------
 if __name__ == "__main__":
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../frontend/docs"))
-    parser = MDXParser(base_dir=BASE_DIR)
-    all_data = parser.parse_all_files()
-    print(f"Total MDX files parsed: {len(all_data)}")
-    for item in all_data[:2]:
-        print(item["metadata"])
-        print(item["content"][:300], "...")
+    parser = MDXParserService(docs_root="../../frontend/docs")
+    parser.scan_mdx_files()
+    all_mdx_data = parser.parse_all_files()
+    for item in all_mdx_data[:3]:  # print first 3 files for testing
+        print("Metadata:", item["metadata"])
+        print("Content snippet:", item["content"][:200], "\n")
