@@ -2,6 +2,7 @@ import os
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 import asyncio
+from src.services.embedding_service import EmbeddingService
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -95,9 +96,13 @@ class QdrantService:
             print(f"[QDRANT ERROR] Upload failed: {e}")
             raise
 
-    async def search(self, query_vector, limit=5, score_threshold=0.7):
+    async def search(self, query, limit=5, score_threshold=0.7):
         """Search for similar vectors using query_points (AsyncQdrantClient method)"""
         try:
+
+            embedding_service = EmbeddingService()
+            query_vector = embedding_service.embed(query,isSingle=True)
+            
             if len(query_vector) != self.vector_size:
                 raise ValueError(
                     f"Query embedding must be {self.vector_size}-dimensional, got {len(query_vector)}"

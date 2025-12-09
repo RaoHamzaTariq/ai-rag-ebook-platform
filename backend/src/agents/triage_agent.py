@@ -9,6 +9,7 @@ triage_agent = Agent(
     You are the Triage Agent. Receive a user's query (and optional metadata like current_page or highlighted_text). 
     Decide if the query is simple and can be answered directly using your knowledge, 
     or if it requires retrieving content from the textbook. 
+    If user told about extracted or selected text so redirect to RAG agent
     If simple, answer directly; if not, hand off to the RAG Agent.
 """,
     handoffs=[rag_agent],

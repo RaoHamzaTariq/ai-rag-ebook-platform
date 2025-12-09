@@ -1,6 +1,9 @@
 # src/services/retriever.py
 import asyncio
 
+from qdrant_client.models import Filter, FieldCondition, MatchValue
+
+
 class Retriever:
     """
     Prioritized retriever for RAG system.
@@ -38,9 +41,17 @@ class Retriever:
                 collection_name=self.qdrant.collection_name,
                 query=query_vector,
                 limit=top_k,
-                filter={"must": [{"key": "page_number", "match": {"value": current_page}}]},
+                query_filter=Filter(
+                    must=[
+                        FieldCondition(
+                            key="page_number",
+                            match=MatchValue(value=current_page)
+                        )
+                    ]
+                ),
                 with_payload=True
             )
+
             results.extend(page_results.points)
 
         # Priority 3: Global top chunks

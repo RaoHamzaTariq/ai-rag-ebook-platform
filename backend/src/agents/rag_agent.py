@@ -9,7 +9,7 @@ import asyncio
 # Initialize your retriever (already implemented in Phase 7)
 retriever = Retriever(qdrant_service=QdrantService())
 
-@function_tool(name_override="retrieve_data")
+# @function_tool(name_override="retrieve_data")
 async def retrieve_chunks(query: str, current_page: int | None = None, highlighted_text: str | None = None):
     """
     Calls the retriever to get relevant chunks based on the query and optional context.
@@ -21,7 +21,7 @@ async def retrieve_chunks(query: str, current_page: int | None = None, highlight
     Returns a formatted string combining all chunks.
     """
     chunks = await retriever.retrieve(
-        query=query,
+        query_vector=query,
         current_page=current_page,
         highlighted_text=highlighted_text
     )
@@ -32,7 +32,7 @@ async def dynamic_instructions(
     context: RunContextWrapper[AgentRequest],
     agent: Agent[AgentRequest]
 ) -> str:
-    current_page = context.context.page_no
+    current_page = context.context.current_page
     highlighted_text = context.context.highlighted_text
     query= context.context.query
 

@@ -1,5 +1,6 @@
 # src/services/embedding_service.py
 
+import json
 import os
 import requests
 from time import sleep
@@ -20,15 +21,34 @@ class EmbeddingService:
         self.batch_size = batch_size
         self.retry = retry
         self.base_wait_seconds = base_wait_seconds
-        self.url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:batchEmbedContents"
+        self.url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}"
+        self.headers={"x-goog-api-key": self.api_key,"Content-Type": "application/json"}
 
     def _chunk_batches(self, chunks):
         """Yield successive batches of chunks"""
         for i in range(0, len(chunks), self.batch_size):
             yield chunks[i:i + self.batch_size]
 
-    def embed(self, chunks):
+    def embed(self, chunks, isSingle=False):
         """Generate embeddings for all chunks in batches with exponential backoff"""
+
+
+        if isSingle:
+            single_payload = {
+            "model": "models/text-embedding-004",
+            "content": {"parts": [{"text": chunks}]}
+        }
+
+            r = requests.post(f"{self.url}:embedContent",
+                            headers=self.headers,
+                            data=json.dumps(single_payload))
+
+            if r.status_code != 200:
+                raise Exception(r.text)
+
+            return r.json()["embedding"]["values"]
+
+
         all_embeddings = []
         total_batches = (len(chunks) + self.batch_size - 1) // self.batch_size
         batch_num = 0
@@ -48,11 +68,8 @@ class EmbeddingService:
             for attempt in range(self.retry):
                 try:
                     response = requests.post(
-                        self.url,
-                        headers={
-                            "x-goog-api-key": self.api_key,
-                            "Content-Type": "application/json"
-                        },
+                        f"{self.url}:batchEmbedContents",
+                        headers=self.headers,
                         json=payload,
                         timeout=60
                     )
