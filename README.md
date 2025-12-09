@@ -744,3 +744,199 @@ You are required to generate **detailed step-by-step tasks** for building a RAG 
 - Store Qdrant collection as `textbook_chunks` with proper metadata fields  
 
 Generate a **complete list of tasks** following this structure and logical order. Each task should be actionable and ready for implementation.
+
+
+
+
+
+
+
+
+
+Here’s a **complete developer-ready specification** for the RAG backend + frontend chatbot integration, written in your template style:
+
+````markdown
+# Feature Specification: Floating Chatbot Integration with RAG Backend
+
+**Feature Branch**: `006-floating-chatbot-rag`  
+**Created**: 2025-12-09  
+**Status**: Draft  
+**Input**: User description: "Integrate a floating chatbot widget on the bottom-right corner of the web page that interacts with the RAG backend system. Supports simple queries (triage agent), context-aware queries (RAG agent), and summarization of selected text (summarizer agent)."
+
+## User Scenarios & Testing *(mandatory)*
+
+### User Story 1 - Ask General Query (Priority: P1)
+
+A user opens the chatbot widget and asks a general question (e.g., "What is a neural network?").  
+
+**Why this priority**: General queries are the most common interaction and provide immediate value without requiring document context.  
+
+**Independent Test**: Open chatbot widget, enter a general question, verify the response comes directly from the triage agent.  
+
+**Acceptance Scenarios**:
+
+1. **Given** the widget is collapsed, **When** user clicks to expand and types a general question, **Then** the triage agent responds in the conversation area.  
+2. **Given** the widget is open, **When** user sends multiple general questions, **Then** conversation history displays all queries and responses in order.
+
+---
+
+### User Story 2 - Ask Contextual Query (Priority: P1)
+
+A user selects text or references a specific page and asks a complex question requiring context from the textbook (e.g., "Explain QoS in chapter 2").  
+
+**Why this priority**: Enables RAG functionality and ensures knowledge from documents is accessible, critical for advanced users.  
+
+**Independent Test**: Select text/current page, enter query, and confirm triage agent delegates to RAG agent and returns a relevant answer.  
+
+**Acceptance Scenarios**:
+
+1. **Given** highlighted text or page context, **When** user submits query, **Then** triage agent hands off to RAG agent.  
+2. **Given** RAG agent retrieves relevant chunks, **When** answer is generated, **Then** response is displayed in the conversation history with appropriate formatting.
+
+---
+
+### User Story 3 - Summarize Selected Text (Priority: P2)
+
+A user highlights a portion of text on the webpage and requests a summary.  
+
+**Why this priority**: Provides efficient content digestion; less frequent than general queries but adds high value.  
+
+**Independent Test**: Highlight text, trigger summarization, and verify response comes from summarizer agent with concise summary.  
+
+**Acceptance Scenarios**:
+
+1. **Given** highlighted text, **When** user clicks "Summarize," **Then** summarizer agent returns a summary in the widget.  
+2. **Given** multiple consecutive summarization requests, **When** user submits them, **Then** conversation history shows all summaries sequentially.
+
+---
+
+### User Story 4 - Conversation UI (Priority: P1)
+
+The widget must support input, conversation history, typing indicator, and collapsible behavior.  
+
+**Why this priority**: Fundamental UX requirement; ensures smooth interaction.  
+
+**Independent Test**: Verify widget toggling, text input, typing indicator, and conversation persistence during a session.  
+
+**Acceptance Scenarios**:
+
+1. **Given** collapsed widget, **When** user clicks the widget icon, **Then** it expands smoothly.  
+2. **Given** conversation ongoing, **When** a response is being generated, **Then** typing indicator appears.  
+3. **Given** multiple queries, **When** user scrolls, **Then** conversation history scrolls properly and remains visible.
+
+---
+
+### Edge Cases
+
+- What happens when API call fails or network error occurs? → Display user-friendly error in widget.  
+- What happens if the query is empty or only whitespace? → Prevent submission and show validation message.  
+- How does the system handle multiple simultaneous queries? → Queue requests; responses appear in order.  
+- How to handle unsupported file content or missing document chunks? → Notify user: "Context not available."
+
+## Requirements *(mandatory)*
+
+### Functional Requirements
+
+- **FR-001**: System MUST render a floating, collapsible chatbot widget in the bottom-right corner.  
+- **FR-002**: System MUST allow text input and submit queries.  
+- **FR-003**: System MUST maintain conversation history per session.  
+- **FR-004**: System MUST show typing indicator while awaiting AI response.  
+- **FR-005**: Frontend MUST call `/agents/run` or `/rag/query` with payload:  
+  ```json
+  {
+    "agent_type": "triage"|"summarizer",
+    "query": "string",
+    "highlighted_text": "optional string",
+    "current_page": "optional string"
+  }
+````
+
+* **FR-006**: System MUST display AI responses in conversation area.
+* **FR-007**: System MUST handle errors gracefully and show notifications to the user.
+* **FR-008**: Triage agent MUST decide if RAG handoff is required for complex queries.
+* **FR-009**: RAG agent MUST retrieve relevant chunks using backend retriever service.
+* **FR-010**: Summarizer agent MUST summarize highlighted text independently.
+* **FR-011**: System MUST be responsive across desktop, tablet, and mobile devices.
+* **FR-012**: API keys and sensitive data MUST be hidden; no keys exposed in frontend code.
+
+### Key Entities *(include if feature involves data)*
+
+* **ConversationSession**: Tracks messages, timestamps, user ID, current page, and highlighted text.
+* **ChatMessage**: Represents a single message in the conversation, includes role (`user` / `agent`) and content.
+* **AgentPayload**: API payload structure including agent_type, query, highlighted_text, and current_page.
+* **AgentResponse**: Response from backend, includes message content and optional metadata (source page/chunk IDs).
+
+## Success Criteria *(mandatory)*
+
+### Measurable Outcomes
+
+* **SC-001**: Users can submit a query and receive a response in <5 seconds.
+* **SC-002**: At least 95% of general queries are answered correctly by triage agent.
+* **SC-003**: RAG agent provides relevant context-aware answers for >90% of complex queries.
+* **SC-004**: Summarizer agent returns concise summaries for selected text with <20% loss of meaning.
+* **SC-005**: Widget displays conversation history correctly for at least 20 messages per session.
+* **SC-006**: Frontend remains responsive and functional across desktop and mobile screens.
+* **SC-007**: API keys remain hidden; no frontend leaks sensitive data.
+
+```
+
+---
+
+This specification includes:  
+
+- User stories with **priority, independent testability, and acceptance scenarios**  
+- **Edge cases** for errors, empty input, and multiple queries  
+- **Functional requirements** for frontend-backend integration, agent behavior, and security  
+- **Key entities** (ConversationSession, ChatMessage, AgentPayload, AgentResponse)  
+- **Measurable success criteria**  
+
+It is **ready for developers** to implement both frontend widget and backend integration.  
+
+If you want, I can also create a **visual diagram and API payload sequence** for the frontend-backend flow to attach to this spec for clarity.  
+
+Do you want me to do that next?
+```
+
+
+
+
+
+Objective: Generate a detailed implementation plan to integrate the RAG backend system with a frontend floating chatbot widget (like Docsourous) that appears in the bottom-right corner of a web page.
+
+Scope:
+
+The chatbot should allow users to:
+
+Ask general questions handled by a triage agent.
+
+Ask context-heavy questions handled by a RAG agent (handoff from triage agent).
+
+Summarize selected text using the summarizer agent.
+
+The frontend should communicate with backend endpoints (/agents/run, /rag/query) with context info such as highlighted_text and current_page.
+
+The system should maintain conversation history, handle errors gracefully, and provide responsive, secure, and fast responses.
+
+Requirements for the Plan:
+
+Divide tasks into phases (e.g., frontend setup, backend integration, agent communication, UI implementation, testing).
+
+Each phase should include:
+
+Purpose
+
+Dependencies
+
+Expected deliverables
+
+API/UX considerations
+
+Testing criteria
+
+Include integration details for connecting the chatbot UI to the backend, including session management and handling agent handoffs.
+
+Mention non-functional requirements such as responsiveness, security, and error handling.
+
+Provide the plan in a developer-friendly, actionable format, suitable for use in project management or sprint planning.
+
+Output: A clear, phased implementation plan with tasks, dependencies, expected deliverables, and testing criteria for each phase, enabling frontend and backend developers to implement the chatbot integration efficiently
