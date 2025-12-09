@@ -8,7 +8,7 @@ model: claude-sonnet-4-5-20250929
 feature: 002-physical-ai-book-implementation
 branch: 002-physical-ai-book-implementation
 user: null
-command: /sp.execute
+command: /sp.implement
 labels: ["textbook", "implementation", "docusaurus", "robotics"]
 links:
   spec: specs/001-ai-textbook-spec/spec.md
