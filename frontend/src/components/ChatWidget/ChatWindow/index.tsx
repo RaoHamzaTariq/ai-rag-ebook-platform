@@ -13,23 +13,38 @@ interface Message {
   sources?: Array<{ slug: string, chapter_number: string, page_number: number, snippet: string }>;
 }
 
-interface ChatWindowProps {
+export interface ChatWindowProps {
   onClose: () => void;
+  initialMessage?: string;
+  autoSubmit?: boolean;
+  highlightedText?: string;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, initialMessage, autoSubmit, highlightedText }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(initialMessage || '');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const hasAutoSubmitted = useRef(false);
 
   // Generate session ID on component mount
   useEffect(() => {
     const id = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     setSessionId(id);
   }, []);
+
+  // Handle auto-submit if requested (only once)
+  useEffect(() => {
+    if (autoSubmit && initialMessage && !hasAutoSubmitted.current && sessionId) {
+      hasAutoSubmitted.current = true;
+      handleSendMessage(initialMessage, true);
+    } else if (initialMessage && !hasAutoSubmitted.current) {
+      // Just set the input value if not auto-submitting
+      setInputValue(initialMessage);
+    }
+  }, [initialMessage, autoSubmit, sessionId]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -40,31 +55,36 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
+  const handleSendMessage = async (textOverride?: string, isAutoSubmit: boolean = false) => {
+    const textToSend = textOverride || inputValue;
+    if (!textToSend.trim() || (isLoading && !isAutoSubmit)) return;
 
     // Add user message to the chat
     const userMessage: Message = {
       id: `msg_${Date.now()}`,
       role: 'user',
-      content: inputValue,
+      content: textToSend,
       timestamp: new Date(),
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
+    if (!isAutoSubmit) setInputValue('');
     setIsLoading(true);
 
     try {
       // Get current page context
       const currentPage = location.pathname;
 
-      // Call the agent API
+      // Determine agent type based on content (simple heuristic or explicit override could be added later)
+      // For now, if auto-submit is true and it looks like a summarization request, we might want to hint the backend?
+      // But the backend has a Triage agent. So we just send it to Triage.
+      // If the user clicked "Summarize", the textToSend will likely be "Summarize this: ..."
+
       const response = await agentClient.runAgent({
-        agent_type: 'triage', // Default to triage agent
-        query: inputValue,
+        agent_type: 'triage',
+        query: textToSend,
         current_page: currentPage,
-        highlighted_text: undefined, // Will implement highlighted text functionality later
+        highlighted_text: highlightedText,
         session_id: sessionId
       });
 
@@ -146,7 +166,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         />
         <button
           className={styles.sendButton}
-          onClick={handleSendMessage}
+          onClick={() => handleSendMessage()}
           disabled={!inputValue.trim() || isLoading}
           aria-label="Send message"
         >

@@ -1,39 +1,31 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-// const tailwindPlugin = require("@tailwindcss/postcss"); // Update this line
-
 const config: Config = {
-  title: 'Physical AI and Humanoid Robotics',
-  tagline: 'An AI-Native Textbook',
+  title: 'Physical AI & Humanoid Robotics',
+  tagline: 'An AI-Native Textbook for the Future of Embodied Intelligence',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
+  // Future flags
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
-  // Set the production url of your site here
-  url: 'https://example.com',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
+  // Production URL
+  url: 'https://physical-ai-ebook.com',
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'BI Structure', // Usually your GitHub org/user name.
-  projectName: 'physical-ai-ebook', // Usually your repo name.
+  // Organization info
+  organizationName: 'BI Structure',
+  projectName: 'physical-ai-ebook',
 
-  onBrokenLinks: 'ignore',
-  onBrokenMarkdownLinks: 'ignore',
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // Internationalization
   i18n: {
-    defaultLocale: 'en' ,
+    defaultLocale: 'en',
     locales: ['en'],
   },
 
@@ -42,29 +34,15 @@ const config: Config = {
       'classic',
       {
         docs: {
-          path: "./docs",
+          path: './docs',
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          routeBasePath: 'docs',
+          // Remove edit links or customize to your repo
+          editUrl: undefined,
+          showLastUpdateTime: true,
+          breadcrumbs: true,
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false, // Disable blog if not needed
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -72,68 +50,89 @@ const config: Config = {
     ],
   ],
 
-  plugins: [
-    // Custom plugin to include the chat widget globally via the Root theme component
-  ],
-
-
-  // docusaurus.config.js
-
-  // docusaurus.config.js
-
-
-  // plugins: [
-  //   async function myPlugin(context, options) {
-  //     return {
-  //       name: "docusaurus-tailwindcss",
-  //       configurePostCss(postcssOptions) {
-  //         // Change 'tailwindcss' to '@tailwindcss/postcss' here
-  //         postcssOptions.plugins.push(tailwindPlugin); 
-  //         postcssOptions.plugins.push(require("autoprefixer"));
-  //         return postcssOptions;
-  //       },
-  //     };
-  //   },
-  // ],
-
-
+  plugins: [],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    // Social card
+    image: 'img/social-card.jpg',
+
+    // Color mode
     colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
       respectPrefersColorScheme: true,
     },
+
+    // Navbar configuration
     navbar: {
       title: 'Physical AI & Humanoid Robotics',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Physical AI Logo',
         src: 'img/logo.svg',
+        srcDark: 'img/logo-dark.svg',
+        width: 32,
+        height: 32,
       },
+      hideOnScroll: false,
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'mainSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: '📚 Textbook',
         },
-        // {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          to: '/docs/intro',
+          label: '🚀 Get Started',
+          position: 'left',
+        },
+        {
+          type: 'search',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/your-org/physical-ai-ebook',
           label: 'GitHub',
           position: 'right',
         },
       ],
     },
+
+    // Footer configuration
     footer: {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Learn',
           items: [
             {
-              label: 'Tutorial',
+              label: 'Introduction',
               to: '/docs/intro',
+            },
+            {
+              label: 'Chapter 1: Foundations',
+              to: '/docs/01-foundations',
+            },
+            {
+              label: 'Chapter 5: Humanoid Action',
+              to: '/docs/05-humanoid',
+            },
+          ],
+        },
+        {
+          title: 'Resources',
+          items: [
+            {
+              label: 'ROS 2 Documentation',
+              href: 'https://docs.ros.org/en/rolling/',
+            },
+            {
+              label: 'NVIDIA Isaac Sim',
+              href: 'https://developer.nvidia.com/isaac-sim',
+            },
+            {
+              label: 'Gazebo',
+              href: 'https://gazebosim.org/',
             },
           ],
         },
@@ -141,38 +140,51 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'GitHub',
+              href: 'https://github.com/your-org/physical-ai-ebook',
             },
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: 'https://discord.gg/your-server',
             },
             {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: 'Twitter',
+              href: 'https://twitter.com/your-handle',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics. Built with Docusaurus.`,
     },
+
+    // Prism syntax highlighting
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ['python', 'bash', 'yaml', 'json', 'cpp'],
+    },
+
+    // Algolia search (optional - configure if you have Algolia)
+    // algolia: {
+    //   appId: 'YOUR_APP_ID',
+    //   apiKey: 'YOUR_SEARCH_API_KEY',
+    //   indexName: 'physical-ai-ebook',
+    // },
+
+    // Announcement bar (optional)
+    announcementBar: {
+      id: 'ai_assistant',
+      content:
+        '🤖 <strong>New!</strong> Try our AI assistant - select any text and click "Summarize" or ask questions in the chat widget!',
+      backgroundColor: '#6366f1',
+      textColor: '#ffffff',
+      isCloseable: true,
+    },
+
+    // Table of contents
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 4,
     },
   } satisfies Preset.ThemeConfig,
 };

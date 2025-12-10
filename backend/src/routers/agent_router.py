@@ -2,13 +2,13 @@ from fastapi import APIRouter
 from src.config.llm import config
 from src.agents.triage_agent import triage_agent
 from src.agents.summarizer_agent import summarizer_agent
+from src.agents.rag_agent import rag_agent
 from src.models.api_routes import AgentRequest, AgentResponse
 from src.utils.logging_config import logger, log_agent_decision, log_error
 from agents import Runner
 from typing import Optional
 import uuid
 
-from src.agents.rag_agent import rag_agent
 
 router = APIRouter(prefix="/agents", tags=["Agents"])
 

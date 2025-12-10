@@ -18,65 +18,80 @@ class Retriever:
         query: str | list[float],
         current_page: int | None = None,
         highlighted_text: str | None = None,
-        top_k: int = 5,
-        score_threshold: float = 0.70,
+        top_k: int = 8,  # Increased default from 5 to 8
+        score_threshold: float = 0.65,  # Lowered from 0.70 to be more inclusive
     ) -> List[Any]:
         from src.services.embedding_service import EmbeddingService
         embed = EmbeddingService().embed
 
         results: List[Any] = []
 
-        # 1. highlighted text
+        # 1. Prioritize highlighted text with higher weight
         if highlighted_text:
-            results.extend(
-                await self.qdrant.search(highlighted_text, limit=top_k, score_threshold=score_threshold)
+            highlighted_results = await self.qdrant.search(
+                highlighted_text, 
+                limit=top_k, 
+                score_threshold=max(0.60, score_threshold - 0.05)  # Slightly lower threshold for highlighted text
             )
+            # Boost scores for highlighted text results
+            for point in highlighted_results:
+                point.score = min(1.0, point.score * 1.1)  # 10% boost
+            results.extend(highlighted_results)
 
-        # 2. current page (only if index exists)
+        # 2. Current page context (if available)
         if current_page is not None:
             vector = query if isinstance(query, list) else embed(query, isSingle=True)
-            results.extend(
-                (
-                    await self.qdrant.client.query_points(
-                        collection_name=self.qdrant.collection_name,
-                        query=vector,
-                        query_filter=models.Filter(
-                            must=[
-                                models.FieldCondition(
-                                    key="page_number",
-                                    match=models.MatchValue(value=str(current_page)),
-                                )
-                            ]
-                        ),
-                        limit=top_k,
-                        with_payload=True,
-                        with_vectors=False,
-                    )
-                ).points
-            )
+            page_results = (
+                await self.qdrant.client.query_points(
+                    collection_name=self.qdrant.collection_name,
+                    query=vector,
+                    query_filter=models.Filter(
+                        must=[
+                            models.FieldCondition(
+                                key="page_number",
+                                match=models.MatchValue(value=str(current_page)),
+                            )
+                        ]
+                    ),
+                    limit=top_k,
+                    with_payload=True,
+                    with_vectors=False,
+                )
+            ).points
+            # Boost scores for current page results
+            for point in page_results:
+                point.score = min(1.0, point.score * 1.05)  # 5% boost
+            results.extend(page_results)
 
-        # 3. global
+        # 3. Global semantic search (always perform for comprehensive results)
         if isinstance(query, str):
-            results.extend(await self.qdrant.search(query, limit=top_k))
-        else:
-            results.extend(
-                (
-                    await self.qdrant.client.query_points(
-                        collection_name=self.qdrant.collection_name,
-                        query=query,
-                        limit=top_k,
-                        with_payload=True,
-                        with_vectors=False,
-                    )
-                ).points
+            global_results = await self.qdrant.search(
+                query, 
+                limit=top_k * 2,  # Get more results for better coverage
+                score_threshold=score_threshold
             )
+            results.extend(global_results)
+        else:
+            global_results = (
+                await self.qdrant.client.query_points(
+                    collection_name=self.qdrant.collection_name,
+                    query=query,
+                    limit=top_k * 2,
+                    with_payload=True,
+                    with_vectors=False,
+                )
+            ).points
+            results.extend(global_results)
 
-        # de-duplicate
-        seen, out = set(), []
+        # Smart deduplication: keep highest score for each unique chunk
+        seen = {}
         for p in results:
-            if str(p.id) not in seen:
-                seen.add(str(p.id))
-                out.append(p)
+            chunk_id = str(p.id)
+            if chunk_id not in seen or p.score > seen[chunk_id].score:
+                seen[chunk_id] = p
+        
+        # Sort by score (highest first) and return top_k results
+        out = sorted(seen.values(), key=lambda x: x.score, reverse=True)[:top_k]
         return out
 
 

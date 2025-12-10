@@ -5,7 +5,7 @@ interface MessageBubbleProps {
   role: 'user' | 'agent';
   content: string;
   timestamp: Date;
-  sources?: Array<{slug: string, chapter_number: string, page_number: number, snippet: string}>;
+  sources?: Array<{ slug: string, chapter_number: string, page_number: number, snippet: string }>;
 }
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ role, content, timestamp, sources }) => {
@@ -22,8 +22,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ role, content, timestamp,
             <ul>
               {sources.map((source, index) => (
                 <li key={index} className={styles.sourceItem}>
-                  <span className={styles.sourceChapter}>Chapter {source.chapter_number}</span>
-                  {source.snippet && <span className={styles.sourceSnippet}>: {source.snippet.substring(0, 100)}{source.snippet.length > 100 ? '...' : ''}</span>}
+                  <a href={`${source.slug}`} className={styles.sourceLink} target="_blank" rel="noopener noreferrer">
+                    <span className={styles.sourceChapter}>Chapter {source.chapter_number}</span>
+                    {source.snippet && <span className={styles.sourceSnippet}>: {source.snippet.substring(0, 100)}{source.snippet.length > 100 ? '...' : ''}</span>}
+                  </a>
                 </li>
               ))}
             </ul>
