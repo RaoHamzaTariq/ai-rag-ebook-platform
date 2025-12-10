@@ -3,6 +3,7 @@ from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 import asyncio
 from src.services.embedding_service import EmbeddingService
+from qdrant_client import models
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -33,24 +34,23 @@ class QdrantService:
         self.vector_size = vector_size
 
     async def _ensure_collection(self):
-        try:
-            exists = await self.client.collection_exists(self.collection_name)
-            if exists:
-                print(f"[QDRANT] Collection '{self.collection_name}' already exists.")
-                return
-
+        exists = await self.client.collection_exists(self.collection_name)
+        if not exists:
             await self.client.create_collection(
-                collection_name=self.collection_name,
-                vectors_config=VectorParams(
-                    size=self.vector_size,
-                    distance=Distance.COSINE
-                )
+                self.collection_name,
+                vectors_config=VectorParams(size=self.vector_size, distance=Distance.COSINE),
             )
-            print(f"[QDRANT] Collection '{self.collection_name}' created successfully.")
-        except Exception as e:
-            print(f"[QDRANT ERROR] Failed to ensure collection: {e}")
-            raise
+            print(f"[QDRANT] Collection '{self.collection_name}' created.")
 
+        # ----------  NEW: always ensure payload index  ----------
+        try:
+            await self.client.create_payload_index(
+                self.collection_name,
+                field_name="page_number",
+                field_schema=models.PayloadSchemaType.INTEGER,
+            )
+        except Exception:  # index already exists → ignore
+            pass
     async def upload(self, chunks, embeddings, metadata_list):
         """
         Upload chunks with embeddings to Qdrant

@@ -1,6 +1,5 @@
 // frontend/src/services/agentClient.ts
 
-// Define TypeScript interfaces for request and response
 interface AgentRequest {
   agent_type: 'triage' | 'summarizer' | 'rag';
   query: string;
@@ -11,7 +10,7 @@ interface AgentRequest {
 
 interface AgentResponse {
   message: string;
-  sources?: Array<{slug: string, chapter_number: string, page_number: number, snippet: string}>;
+  sources?: Array<{slug: string; chapter_number: string; page_number: number; snippet: string}>;
   agent_used: string;
   timestamp: string;
 }
@@ -20,35 +19,35 @@ class AgentClient {
   private baseUrl: string;
 
   constructor() {
-    // Use environment variable or default to development backend
-    this.baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+    // ----------  fix starts  ----------
+    // Docusaurus does NOT ship `process` to the browser, so we guard it.
+    const maybeUrl =
+      typeof process !== 'undefined' && process.env?.REACT_APP_BACKEND_URL
+        ? process.env.REACT_APP_BACKEND_URL
+        : undefined;
+
+    this.baseUrl = maybeUrl || 'http://localhost:8000';
+    // ----------  fix ends  ----------
   }
 
   async runAgent(request: AgentRequest): Promise<AgentResponse> {
     try {
       const response = await fetch(`${this.baseUrl}/agents/run`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(request),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data: AgentResponse = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error calling agent API:', error);
-      throw error;
+      return await response.json();
+    } catch (err) {
+      console.error('AgentClient error:', err);
+      throw err;
     }
   }
 }
 
-// Create a singleton instance
 export const agentClient = new AgentClient();
-
-// Export the types for use in other components
 export type { AgentRequest, AgentResponse };
