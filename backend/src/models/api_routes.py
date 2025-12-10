@@ -9,6 +9,7 @@ class AgentRequest(BaseModel):
     current_page: Optional[str] = None  # Changed to string to match plan.md
     highlighted_text: Optional[str] = None
     session_id: Optional[str] = None  # Added for session tracking
+    retrieved_chunks: Optional[List[dict]] = None  # Internal use: store chunks retrieved during RAG
 
 
 class AgentResponse(BaseModel):

@@ -8,6 +8,8 @@ from agents import Runner
 from typing import Optional
 import uuid
 
+from src.agents.rag_agent import rag_agent
+
 router = APIRouter(prefix="/agents", tags=["Agents"])
 
 
@@ -15,7 +17,7 @@ router = APIRouter(prefix="/agents", tags=["Agents"])
 async def run_agent(req: AgentRequest):
     """
     Run an agent based on the request type.
-    Supports triage, summarizer, and (future) RAG agents.
+    Supports triage, summarizer, and RAG agents.
     """
     session_id = req.session_id or str(uuid.uuid4())
 
@@ -32,7 +34,7 @@ async def run_agent(req: AgentRequest):
             result = await Runner.run(triage_agent, req.query, context=req, run_config=config)
             response = AgentResponse(
                 message=result.final_output,
-                agent_used="triage"
+                agent_used="triage" # It might have handed off, but we started with triage. Ideally we check result.agent.name
             )
         elif agent_type_lower == "summarizer":
             result = await Runner.run(summarizer_agent, req.query, context=req, run_config=config)
@@ -41,9 +43,9 @@ async def run_agent(req: AgentRequest):
                 agent_used="summarizer"
             )
         elif agent_type_lower == "rag":
-            # Placeholder for future RAG implementation
+            result = await Runner.run(rag_agent, req.query, context=req, run_config=config)
             response = AgentResponse(
-                message="RAG agent is not yet implemented",
+                message=result.final_output,
                 agent_used="rag"
             )
         else:
@@ -53,6 +55,18 @@ async def run_agent(req: AgentRequest):
                 message=f"Unknown agent_type: {req.agent_type}. Supported types: triage, summarizer, rag",
                 agent_used="unknown"
             )
+
+        # Populate sources if RAG retrieved anything
+        if req.retrieved_chunks:
+            sources = []
+            for chunk in req.retrieved_chunks:
+                sources.append({
+                    "slug": chunk.get("slug", "handbook"), # Default slug if missing
+                    "chapter_number": str(chunk.get("chapter_number", "")),
+                    "page_number": int(chunk.get("page_number") or 0),
+                    "snippet": chunk.get("text", "")[:150] + "..."
+                })
+            response.sources = sources
 
         # Log the agent decision
         log_agent_decision(
