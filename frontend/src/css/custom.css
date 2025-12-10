@@ -1,27 +1,59 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Modern Docusaurus Theme
+ * A contemporary design system with improved color harmony and accessibility
  */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2563eb;
-  --ifm-color-primary-dark: #1d4ed8;
-  --ifm-color-primary-darker: #1e40af;
-  --ifm-color-primary-darkest: #1e3a8a;
-  --ifm-color-primary-light: #3b82f6;
-  --ifm-color-primary-lighter: #60a5fa;
-  --ifm-color-primary-lightest: #93c5fd;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* Primary Brand Colors - Modern Blue Palette */
+  --ifm-color-primary: #3b82f6;
+  --ifm-color-primary-dark: #2563eb;
+  --ifm-color-primary-darker: #1d4ed8;
+  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #bfdbfe;
+
+  /* Typography */
+  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
+  --ifm-code-font-size: 92%;
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-font-weight: 700;
+
+  /* Spacing & Layout */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-navbar-height: 4rem;
+  --ifm-global-radius: 0.5rem;
+
+  /* Code Blocks */
+  --docusaurus-highlighted-code-line-bg: rgba(59, 130, 246, 0.1);
+  --ifm-code-background: #f8fafc;
+  --ifm-code-border-radius: 0.375rem;
+  --ifm-pre-background: #1e293b;
+  --ifm-pre-color: #e2e8f0;
+
+  /* UI Elements */
+  --ifm-link-hover-decoration: none;
+  --ifm-button-border-radius: 0.5rem;
+  --ifm-card-border-radius: 0.75rem;
+  
+  /* Backgrounds */
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8fafc;
+  
+  /* Borders */
+  --ifm-color-emphasis-300: #e2e8f0;
+  --ifm-hr-border-color: #e2e8f0;
+  
+  /* Shadows */
+  --ifm-global-shadow-lw: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-tl: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark Mode Theme */
 [data-theme='dark'] {
+  /* Primary Colors - Brighter for dark backgrounds */
   --ifm-color-primary: #60a5fa;
   --ifm-color-primary-dark: #3b82f6;
   --ifm-color-primary-darker: #2563eb;
@@ -29,5 +61,119 @@
   --ifm-color-primary-light: #93c5fd;
   --ifm-color-primary-lighter: #bfdbfe;
   --ifm-color-primary-lightest: #dbeafe;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Code Blocks */
+  --docusaurus-highlighted-code-line-bg: rgba(96, 165, 250, 0.15);
+  --ifm-code-background: #1e293b;
+  --ifm-pre-background: #0f172a;
+  --ifm-pre-color: #e2e8f0;
+
+  /* Backgrounds */
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+  
+  /* Text Colors */
+  --ifm-font-color-base: #e2e8f0;
+  --ifm-heading-color: #f1f5f9;
+  
+  /* Borders */
+  --ifm-color-emphasis-300: #334155;
+  --ifm-hr-border-color: #334155;
+  
+  /* Shadows - Softer in dark mode */
+  --ifm-global-shadow-lw: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --ifm-global-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --ifm-global-shadow-tl: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced Link Styles */
+a {
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* Smooth Navbar */
+.navbar {
+  box-shadow: var(--ifm-global-shadow-md);
+  backdrop-filter: blur(8px);
+}
+
+/* Enhanced Code Blocks */
+code {
+  padding: 0.2em 0.4em;
+  font-weight: 500;
+}
+
+pre code {
+  padding: 0;
+  font-weight: 400;
+}
+
+/* Card Enhancements */
+.card {
+  box-shadow: var(--ifm-global-shadow-lw);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--ifm-global-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Button Improvements */
+.button {
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--ifm-global-shadow-md);
+}
+
+/* Improved Table of Contents */
+.table-of-contents {
+  font-size: 0.875rem;
+}
+
+.table-of-contents__link:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* Sidebar Enhancements */
+.menu__link {
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+}
+
+.menu__link:hover {
+  background-color: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='dark'] .menu__link:hover {
+  background-color: rgba(96, 165, 250, 0.1);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ifm-background-surface-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-emphasis-300);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-primary);
 }
