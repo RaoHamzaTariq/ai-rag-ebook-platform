@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "The response message from the agent"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Unique identifier for the content"
+          },
+          "chapter_number": {
+            "type": "string",
+            "description": "Chapter number where the content appears"
+          },
+          "page_number": {
+            "type": "number",
+            "description": "Page number where the content appears"
+          },
+          "snippet": {
+            "type": "string",
+            "description": "Text snippet from the source"
+          }
+        },
+        "required": ["slug", "snippet"],
+        "additionalProperties": false
+      },
+      "description": "Optional array of sources used by the RAG agent"
+    },
+    "agent_used": {
+      "type": "string",
+      "enum": ["triage", "summarizer", "rag"],
+      "description": "Which agent actually processed the request"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the response was generated"
+    }
+  },
+  "required": ["message", "agent_used"],
+  "additionalProperties": false
+}

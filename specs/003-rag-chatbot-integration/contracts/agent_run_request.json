@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "agent_type": {
+      "type": "string",
+      "enum": ["triage", "summarizer", "rag"],
+      "description": "Type of agent to run"
+    },
+    "query": {
+      "type": "string",
+      "description": "The user query to process"
+    },
+    "highlighted_text": {
+      "type": "string",
+      "description": "Optional highlighted text from the current page"
+    },
+    "current_page": {
+      "type": "string",
+      "description": "Optional identifier for the current page/chapter"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Optional session identifier for conversation tracking"
+    }
+  },
+  "required": ["agent_type", "query"],
+  "additionalProperties": false
+}

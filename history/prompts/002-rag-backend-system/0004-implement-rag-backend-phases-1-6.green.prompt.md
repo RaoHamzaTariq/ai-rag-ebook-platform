@@ -1,5 +1,5 @@
 ---
-id: 0003
+id: 0004
 title: Implement RAG Backend System Phases 1–6
 stage: implement
 date: 2025-12-09

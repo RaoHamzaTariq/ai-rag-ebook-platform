@@ -72,6 +72,11 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    // Custom plugin to include the chat widget globally via the Root theme component
+  ],
+
+
   // docusaurus.config.js
 
   // docusaurus.config.js
