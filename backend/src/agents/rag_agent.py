@@ -21,7 +21,7 @@ async def retrieve_chunks(query: str, current_page: int | None = None, highlight
     Returns a formatted string combining all chunks.
     """
     chunks = await retriever.retrieve(
-        query_vector=query,
+        query=query,
         current_page=current_page,
         highlighted_text=highlighted_text
     )
