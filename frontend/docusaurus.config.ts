@@ -77,12 +77,12 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'mainSidebar',
+          sidebarId: 'tutorialSidebar',
           position: 'left',
           label: '📚 Textbook',
         },
         {
-          to: '/docs/intro',
+          to: '/intro',
           label: '🚀 Get Started',
           position: 'left',
         },
@@ -107,15 +107,15 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/docs/intro',
+              to: '/intro',
             },
             {
               label: 'Chapter 1: Foundations',
-              to: '/docs/01-foundations',
+              to: '/category/foundations',
             },
             {
               label: 'Chapter 5: Humanoid Action',
-              to: '/docs/05-humanoid',
+              to: '/category/humanoid-action--vla-integration',
             },
           ],
         },
