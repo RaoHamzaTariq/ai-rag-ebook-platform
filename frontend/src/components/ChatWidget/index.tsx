@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState<{ text: string; top: number; left: number } | null>(null);
-  const [windowProps, setWindowProps] = useState<{ initialMessage?: string; autoSubmit?: boolean; highlightedText?: string }>({});
+  const [windowProps, setWindowProps] = useState<{ initialMessage?: string; autoSubmit?: boolean; highlightedText?: string, agentType?: 'triage' | 'summarizer' | 'rag' }>({});
 
   // Handle text selection
   useEffect(() => {
@@ -55,7 +55,7 @@ const ChatWidget: React.FC = () => {
     setWindowProps({
       initialMessage: `> ${selection.text}\n\n`,
       autoSubmit: false,
-      highlightedText: selection.text
+      highlightedText: selection.text,
     });
     setIsOpen(true);
     setSelection(null);
@@ -64,15 +64,36 @@ const ChatWidget: React.FC = () => {
 
   const handleSummarize = () => {
     if (!selection) return;
+
+    const { text } = selection;
+
+    // Normalize newlines and trim
+    const cleaned = text.trim().replace(/\r\n/g, "\n");
+
+    // Truncate to 2–3 lines or fallback to first 500 chars if no newlines
+    let textToUse;
+    const lines = cleaned.split("\n");
+
+    if (cleaned.length > 500) {
+      textToUse = lines.length >= 3
+        ? lines.slice(0, 3).join("\n")
+        : cleaned.slice(0, 500);
+    } else {
+      textToUse = cleaned;
+    }
+
     setWindowProps({
-      initialMessage: `Summarize this topic.`,
+      initialMessage: `Summarize this text:\n\n"${textToUse}"`,
       autoSubmit: true,
-      highlightedText: selection.text
+      highlightedText: text,     // full original text preserved
+      agentType: 'summarizer'
     });
+
     setIsOpen(true);
     setSelection(null);
     window.getSelection()?.removeAllRanges();
   };
+
 
   const closeSelectionMenu = () => {
     setSelection(null);
@@ -104,6 +125,7 @@ const ChatWidget: React.FC = () => {
             initialMessage={windowProps.initialMessage}
             autoSubmit={windowProps.autoSubmit}
             highlightedText={windowProps.highlightedText}
+            agentType={windowProps.agentType}
           />
         ) : (
           <button

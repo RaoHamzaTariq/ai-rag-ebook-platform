@@ -18,9 +18,10 @@ export interface ChatWindowProps {
   initialMessage?: string;
   autoSubmit?: boolean;
   highlightedText?: string;
+  agentType?: 'triage' | 'summarizer' | 'rag';
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, initialMessage, autoSubmit, highlightedText }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, initialMessage, autoSubmit, highlightedText , agentType}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState(initialMessage || '');
   const [isLoading, setIsLoading] = useState(false);
@@ -81,7 +82,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, initialMessage, autoSu
       // If the user clicked "Summarize", the textToSend will likely be "Summarize this: ..."
 
       const response = await agentClient.runAgent({
-        agent_type: 'triage',
+        agent_type:  agentType || 'triage',
         query: textToSend,
         current_page: currentPage,
         highlighted_text: highlightedText,

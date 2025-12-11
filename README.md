@@ -940,3 +940,16 @@ Mention non-functional requirements such as responsiveness, security, and error 
 Provide the plan in a developer-friendly, actionable format, suitable for use in project management or sprint planning.
 
 Output: A clear, phased implementation plan with tasks, dependencies, expected deliverables, and testing criteria for each phase, enabling frontend and backend developers to implement the chatbot integration efficiently
+
+
+
+Now plz fix the issue.
+
+Issue:
+
+When user select text on frontend and click on summarize button so it does not redirect it to the summarizer agent. 
+So whenever user click on summarizer it should be goes in chat and to backend with parameters incluing agent_type is summarizer.
+
+So fix it properly but before read the necessary files of the frontend
+
+Another issue is that when submit so only the text goes which is  'summarize this topic' but i want that higlighted text also goes if so much huge text so display first 2 3 lines
