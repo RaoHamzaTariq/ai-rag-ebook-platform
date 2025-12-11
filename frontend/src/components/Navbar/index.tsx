@@ -13,7 +13,7 @@ export default function Navbar() {
 
         {/* Right: Navigation Links */}
         <div className={styles.navLinks}>
-          <a href="physical-ai-ebook/intro" className={styles.navItem}>Syllabus</a>
+          <a href="/docs/intro" className={styles.navItem}>Syllabus</a>
           <a href="https://github.com/RaoHamzaTariq/ai-rag-ebook-platform/tree/main/frontend" className={styles.navItem}>GitHub</a>
         </div>
 
