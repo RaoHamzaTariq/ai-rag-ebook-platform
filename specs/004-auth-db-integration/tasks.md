@@ -15,6 +15,8 @@ Initialize project structure, configure environment variables, and set up founda
 - Environment variables are set up correctly
 - Basic logging and middleware scaffolding is in place
 
+> Note: First read the file @.claude/skills/better-auth-neondb-integration.md to understand the flow and syntax of Better Auth
+
 ### Implementation Tasks
 
 - [ ] T001 Create project structure for authentication integration per implementation plan
