@@ -1,44 +1,41 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Better Auth Integration with FastAPI Backend and Neon PostgreSQL
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `004-auth-db-integration` | **Date**: 2025-12-13 | **Spec**: [link]
+**Input**: Feature specification for integrating Better Auth authentication with FastAPI backend and Neon PostgreSQL for user accounts and chat history storage
 
 **Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Integrate Better Auth authentication with the existing RAG chatbot system to provide user accounts and persistent chat history storage. This implementation will secure all chat interactions, store conversation history in Neon PostgreSQL, and maintain the existing RAG agent functionality while adding user-specific data isolation.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: Python 3.11, TypeScript/JavaScript for frontend
+**Primary Dependencies**: FastAPI, Better Auth, asyncpg, SQLAlchemy/SQLModel, Neon PostgreSQL
+**Storage**: Neon PostgreSQL database with asyncpg driver
+**Testing**: pytest for backend, Jest for frontend
+**Target Platform**: Web application (Linux server backend, browser frontend)
+**Project Type**: Web application with separate frontend and backend
+**Performance Goals**: <200ms p95 response time for authenticated requests, support 1000 concurrent users
+**Constraints**: JWT token validation with <50ms overhead, secure session management, GDPR compliant data storage
+**Scale/Scope**: 10k users, 1M chat messages, multi-tenant data isolation
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Security: JWT validation and database security implemented per standards
+- Performance: Async operations maintained throughout to prevent blocking
+- Data Privacy: User data properly isolated and GDPR compliant
+- Architecture: Clean separation of concerns maintained
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
+specs/004-auth-db-integration/
 ├── plan.md              # This file (/sp.plan command output)
 ├── research.md          # Phase 0 output (/sp.plan command)
 ├── data-model.md        # Phase 1 output (/sp.plan command)
@@ -48,51 +45,43 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
 ├── src/
 │   ├── models/
+│   │   ├── user.py           # User model with SQLAlchemy
+│   │   ├── conversation.py   # Conversation model with SQLAlchemy
+│   │   └── message.py        # Message model with SQLAlchemy
 │   ├── services/
-│   └── api/
+│   │   ├── auth.py          # JWT validation and user services
+│   │   ├── user_service.py  # User-related operations
+│   │   ├── conversation_service.py  # Conversation operations
+│   │   └── message_service.py       # Message operations
+│   ├── middleware/
+│   │   └── auth_middleware.py       # JWT token validation middleware
+│   ├── api/
+│   │   ├── auth.py          # Authentication endpoints
+│   │   └── conversations.py # Conversation endpoints
+│   └── config/
+│       └── database.py      # Database configuration
 └── tests/
 
 frontend/
 ├── src/
 │   ├── components/
-│   ├── pages/
-│   └── services/
+│   │   ├── auth/            # Authentication UI components
+│   │   ├── chat/            # Chat components with auth integration
+│   │   └── history/         # Conversation history components
+│   ├── services/
+│   │   ├── authClient.ts    # Better Auth integration
+│   │   └── conversationClient.ts  # Conversation API client
+│   └── contexts/
+│       └── AuthContext.tsx  # Authentication context provider
 └── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Web application structure selected to maintain separation between frontend and backend while enabling proper authentication flow.
 
 ## Complexity Tracking
 
@@ -100,5 +89,5 @@ directories captured above]
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| JWT Validation Middleware | Required for secure token validation | Direct token passing would be insecure |
+| Database Connection Pooling | Required for performance with concurrent users | Direct connections would cause resource exhaustion |
