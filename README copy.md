@@ -1276,7 +1276,7 @@ Add authentication middleware (JWT/JWKS verification).
 Add services for user lookup, conversation creation, message insertion.
 Modify the existing agent execution flow to:
 attach user_id to all sessions
-save chat messages + agent replies
+save chat messages + agent replies in neon db
 store RAG sources
 
 5. Frontend Implementation Plan

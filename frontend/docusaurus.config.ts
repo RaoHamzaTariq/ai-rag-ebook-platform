@@ -82,7 +82,7 @@ const config: Config = {
           label: '📚 Textbook',
         },
         {
-          to: '/intro',
+          to: '/docs/intro',
           label: '🚀 Get Started',
           position: 'left',
         },
@@ -107,15 +107,15 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/intro',
+              to: '/docs/intro',
             },
             {
               label: 'Chapter 1: Foundations',
-              to: '/category/foundations',
+              to: '/docs/category/foundations',
             },
             {
               label: 'Chapter 5: Humanoid Action',
-              to: '/category/humanoid-action--vla-integration',
+              to: '/docs/category/humanoid-action--vla-integration',
             },
           ],
         },
