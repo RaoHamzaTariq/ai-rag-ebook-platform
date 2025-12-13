@@ -32,18 +32,28 @@ class AgentClient {
 
   async runAgent(request: AgentRequest): Promise<AgentResponse> {
     try {
+      console.log('Sending request to:', `${this.baseUrl}/agents/run`, 'with data:', request);
       const response = await fetch(`${this.baseUrl}/agents/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(request),
       });
 
+      console.log('Response status:', response.status);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
-      return await response.json();
+      const result = await response.json();
+      console.log('API Response:', result);
+      return result;
     } catch (err) {
       console.error('AgentClient error:', err);
+      // Re-throw with more context
+      if (err instanceof Error) {
+        throw new Error(`AgentClient error: ${err.message}. Please check that your backend is running at ${this.baseUrl}`);
+      }
       throw err;
     }
   }
