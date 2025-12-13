@@ -73,4 +73,8 @@
 - User data is primarily managed by Better Auth
 - Only user_id, email, and name are stored in our database (synchronized from Better Auth)
 - Session management is handled by Better Auth cookies
+<<<<<<< HEAD
 - JWT tokens can be obtained via Better Auth JWT plugin if needed for external services
+=======
+- JWT tokens can be obtained via Better Auth JWT plugin if needed for external services
+>>>>>>> f99c7079ed7175125910f696e233b326cfa1f439

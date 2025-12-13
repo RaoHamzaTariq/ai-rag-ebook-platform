@@ -504,4 +504,8 @@ export async function makeAuthenticatedRequest(url: string, options = {}) {
 }
 ```
 
+<<<<<<< HEAD
 This guide provides the foundation for integrating Better Auth with NeonDB in your AI RAG ebook platform. The implementation will follow the tasks outlined in your project, starting with basic authentication setup and progressing to full chat history persistence with user accounts.
+=======
+This guide provides the foundation for integrating Better Auth with NeonDB in your AI RAG ebook platform. The implementation will follow the tasks outlined in your project, starting with basic authentication setup and progressing to full chat history persistence with user accounts.
+>>>>>>> f99c7079ed7175125910f696e233b326cfa1f439

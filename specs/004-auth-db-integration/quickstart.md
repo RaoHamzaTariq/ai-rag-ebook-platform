@@ -185,4 +185,8 @@ BETTER_AUTH_AUDIENCE=your-app-audience
 2. Start the FastAPI backend
 3. Verify that protected endpoints require valid Better Auth tokens
 4. Test user creation and authentication flow
+<<<<<<< HEAD
 5. Verify that chat history is properly associated with authenticated users
+=======
+5. Verify that chat history is properly associated with authenticated users
+>>>>>>> f99c7079ed7175125910f696e233b326cfa1f439

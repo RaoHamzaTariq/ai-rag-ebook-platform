@@ -52,4 +52,8 @@
 - Connection pooling for database operations
 - JWKS caching to reduce validation overhead
 - Proper indexing for efficient message retrieval
+<<<<<<< HEAD
 - Pagination for large conversation histories
+=======
+- Pagination for large conversation histories
+>>>>>>> f99c7079ed7175125910f696e233b326cfa1f439

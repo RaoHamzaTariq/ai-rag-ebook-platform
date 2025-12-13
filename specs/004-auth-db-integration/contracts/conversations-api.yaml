@@ -255,4 +255,8 @@ components:
       properties:
         title:
           type: string
+<<<<<<< HEAD
           description: New title for the conversation
+=======
+          description: New title for the conversation
+>>>>>>> f99c7079ed7175125910f696e233b326cfa1f439
