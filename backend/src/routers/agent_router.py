@@ -1,10 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from src.config.llm import config
 from src.agents.triage_agent import triage_agent
 from src.agents.summarizer_agent import summarizer_agent
 from src.agents.rag_agent import rag_agent
 from src.models.api_routes import AgentRequest, AgentResponse
 from src.utils.logging_config import logger, log_agent_decision, log_error
+from src.dependencies.auth import get_current_user_id
 from agents import Runner
 from typing import Optional
 import uuid
@@ -14,17 +15,18 @@ router = APIRouter(prefix="/agents", tags=["Agents"])
 
 
 @router.post("/run", response_model=AgentResponse)
-async def run_agent(req: AgentRequest):
+async def run_agent(req: AgentRequest, user_id: str = Depends(get_current_user_id)):
     """
     Run an agent based on the request type.
     Supports triage, summarizer, and RAG agents.
+    Requires authentication.
     """
     session_id = req.session_id or str(uuid.uuid4())
 
     try:
-        # Log the incoming request
+        # Log the incoming request with user ID
         logger.info(
-            f"Agent request received - Session: {session_id}, "
+            f"Agent request received - User: {user_id}, Session: {session_id}, "
             f"Type: {req.agent_type}, Query: {req.query[:50]}..."
         )
 

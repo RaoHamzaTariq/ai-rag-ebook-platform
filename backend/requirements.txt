@@ -2,8 +2,14 @@ qdrant-client
 openai-agents
 numpy
 fastapi
-dotenv
+uvicorn
+python-dotenv
 python-frontmatter
 langchain
 langchain-community
 PyYAML
+python-jose[cryptography]
+cryptography
+asyncpg
+sqlmodel
+httpx
