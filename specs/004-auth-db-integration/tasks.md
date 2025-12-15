@@ -61,13 +61,13 @@ Implement JWT token verification middleware to authenticate requests using Bette
 
 ### Implementation Tasks
 
-- [ ] T017 Create JWT verification middleware in backend/src/middleware/auth_middleware.py
-- [ ] T018 Implement JWKS fetching and caching for Better Auth tokens
-- [ ] T019 Create dependency for authenticated user in backend/src/dependencies/auth.py
-- [ ] T020 Protect /agents/run endpoint with authentication middleware
-- [ ] T021 Add error handling for unauthorized access in middleware
-- [ ] T022 Create utility functions for token validation
-- [ ] T023 Test JWT verification with sample Better Auth tokens
+- [X] T017 Create JWT verification middleware in backend/src/middleware/auth_middleware.py
+- [X] T018 Implement JWKS fetching and caching for Better Auth tokens
+- [X] T019 Create dependency for authenticated user in backend/src/dependencies/auth.py
+- [X] T020 Protect /agents/run endpoint with authentication middleware
+- [X] T021 Add error handling for unauthorized access in middleware
+- [X] T022 Create utility functions for token validation
+- [X] T023 Test JWT verification with sample Better Auth tokens
 
 ## Phase 4: Backend Chat Persistence
 
@@ -81,17 +81,17 @@ Modify agent flow to store user messages and agent responses in the database, an
 
 ### Implementation Tasks
 
-- [ ] T024 Modify /agents/run flow to save user message in database
-- [ ] T025 Update agent processing to save agent response with sources
-- [ ] T026 Create UserService for user management in backend/src/services/user_service.py
-- [ ] T027 Create ConversationService for conversation operations in backend/src/services/conversation_service.py
-- [ ] T028 Create MessageService for message operations in backend/src/services/message_service.py
-- [ ] T029 Implement GET /users/me endpoint
-- [ ] T030 Implement GET /conversations endpoint
-- [ ] T031 Implement GET /conversations/{session_id} endpoint
-- [ ] T032 Implement POST /conversations/{session_id}/messages endpoint
-- [ ] T033 Associate all messages with authenticated user and conversation
-- [ ] T034 Test chat persistence flow with authenticated users
+- [X] T024 Modify /agents/run flow to save user message in database
+- [X] T025 Update agent processing to save agent response with sources
+- [X] T026 Create UserService for user management in backend/src/services/user_service.py
+- [X] T027 Create ConversationService for conversation operations in backend/src/services/conversation_service.py
+- [X] T028 Create MessageService for message operations in backend/src/services/message_service.py
+- [X] T029 Implement GET /users/me endpoint
+- [X] T030 Implement GET /conversations endpoint
+- [X] T031 Implement GET /conversations/{session_id} endpoint
+- [X] T032 Implement POST /conversations/{session_id}/messages endpoint
+- [X] T033 Associate all messages with authenticated user and conversation
+- [X] T034 Test chat persistence flow with authenticated users
 
 ## Phase 5: Frontend Auth Integration
 
