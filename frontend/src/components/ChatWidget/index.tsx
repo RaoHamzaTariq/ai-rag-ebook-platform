@@ -8,6 +8,8 @@ const ChatWidget: React.FC = () => {
   const [selection, setSelection] = useState<{ text: string; top: number; left: number } | null>(null);
   const [windowProps, setWindowProps] = useState<{ initialMessage?: string; autoSubmit?: boolean; highlightedText?: string, agentType?: 'triage' | 'summarizer' | 'rag' }>({});
 
+
+  
   // Handle text selection
   useEffect(() => {
     const handleMouseUp = () => {
