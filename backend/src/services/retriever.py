@@ -18,8 +18,8 @@ class Retriever:
         query: str | list[float],
         current_page: int | None = None,
         highlighted_text: str | None = None,
-        top_k: int = 8,  # Increased default from 5 to 8
-        score_threshold: float = 0.65,  # Lowered from 0.70 to be more inclusive
+        top_k: int = 3,  # Reduced from 8 to 3 as requested
+        score_threshold: float = 0.70,  # Increased from 0.65 for better precision
     ) -> List[Any]:
         from src.services.embedding_service import EmbeddingService
         embed = EmbeddingService().embed

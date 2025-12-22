@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - ENVIRONMENT=${ENVIRONMENT}
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
+    depends_on:
+      - backend
+    env_file:
+      - .env
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: rag_ebook_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

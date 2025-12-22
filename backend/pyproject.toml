@@ -5,14 +5,22 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "asyncpg>=0.31.0",
+    "cryptography>=46.0.3",
     "dotenv>=0.9.9",
     "fastapi>=0.123.9",
+    "httpx>=0.28.1",
     "langchain>=1.1.2",
     "langchain-community>=0.4.1",
     "langchain-text-splitters>=1.0.0",
     "numpy>=2.3.5",
     "openai-agents>=0.6.2",
+    "psycopg2>=2.9.11",
+    "python-dotenv>=1.2.1",
     "python-frontmatter>=1.1.0",
+    "python-jose[cryptography]>=3.5.0",
     "pyyaml>=6.0.3",
     "qdrant-client>=1.16.1",
+    "sqlmodel>=0.0.27",
+    "uvicorn>=0.38.0",
 ]

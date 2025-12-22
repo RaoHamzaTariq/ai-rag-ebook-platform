@@ -7,15 +7,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get API key with validation
-GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
+GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("OPENAI_API_KEY")
 
 if not GEMINI_API_KEY:
-    raise ValueError(
-        "GOOGLE_API_KEY environment variable is not set. "
-        "Please set it in your deployment environment or .env file."
-    )
+    logger.warning("Neither GOOGLE_API_KEY nor OPENAI_API_KEY set. The chatbot will fail at runtime until a key is provided.")
+    # For now, we'll let it pass to allow the server to start (simple mode)
+    # but actual agent runs will fail.
+    GEMINI_API_KEY = "PLACEHOLDER_KEY"
 
-# Initialize OpenAI client with Gemini API
+# Initialize OpenAI client wih Gemini API
 external_client = AsyncOpenAI(
     api_key=GEMINI_API_KEY,
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/",

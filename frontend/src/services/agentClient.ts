@@ -1,4 +1,5 @@
 // frontend/src/services/agentClient.ts
+import { authClient } from '../lib/authClient';
 
 interface AgentRequest {
   agent_type: 'triage' | 'summarizer' | 'rag';
@@ -10,50 +11,61 @@ interface AgentRequest {
 
 interface AgentResponse {
   message: string;
-  sources?: Array<{slug: string; chapter_number: string; page_number: number; snippet: string}>;
+  sources?: Array<{ slug: string; chapter_number: string; page_number: number; snippet: string }>;
   agent_used: string;
   timestamp: string;
 }
+
+import siteConfig from '@generated/docusaurus.config';
 
 class AgentClient {
   private baseUrl: string;
 
   constructor() {
-    // ----------  fix starts  ----------
-    // Docusaurus does NOT ship `process` to the browser, so we guard it.
-    const maybeUrl =
-      typeof process !== 'undefined' && process.env?.REACT_APP_BACKEND_URL
-        ? process.env.REACT_APP_BACKEND_URL
-        : undefined;
-
-    this.baseUrl = maybeUrl || 'http://localhost:8000';
-    // ----------  fix ends  ----------
+    this.baseUrl = (siteConfig.customFields?.backendUrl as string) || 'http://localhost:8000';
   }
 
   async runAgent(request: AgentRequest): Promise<AgentResponse> {
     try {
-      console.log('Sending request to:', `${this.baseUrl}/agents/run`, 'with data:', request);
+      // Get the session to see if user is logged in
+      const { data: session } = await authClient.getSession();
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+
+      // Simple Mode: Send user ID in a header if we have one
+      if (session?.user?.id) {
+        headers['X-User-ID'] = session.user.id;
+        console.log(`Authenticated request for user: ${session.user.id}`);
+      }
+
+      // Still try to get the JWT token but handle failure gracefully
+      try {
+        const tokenResult = await authClient.token();
+
+        if (tokenResult?.data?.token) {
+          headers['Authorization'] = `Bearer ${tokenResult.data.token}`;
+        }
+      } catch (tokenErr) {
+        console.log('JWT Fetch skipped or failed, using simple user identification', tokenErr);
+      }
+
       const response = await fetch(`${this.baseUrl}/agents/run`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(request),
       });
 
-      console.log('Response status:', response.status);
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('API Error Response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        console.error('Agent API error:', response.status, errorText);
+        throw new Error(`Chatbot error (${response.status}). Please ensure backend is running.`);
       }
-      const result = await response.json();
-      console.log('API Response:', result);
-      return result;
+
+      return await response.json();
     } catch (err) {
       console.error('AgentClient error:', err);
-      // Re-throw with more context
-      if (err instanceof Error) {
-        throw new Error(`AgentClient error: ${err.message}. Please check that your backend is running at ${this.baseUrl}`);
-      }
       throw err;
     }
   }

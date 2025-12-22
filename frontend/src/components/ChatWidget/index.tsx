@@ -3,15 +3,19 @@ import ChatWindow from './ChatWindow';
 import TextSelectionMenu from './TextSelectionMenu';
 import styles from './styles.module.css';
 
+import { useAuth } from '../../contexts/AuthContext';
+import Link from '@docusaurus/Link';
+
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState<{ text: string; top: number; left: number } | null>(null);
   const [windowProps, setWindowProps] = useState<{ initialMessage?: string; autoSubmit?: boolean; highlightedText?: string, agentType?: 'triage' | 'summarizer' | 'rag' }>({});
 
-
-  
+  const { isAuthenticated } = useAuth();
   // Handle text selection
   useEffect(() => {
+    if (!isAuthenticated) return; // Don't handle selection if not logged in
+
     const handleMouseUp = () => {
       const windowSelection = window.getSelection();
       if (!windowSelection || windowSelection.isCollapsed) {
@@ -50,7 +54,7 @@ const ChatWidget: React.FC = () => {
 
     document.addEventListener('mouseup', handleMouseUp);
     return () => document.removeEventListener('mouseup', handleMouseUp);
-  }, []);
+  }, [isAuthenticated]);
 
   const handleAddToChat = () => {
     if (!selection) return;
@@ -112,7 +116,7 @@ const ChatWidget: React.FC = () => {
 
   return (
     <>
-      {selection && !isOpen && (
+      {selection && !isOpen && isAuthenticated && (
         <TextSelectionMenu
           position={{ top: selection.top, left: selection.left }}
           onAddToChat={handleAddToChat}
@@ -122,13 +126,39 @@ const ChatWidget: React.FC = () => {
       )}
       <div className={styles.chatWidget}>
         {isOpen ? (
-          <ChatWindow
-            onClose={() => setIsOpen(false)}
-            initialMessage={windowProps.initialMessage}
-            autoSubmit={windowProps.autoSubmit}
-            highlightedText={windowProps.highlightedText}
-            agentType={windowProps.agentType}
-          />
+          isAuthenticated ? (
+            <ChatWindow
+              onClose={() => setIsOpen(false)}
+              initialMessage={windowProps.initialMessage}
+              autoSubmit={windowProps.autoSubmit}
+              highlightedText={windowProps.highlightedText}
+              agentType={windowProps.agentType}
+            />
+          ) : (
+            <div className={styles.loginPromptContainer}>
+              <div className={styles.loginPromptHeader}>
+                <h3>Sign In Required</h3>
+                <button
+                  className={styles.closeButton}
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.loginPromptContent}>
+                <p>Please sign in to access the AI RAG Assistant and ask questions about the book.</p>
+                <Link to="/login" className="button button--primary button--block">
+                  Sign In
+                </Link>
+                <div style={{ marginTop: '0.5rem', textAlign: 'center' }}>
+                  <small>
+                    Don't have an account? <Link to="/signup">Sign Up</Link>
+                  </small>
+                </div>
+              </div>
+            </div>
+          )
         ) : (
           <button
             className={styles.fabButton}

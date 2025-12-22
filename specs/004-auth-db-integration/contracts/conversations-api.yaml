@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  title: Conversations API with Better Auth Integration
+  description: API for managing user conversations and messages with authentication
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /conversations:
+    get:
+      summary: Get user's conversations
+      description: Retrieve all conversations for the authenticated user
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of user's conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conversation'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token validation failed
+
+    post:
+      summary: Create a new conversation
+      description: Create a new conversation for the authenticated user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConversationRequest'
+      responses:
+        '201':
+          description: Conversation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token validation failed
+
+  /conversations/{conversationId}:
+    get:
+      summary: Get conversation details
+      description: Retrieve a specific conversation and its messages
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Conversation details with messages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationWithMessages'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token validation failed or user doesn't own conversation
+        '404':
+          description: Conversation not found
+
+    put:
+      summary: Update conversation
+      description: Update conversation details
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConversationRequest'
+      responses:
+        '200':
+          description: Conversation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token validation failed or user doesn't own conversation
+        '404':
+          description: Conversation not found
+
+  /conversations/{conversationId}/messages:
+    get:
+      summary: Get conversation messages
+      description: Retrieve all messages in a specific conversation
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of messages in the conversation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token validation failed or user doesn't own conversation
+        '404':
+          description: Conversation not found
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Better Auth JWT token
+
+  schemas:
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the conversation
+        user_id:
+          type: string
+          format: uuid
+          description: ID of the user who owns this conversation
+        title:
+          type: string
+          description: Title of the conversation
+        created_at:
+          type: string
+          format: date-time
+          description: When the conversation was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the conversation was last updated
+        is_active:
+          type: boolean
+          description: Whether the conversation is active
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the message
+        conversation_id:
+          type: string
+          format: uuid
+          description: ID of the conversation this message belongs to
+        user_id:
+          type: string
+          format: uuid
+          description: ID of the user who sent this message
+        role:
+          type: string
+          enum: [user, assistant]
+          description: Role of the message sender
+        content:
+          type: string
+          description: Content of the message
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              slug:
+                type: string
+              chapter_number:
+                type: string
+              page_number:
+                type: integer
+              snippet:
+                type: string
+          description: Sources for RAG responses
+        timestamp:
+          type: string
+          format: date-time
+          description: When the message was sent
+        agent_type:
+          type: string
+          description: Type of agent that generated the response
+
+    ConversationWithMessages:
+      type: object
+      properties:
+        conversation:
+          $ref: '#/components/schemas/Conversation'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+
+    CreateConversationRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: Title for the new conversation
+
+    UpdateConversationRequest:
+      type: object
+      properties:
+        title:
+          type: string
+<<<<<<< HEAD
+          description: New title for the conversation
+=======
+          description: New title for the conversation
+>>>>>>> f99c7079ed7175125910f696e233b326cfa1f439
