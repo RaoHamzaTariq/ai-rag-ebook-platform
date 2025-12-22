@@ -24,12 +24,12 @@ app = FastAPI(
 )
 
 # Configure CORS from environment variable
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+# allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 
-if "*" in allowed_origins:
-    origins = ["*"]
-else:
-    origins = [origin.strip() for origin in allowed_origins if origin.strip()]
+# if "*" in allowed_origins:
+origins = ["*"]
+# else:
+#    origins = [origin.strip() for origin in allowed_origins if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
@@ -67,6 +67,7 @@ async def startup_event():
 
 if __name__ == "__main__":
     import uvicorn
-
+    import os
     logger.info("Starting RAG Backend System")
-    uvicorn.run("src.main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
