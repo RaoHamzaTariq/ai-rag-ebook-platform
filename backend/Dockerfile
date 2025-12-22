@@ -1,27 +1,29 @@
-# Use an official Python runtime as a parent image
+# Use official Python slim image
 FROM python:3.11-slim
 
-# # Set environment variables
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PYTHONUNBUFFERED 1
+# Prevent Python from writing pyc files and enable unbuffered logs
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Set work directory
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        postgresql-client \
+# Install system dependencies (runtime only)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Upgrade pip
+RUN pip install --upgrade pip
+
+# Install Python dependencies first (better Docker cache)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
+# Copy application code
 COPY . .
 
-# Expose port
+# Expose FastAPI port
 EXPOSE 8000
 
 # Run the application
