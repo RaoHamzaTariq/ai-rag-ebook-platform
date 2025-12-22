@@ -13,3 +13,4 @@ cryptography
 asyncpg
 sqlmodel
 httpx
+psycopg2

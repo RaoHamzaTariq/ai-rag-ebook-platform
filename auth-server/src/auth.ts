@@ -4,7 +4,7 @@ import { Pool } from "pg";
 
 export const auth = betterAuth({
     database: new Pool({
-        connectionString: process.env.DATABASE_URL || process.env.NEON_DATABASE_URL,
+        connectionString: process.env.DATABASE_URL,
     }),
     plugins: [
         jwt({
