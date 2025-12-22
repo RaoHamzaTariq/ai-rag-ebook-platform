@@ -1,20 +1,19 @@
-/* frontend/src/pages/login/styles.module.css */
 .loginContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 20px;
+  padding: 4rem 1rem;
+  background-color: var(--ifm-background-color);
 }
 
 .loginCard {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: var(--ifm-card-background-color);
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
   padding: 40px;
   width: 100%;
   max-width: 400px;
+  border: 1px solid var(--ifm-color-emphasis-200);
 }
 
 .title {
@@ -22,12 +21,12 @@
   font-weight: 600;
   text-align: center;
   margin-bottom: 8px;
-  color: #1a1a1a;
+  color: var(--ifm-color-content);
 }
 
 .subtitle {
   text-align: center;
-  color: #666;
+  color: var(--ifm-color-content-secondary);
   margin-bottom: 30px;
   font-size: 14px;
 }
@@ -42,12 +41,12 @@
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
 }
 
 .divider span {
   padding: 0 10px;
-  color: #777;
+  color: var(--ifm-color-content-secondary);
   font-size: 14px;
 }
 
@@ -62,11 +61,12 @@
 }
 
 .link {
-  color: #007bff;
+  color: var(--ifm-color-primary);
   text-decoration: none;
   font-weight: 500;
 }
 
 .link:hover {
   text-decoration: underline;
+  color: var(--ifm-color-primary-darker);
 }

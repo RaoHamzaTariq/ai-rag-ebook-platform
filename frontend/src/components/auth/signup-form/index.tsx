@@ -2,20 +2,20 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
 import { signUp } from '../../../lib/authClient';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from '@docusaurus/router';
 
 interface SignupFormProps {
   onSignupSuccess?: () => void;
 }
 
 export const SignupForm: React.FC<SignupFormProps> = ({ onSignupSuccess }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,22 +23,22 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSignupSuccess }) => {
     setError('');
 
     try {
-      const response = await signUp.email({
+      const { data, error } = await signUp.email({
         email,
         password,
         name,
-        callbackURL: "/dashboard", // Redirect after signup
+        callbackURL: "/", // Redirect to home after signup
       });
 
-      if (!response) {
-        setError('Failed to create account');
+      if (error) {
+        setError(error.message || 'Error creating account');
       } else if (onSignupSuccess) {
         onSignupSuccess();
       } else {
-        navigate('/dashboard'); // Default redirect
+        history.push('/'); // Default redirect
       }
-    } catch (err) {
-      setError('An error occurred during signup');
+    } catch (err: any) {
+      setError(err?.message || 'An unexpected error occurred');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -59,6 +59,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSignupSuccess }) => {
           className={styles.input}
           required
           disabled={isLoading}
+          placeholder="First Last"
         />
       </div>
 
@@ -72,6 +73,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSignupSuccess }) => {
           className={styles.input}
           required
           disabled={isLoading}
+          placeholder="you@example.com"
         />
       </div>
 
@@ -84,13 +86,14 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSignupSuccess }) => {
           onChange={(e) => setPassword(e.target.value)}
           className={styles.input}
           required
-          minLength={6}
           disabled={isLoading}
+          minLength={8}
+          placeholder="Min. 8 characters"
         />
       </div>
 
       <button type="submit" className={styles.button} disabled={isLoading}>
-        {isLoading ? 'Creating account...' : 'Sign Up'}
+        {isLoading ? 'Creating account...' : 'Create Account'}
       </button>
     </form>
   );

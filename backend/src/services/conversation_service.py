@@ -16,17 +16,17 @@ class ConversationService:
         Create a new conversation for a user
         """
         try:
-            user_uuid = uuid.UUID(user_id)
-
             # Verify user exists
-            user_statement = select(User).where(User.id == user_uuid)
+            user_statement = select(User).where(User.id == user_id)
             user_result = session.exec(user_statement)
             user = user_result.first()
+            
             if not user:
-                raise ValueError(f"User with ID {user_id} does not exist")
+                logger.error(f"Failed to create conversation: User with ID {user_id} does not exist in the database.")
+                raise ValueError(f"User with ID {user_id} not found. A user must exist before creating a conversation.")
 
             conversation = Conversation(
-                user_id=user_uuid,
+                user_id=user_id,
                 title=title
             )
             session.add(conversation)
@@ -34,9 +34,6 @@ class ConversationService:
             session.refresh(conversation)
             logger.info(f"Created conversation {conversation.id} for user {user_id}")
             return conversation
-        except ValueError as e:
-            logger.error(f"Error creating conversation: {e}")
-            raise
         except Exception as e:
             logger.error(f"Unexpected error in create_conversation: {e}")
             raise
@@ -47,18 +44,14 @@ class ConversationService:
         Get all conversations for a user
         """
         try:
-            user_uuid = uuid.UUID(user_id)
             statement = select(Conversation).where(
-                Conversation.user_id == user_uuid,
+                Conversation.user_id == user_id,
                 Conversation.is_active == True
             ).order_by(Conversation.updated_at.desc())
             result = session.exec(statement)
             conversations = result.all()
             logger.info(f"Retrieved {len(conversations)} conversations for user {user_id}")
             return conversations
-        except ValueError as e:
-            logger.error(f"Invalid UUID format for user_id {user_id}: {e}")
-            raise ValueError(f"Invalid user ID format: {user_id}")
         except Exception as e:
             logger.error(f"Error in get_user_conversations: {e}")
             raise
@@ -69,12 +62,9 @@ class ConversationService:
         Get a specific conversation by ID for a user (ensures user owns the conversation)
         """
         try:
-            conv_uuid = uuid.UUID(conversation_id)
-            user_uuid = uuid.UUID(user_id)
-
             statement = select(Conversation).where(
-                Conversation.id == conv_uuid,
-                Conversation.user_id == user_uuid,
+                Conversation.id == conversation_id,
+                Conversation.user_id == user_id,
                 Conversation.is_active == True
             )
             result = session.exec(statement)
@@ -86,9 +76,6 @@ class ConversationService:
                 logger.info(f"Conversation {conversation_id} not found for user {user_id}")
 
             return conversation
-        except ValueError as e:
-            logger.error(f"Invalid UUID format - conversation_id: {conversation_id}, user_id: {user_id}: {e}")
-            raise ValueError(f"Invalid ID format")
         except Exception as e:
             logger.error(f"Error in get_conversation_by_id: {e}")
             raise
@@ -99,13 +86,10 @@ class ConversationService:
         Update a conversation's details
         """
         try:
-            conv_uuid = uuid.UUID(conversation_id)
-            user_uuid = uuid.UUID(user_id)
-
             # Get the conversation to update
             statement = select(Conversation).where(
-                Conversation.id == conv_uuid,
-                Conversation.user_id == user_uuid,
+                Conversation.id == conversation_id,
+                Conversation.user_id == user_id,
                 Conversation.is_active == True
             )
             result = session.exec(statement)
@@ -125,9 +109,6 @@ class ConversationService:
             session.refresh(conversation)
             logger.info(f"Updated conversation {conversation_id}")
             return conversation
-        except ValueError as e:
-            logger.error(f"Invalid UUID format: {e}")
-            raise ValueError(f"Invalid ID format")
         except Exception as e:
             logger.error(f"Error in update_conversation: {e}")
             raise
@@ -138,12 +119,9 @@ class ConversationService:
         Soft delete a conversation by setting is_active to False
         """
         try:
-            conv_uuid = uuid.UUID(conversation_id)
-            user_uuid = uuid.UUID(user_id)
-
             statement = select(Conversation).where(
-                Conversation.id == conv_uuid,
-                Conversation.user_id == user_uuid,
+                Conversation.id == conversation_id,
+                Conversation.user_id == user_id,
                 Conversation.is_active == True
             )
             result = session.exec(statement)
@@ -159,9 +137,6 @@ class ConversationService:
             session.commit()
             logger.info(f"Soft deleted conversation {conversation_id}")
             return True
-        except ValueError as e:
-            logger.error(f"Invalid UUID format: {e}")
-            raise ValueError(f"Invalid ID format")
         except Exception as e:
             logger.error(f"Error in delete_conversation: {e}")
             raise

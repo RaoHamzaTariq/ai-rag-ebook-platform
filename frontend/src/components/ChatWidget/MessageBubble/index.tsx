@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from './styles.module.css';
 
 interface MessageBubbleProps {
@@ -14,7 +16,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ role, content, timestamp,
   return (
     <div className={`${styles.messageBubble} ${isUser ? styles.userMessage : styles.agentMessage}`}>
       <div className={styles.messageContent}>
-        <p>{content}</p>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            p: ({ node, ...props }) => <p {...props} />,
+            table: ({ node, ...props }) => <div className={styles.tableWrapper}><table {...props} /></div>,
+          }}
+        >
+          {content}
+        </ReactMarkdown>
 
         {sources && sources.length > 0 && (
           <div className={styles.sources}>
@@ -22,7 +32,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ role, content, timestamp,
             <ul>
               {sources.map((source, index) => (
                 <li key={index} className={styles.sourceItem}>
-                  <a href={`${source.slug}`} className={styles.sourceLink} target="_blank" rel="noopener noreferrer">
+                  <a href={`/docs/${source.slug}`} className={styles.sourceLink} target="_blank" rel="noopener noreferrer">
                     <span className={styles.sourceChapter}>Chapter {source.chapter_number}</span>
                     {source.snippet && <span className={styles.sourceSnippet}>: {source.snippet.substring(0, 100)}{source.snippet.length > 100 ? '...' : ''}</span>}
                   </a>

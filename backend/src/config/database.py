@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger('database')
 
 # Database configuration
-DATABASE_URL = os.getenv("NEON_DATABASE_URL", "postgresql://localhost:5432/ai_rag_ebook")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Parse the database URL to extract connection parameters
 parsed_url = urlparse(DATABASE_URL)

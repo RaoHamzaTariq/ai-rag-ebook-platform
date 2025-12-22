@@ -19,8 +19,8 @@ async def retrieve_data(query: str, current_page: int | None = None, highlighted
         query=query,
         current_page=current_page,
         highlighted_text=highlighted_text,
-        top_k=8,  # Increased from 5 to get more context
-        score_threshold=0.65  # Slightly lowered to be more inclusive
+        top_k=3,  # Reduced from 8 to only retrieve 3 resources as requested
+        score_threshold=0.70  # Slightly increased to ensure high relevance
     )
 
 async def dynamic_instructions(

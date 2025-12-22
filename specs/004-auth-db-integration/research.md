@@ -1,59 +1,88 @@
-# Research: Better Auth Integration with FastAPI Backend and Neon PostgreSQL
+# **Research: BetterAuth Integration with FastAPI Backend and Neon PostgreSQL**
 
-## Decision: JWT Token Validation Approach
-**Rationale**: Using JWT tokens with JWKS validation provides stateless authentication that scales well with the existing FastAPI architecture. This approach allows the backend to verify tokens without making external calls for each request after initial JWKS caching.
+## **Decision: JWT Token Validation Approach**
 
-**Alternatives considered**:
-- Session-based authentication (requires server-side session storage)
-- OAuth2 with database token storage (higher database load)
+**Rationale:**
+We chose to use **JWT tokens with JWKS validation** for stateless authentication. This approach allows the FastAPI backend to verify tokens issued by BetterAuth without maintaining server‑side sessions or storing session state. After initial JWKS retrieval, public keys can be cached for performance, reducing overhead. This matches BetterAuth’s recommended pattern for external API authentication. ([Better Auth][1])
 
-## Decision: Database Schema Design
-**Rationale**: Using UUID primary keys with proper foreign key relationships ensures data integrity and scalability. JSONB for sources allows flexible storage of RAG response metadata.
+**Alternatives considered:**
 
-**Alternatives considered**:
-- Using auto-incrementing integers (less secure, predictable)
-- Storing all data in a single table (violates normalization principles)
+* **Session‑based authentication** (frontend cookies) — easier but not reliable for backend API verification without custom logic.
+* **OAuth2 with database token storage** — more complex, higher database load, unnecessary for this use case.
 
-## Decision: Authentication Middleware Pattern
-**Rationale**: FastAPI middleware provides clean separation of authentication concerns from business logic, making it easy to protect specific endpoints while maintaining the existing agent architecture.
+## **Decision: Database Schema Design**
 
-**Alternatives considered**:
-- Decorator-based authentication (would require changes to existing agent endpoints)
-- Manual token checking in each route (repetitive and error-prone)
+**Rationale:**
+Use **UUID primary keys** with explicit foreign key relationships between users, conversations, and messages to ensure data integrity and scalability. **JSONB fields** are used for RAG source metadata to allow flexible storage of embeddings and references.
 
-## Decision: Better Auth Configuration
-**Rationale**: Better Auth provides a complete authentication solution with secure session management, eliminating the need to implement custom authentication logic while maintaining compatibility with existing frontend architecture.
+**Alternatives considered:**
 
-**Alternatives considered**:
-- Custom JWT implementation (higher complexity, security risks)
-- Other auth providers (require different integration patterns)
+* **Auto‑increment integers** — easier but less secure and predictable.
+* **Single flat table** — violates normalization, hampers efficient querying and scaling.
 
-## Decision: Async Database Operations
-**Rationale**: Using async database operations maintains the existing performance characteristics of the RAG system while adding authentication functionality.
+## **Decision: Authentication Middleware Pattern**
 
-**Alternatives considered**:
-- Synchronous operations (would block the event loop)
-- Database connection per request (poor performance)
+**Rationale:**
+FastAPI middleware using a JWT bearer scheme cleanly separates authentication from your business logic. It allows protecting specific endpoints without modifying existing RAG agent flows. Middleware also simplifies applying token verification uniformly across routes.
 
-## Decision: Conversation History Architecture
-**Rationale**: Storing conversations and messages in separate tables with proper relationships allows for efficient querying and pagination while maintaining data integrity.
+**Alternatives considered:**
 
-**Alternatives considered**:
-- Storing all messages in a single array field (difficult to query and paginate)
-- No conversation grouping (loses conversation context)
+* **Decorator‑based authentication** — requires modifying many endpoints.
+* **Manual token checks in each route** — repetitive and error‑prone.
 
-## Security Considerations Researched
-- Token expiration and refresh mechanisms
-- SQL injection prevention through parameterized queries
-- CORS configuration for production environments
-- Secure cookie settings for session management
+## **Decision: BetterAuth Configuration for JWT**
 
-## Performance Optimizations Researched
-- Connection pooling for database operations
-- JWKS caching to reduce validation overhead
-- Proper indexing for efficient message retrieval
-<<<<<<< HEAD
-- Pagination for large conversation histories
-=======
-- Pagination for large conversation histories
->>>>>>> f99c7079ed7175125910f696e233b326cfa1f439
+**Rationale:**
+BetterAuth supports a **JWT plugin** that provides both token issuance and a JWKS endpoint for public key discovery. This enables external API services (like your FastAPI backend) to verify tokens issued by BetterAuth without maintaining state. ([Better Auth][1])
+
+**Alternatives considered:**
+
+* **Custom JWT implementation** — more complex and risky.
+* **Third‑party auth providers** — would require different integration patterns and more dependencies.
+
+
+## **Decision: Async Database Operations**
+
+**Rationale:**
+Keeping database operations asynchronous using **asyncpg + SQLModel** preserves the non‑blocking performance of your existing RAG system. This is crucial for maintaining responsiveness when handling many concurrent chat requests.
+
+**Alternatives considered:**
+
+* **Synchronous DB operations** — blocks FastAPI’s event loop and harms performance.
+* **Opening a new connection per request** — causes resource exhaustion.
+
+## **Decision: Conversation History Architecture**
+
+**Rationale:**
+Storing conversations and messages in **separate but related tables** allows efficient querying, pagination, and filtering while preserving chat context. Each conversation is linked to a user, and messages reference their parent conversation.
+
+**Alternatives considered:**
+
+* **Single array field for messages** — difficult to query or paginate.
+* **No conversation grouping** — loses context across sessions.
+
+## **Security Considerations Researched**
+
+* Token expiration and refresh behavior designed according to BetterAuth recommendations. ([Better Auth][1])
+* SQL injection prevention through **parameterized queries** with SQLModel/asyncpg.
+* CORS configuration for secure production environments.
+* Considered secure cookie settings for session handling if using additional BetterAuth plugins.
+
+## **Performance Optimizations Researched**
+
+* **Connection pooling** for Neon PostgreSQL to handle many concurrent users.
+* **JWKS caching** to reduce validation overhead — fetch once and reuse keys until rotation. ([Better Auth][1])
+* Proper **indexing** on user_id and conversation_id for efficient message retrieval.
+* **Pagination** strategies to efficiently handle large conversation histories.
+
+---
+
+## **Summary of Research Findings**
+
+| Area                      | Decision                  | Key Reason                                  |
+| ------------------------- | ------------------------- | ------------------------------------------- |
+| Auth Strategy             | JWT via BetterAuth + JWKS | Stateless, backend verifiable tokens        |
+| Schema Design             | UUID keys + relations     | Secure, scalable, query‑efficient           |
+| Auth Middleware           | FastAPI middleware        | Clean integration, centralized verification |
+| DB Operations             | Async                     | Non‑blocking, high concurrency              |
+| Conversation Architecture | Separate tables           | Maintain context & efficient querying       |

@@ -1,66 +1,99 @@
 .chatWidget {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 20px;
+  right: 20px;
   z-index: 1000;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .fabButton {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background-color: var(--ifm-color-primary);
   color: white;
   border: none;
-  font-size: 26px;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.fabButton::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
-}
-
-.fabButton:hover::before {
-  width: 120%;
-  height: 120%;
 }
 
 .fabButton:hover {
-  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-  transform: scale(1.08) translateY(-2px);
-  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--ifm-color-primary-dark);
+  transform: scale(1.05);
 }
 
-.fabButton:active {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3), 0 2px 6px rgba(0, 0, 0, 0.1);
+.loginPromptContainer {
+  width: 350px;
+  height: auto;
+  min-height: 200px;
+  background-color: var(--ifm-card-background-color);
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  animation: slideUp 0.3s ease-out;
+  margin-bottom: 20px;
 }
 
-.fabButton:focus {
-  outline: none;
-  box-shadow: 
-    0 6px 16px rgba(79, 70, 229, 0.3), 
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    0 0 0 4px rgba(199, 210, 254, 0.4);
+.loginPromptHeader {
+  padding: 16px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.fabButton:focus:not(:focus-visible) {
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+.loginPromptHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--ifm-color-content);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--ifm-color-content-secondary);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  color: var(--ifm-color-content);
+}
+
+.loginPromptContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loginPromptContent p {
+  margin: 0;
+  color: var(--ifm-color-content-secondary);
+  line-height: 1.5;
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

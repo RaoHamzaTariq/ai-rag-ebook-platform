@@ -36,18 +36,21 @@ async def run_agent(req: AgentRequest, user_id: str = Depends(get_current_user_i
 
         # Get or create conversation
         with Session(engine) as session:
+            conversation_id = session_id  # Store the original session_id to check if it's a conversation ID
             # Check if conversation exists, create if not
-            conversation = await ConversationService.get_conversation_by_id(session, session_id, user_id)
+            conversation = await ConversationService.get_conversation_by_id(session, conversation_id, user_id)
             if not conversation:
                 # Create a new conversation with a title based on the first query
                 title = req.query[:50] + "..." if len(req.query) > 50 else req.query
                 conversation = await ConversationService.create_conversation(session, user_id, title)
-                session_id = str(conversation.id)
+                conversation_id = str(conversation.id)  # Use the actual conversation ID from DB
+            else:
+                conversation_id = str(conversation.id)  # Use the actual conversation ID from DB
 
             # Save user message to database
             user_message = await MessageService.create_message(
                 session=session,
-                conversation_id=session_id,
+                conversation_id=conversation_id,
                 user_id=user_id,
                 role="user",
                 content=req.query,
@@ -99,7 +102,7 @@ async def run_agent(req: AgentRequest, user_id: str = Depends(get_current_user_i
         with Session(engine) as session:
             agent_message = await MessageService.create_message(
                 session=session,
-                conversation_id=session_id,
+                conversation_id=conversation_id,
                 user_id=user_id,  # For agent messages, we'll use the same user_id as the owner of the conversation
                 role="assistant",
                 content=response.message,
@@ -133,7 +136,7 @@ async def run_agent(req: AgentRequest, user_id: str = Depends(get_current_user_i
                 )
                 error_message = await MessageService.create_message(
                     session=session,
-                    conversation_id=session_id,
+                    conversation_id=conversation_id,
                     user_id=user_id,
                     role="assistant",
                     content=error_response.message,

@@ -91,6 +91,11 @@ const config: Config = {
           position: 'right',
         },
         {
+          type: 'html',
+          position: 'right',
+          value: '<div id="navbar-auth-root"></div>',
+        },
+        {
           href: 'https://github.com/your-org/physical-ai-ebook',
           label: 'GitHub',
           position: 'right',
@@ -187,6 +192,11 @@ const config: Config = {
       maxHeadingLevel: 4,
     },
   } satisfies Preset.ThemeConfig,
+
+  customFields: {
+    betterAuthUrl: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3001",
+    backendUrl: process.env.REACT_APP_BACKEND_URL || "http://localhost:8000",
+  },
 };
 
 export default config;

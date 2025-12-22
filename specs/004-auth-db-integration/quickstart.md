@@ -1,192 +1,220 @@
-# Quickstart Guide: Better Auth Integration
+# **Quickstart Guide: BetterAuth + FastAPI + Neon PostgreSQL + RAG Chatbot**
 
-## Prerequisites
-- Node.js 18+ and npm
-- Python 3.11+ with uv
-- Neon PostgreSQL database instance
-- Better Auth configured in frontend
+This guide helps you quickly set up authentication using **BetterAuth (JWT)** in the frontend and verify it in your **FastAPI backend** while storing user chats in **Neon PostgreSQL**.
 
-## Frontend Setup
+## **Prerequisites**
 
-### 1. Install Better Auth
+* Node.js 18+ and npm
+* Python 3.11+ with `uvicorn`
+* Neon PostgreSQL database instance
+* BetterAuth configured in the frontend
+* Your RAG chatbot and Qdrant setup already running
+
+
+## **1. Frontend Setup (BetterAuth + JWT)**
+
+### **1.1 Install BetterAuth**
+
 ```bash
 cd frontend
-npm add better-auth better-auth/plugins
+npm install better-auth better-auth/plugins
 ```
 
-### 2. Configure Better Auth in frontend
+> We’ll use the **JWT plugin** so your frontend can fetch a JWT token for FastAPI backend validation. ([Better Auth][1])
+
+### **1.2 Configure BetterAuth Server (Frontend Side)**
+
 Create `frontend/src/lib/auth.ts`:
+
 ```typescript
 import { betterAuth } from "better-auth";
 import { jwt } from "better-auth/plugins";
 
 export const auth = betterAuth({
   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
-  database: {
-    // Better Auth will handle its own database tables
-  },
-  plugins: [
-    jwt() // Enable JWT tokens if needed for external services
-  ]
+  plugins: [ jwt() ] // Enable JWT plugin
 });
 ```
 
-### 3. Initialize Better Auth client
+### **1.3 Initialize BetterAuth Client**
+
 Create `frontend/src/lib/authClient.ts`:
+
 ```typescript
 import { createAuthClient } from "better-auth/client";
 import { jwtClient } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
-  plugins: [
-    jwtClient()
-  ]
+  plugins: [ jwtClient() ] // Pull JWT tokens
 });
 ```
 
-## Backend Setup
+## **2. Frontend Usage (Get JWT Token)**
 
-### 1. Install required dependencies
-```bash
-cd backend
-uv add python-jose cryptography
+Where you make API calls (e.g., when user logs in or before sending a request to backend):
+
+```ts
+// Fetch JWT token from BetterAuth client
+const { data, error } = await authClient.token();
+if (error || !data?.token) {
+  console.error("Failed to get JWT token:", error);
+} else {
+  const jwtToken = data.token;
+  // Store token and use in fetch calls
+  localStorage.setItem("authToken", jwtToken);
+}
 ```
 
-### 2. Configure JWT verification middleware
+Then include this token in requests:
+
+```ts
+fetch("/api/agents/run", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${jwtToken}`
+  },
+  body: JSON.stringify({ question })
+});
+```
+
+
+## **3. Backend Setup (FastAPI)**
+
+### **3.1 Install Python Dependencies**
+
+```bash
+cd backend
+pip install python-jose httpx python-dotenv
+```
+
+We’ll use **python-jose** to verify JWT tokens your frontend sends using BetterAuth’s public keys (from JWKS). ([Better Auth][1])
+
+
+### **3.2 JWT Middleware (Validate Token)**
+
 Create `backend/src/middleware/auth_middleware.py`:
+
 ```python
-from fastapi import HTTPException, Request
+from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-import httpx
 from jose import jwt, JWTError
+import httpx
 import os
-from typing import Optional
 
 class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):
-        super(JWTBearer, self).__init__(auto_error=auto_error)
-        self.jwks_client = None
+        super().__init__(auto_error=auto_error)
+        self.jwks_cache = None
 
     async def __call__(self, request: Request):
-        credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
-
-        if credentials:
-            if not credentials.scheme == "Bearer":
-                raise HTTPException(status_code=403, detail="Invalid authentication scheme.")
+        credentials: HTTPAuthorizationCredentials = await super().__call__(request)
+        if credentials and credentials.scheme == "Bearer":
             token = credentials.credentials
-            user_id = await self.verify_jwt(token)
-            if not user_id:
-                raise HTTPException(status_code=403, detail="Invalid token or expired token.")
-            request.state.user_id = user_id
-            return credentials.credentials
-        else:
-            raise HTTPException(status_code=403, detail="Invalid authorization code.")
+            user = await self.verify_jwt(token)
+            if not user:
+                raise HTTPException(status_code=401, detail="Invalid or expired token")
+            request.state.user = user
+            return user
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
-    async def verify_jwt(self, token: str) -> Optional[str]:
-        # Fetch JWKS from Better Auth
-        jwks_url = f"{os.getenv('BETTER_AUTH_URL', 'http://localhost:3000')}/api/auth/jwks"
-        if not self.jwks_client:
-            async with httpx.AsyncClient() as client:
-                jwks_response = await client.get(jwks_url)
-                jwks = jwks_response.json()
-                self.jwks_client = jwks
+    async def verify_jwt(self, token: str):
+        jwks_url = f"{os.getenv('BETTER_AUTH_URL')}/api/auth/jwks"
+        async with httpx.AsyncClient() as client:
+            jwks_resp = await client.get(jwks_url)
+            jwks = jwks_resp.json()
 
         try:
-            # Decode and verify the token
             payload = jwt.decode(
                 token,
-                self.jwks_client,
-                algorithms=["RS256"],
-                audience=os.getenv('BETTER_AUTH_AUDIENCE', 'your-app-audience')
+                jwks,
+                algorithms=["EdDSA", "RS256"],
+                audience=os.getenv("BETTER_AUTH_AUDIENCE"),
+                issuer=os.getenv("BETTER_AUTH_URL")
             )
-            return payload.get('sub')  # User ID is in 'sub' claim
+            return payload
         except JWTError:
             return None
 ```
 
-### 3. Create database models
-Update `backend/src/models/user.py`:
+
+### **3.3 Add to FastAPI Routes**
+
+In your router:
+
+```python
+from fastapi import APIRouter, Depends, Request
+from backend.src.middleware.auth_middleware import JWTBearer
+
+router = APIRouter()
+
+@router.post("/agents/run", dependencies=[Depends(JWTBearer())])
+async def run_agent(request: Request, payload: dict):
+    user = request.state.user  # from token
+    # use user info for DB storage and chat logic
+    return ...
+```
+
+## **4. Database Models & Storage**
+
+### **4.1 User Model (SQLModel Example)**
+
+File: `backend/src/models/user.py`:
+
 ```python
 from sqlmodel import SQLModel, Field
-from typing import Optional
 from datetime import datetime
 import uuid
 
 class User(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    email: str = Field(unique=True, nullable=False)
-    name: Optional[str] = Field(default=None)
+    id: str = Field(primary_key=True)
+    email: str
+    name: str | None
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-    is_active: bool = Field(default=True)
 ```
 
-### 4. Create services for user management
-Create `backend/src/services/user_service.py`:
-```python
-from sqlmodel import Session, select
-from ..models.user import User
-from typing import Optional
-import uuid
+### **4.2 Conversation/Message Models**
 
-class UserService:
-    @staticmethod
-    async def get_or_create_user(session: Session, user_id: str, email: str, name: Optional[str] = None) -> User:
-        # Check if user already exists
-        statement = select(User).where(User.id == user_id)
-        result = session.exec(statement)
-        user = result.first()
+Similar models should relate user to messages; store question/answer, timestamps.
 
-        if user:
-            # Update user info if needed
-            if name and user.name != name:
-                user.name = name
-                user.updated_at = datetime.utcnow()
-                session.add(user)
-                session.commit()
-            return user
-        else:
-            # Create new user
-            user = User(
-                id=uuid.UUID(user_id),
-                email=email,
-                name=name
-            )
-            session.add(user)
-            session.commit()
-            session.refresh(user)
-            return user
-```
+## **5. Database Migration**
 
-## Database Migration
-Run database migrations to create the required tables:
+Run migrations or execute your schema creation code so tables exist in Neon PostgreSQL.
+
 ```bash
+# Example
 cd backend
-# Run your existing migration command or create new ones for the auth tables
+alembic upgrade head
 ```
 
-## Environment Variables
-Add these to your `.env` files:
+(or whatever migration tool you use)
 
-Frontend (.env.local):
+## **6. Environment Variables**
+
+**Frontend `.env.local`**
+
 ```
 NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 ```
 
-Backend (.env):
+**Backend `.env`**
+
 ```
 BETTER_AUTH_URL=http://localhost:3000
-BETTER_AUTH_AUDIENCE=your-app-audience
+BETTER_AUTH_AUDIENCE=http://localhost:3000
+DATABASE_URL=postgresql://...
 ```
 
-## Testing the Integration
-1. Start the Better Auth server
-2. Start the FastAPI backend
-3. Verify that protected endpoints require valid Better Auth tokens
-4. Test user creation and authentication flow
-<<<<<<< HEAD
-5. Verify that chat history is properly associated with authenticated users
-=======
-5. Verify that chat history is properly associated with authenticated users
->>>>>>> f99c7079ed7175125910f696e233b326cfa1f439
+> `BETTER_AUTH_AUDIENCE` must match the expected token audience. Default is your base URL. ([Better Auth][1])
+
+---
+
+## **7. Test It All**
+
+1. Run your BetterAuth server (frontend auth).
+2. Run your FastAPI backend.
+3. Login/signup via the frontend.
+4. Obtain a JWT token from BetterAuth.
+5. Call a protected endpoint like `/agents/run`.
+6. Validate responses and confirm that chat history is associated with the authenticated user.

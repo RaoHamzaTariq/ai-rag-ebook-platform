@@ -1,6 +1,10 @@
 """
-Database initialization module for Better Auth integration with Neon PostgreSQL
+Database initialization module for Better Auth integration with Neon PostgreSQL.
+Note: User table is managed by Better Auth migrations. Backend only maps to it.
 """
+from dotenv import load_dotenv
+load_dotenv()
+
 import asyncio
 import logging
 from sqlmodel import SQLModel

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
 import { signIn } from '../../../lib/authClient';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from '@docusaurus/router';
 
 interface LoginFormProps {
   onLoginSuccess?: () => void;
@@ -14,7 +14,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,21 +22,21 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     setError('');
 
     try {
-      const response = await signIn.email({
+      const { data, error } = await signIn.email({
         email,
         password,
-        callbackURL: "/dashboard", // Redirect after login
+        callbackURL: "/", // Redirect to home after login
       });
 
-      if (!response) {
-        setError('Invalid email or password');
+      if (error) {
+        setError(error.message || 'Invalid email or password');
       } else if (onLoginSuccess) {
         onLoginSuccess();
       } else {
-        navigate('/dashboard'); // Default redirect
+        history.push('/'); // Default redirect to home/docs
       }
-    } catch (err) {
-      setError('An error occurred during login');
+    } catch (err: any) {
+      setError(err?.message || 'An error occurred during login');
       console.error(err);
     } finally {
       setIsLoading(false);
