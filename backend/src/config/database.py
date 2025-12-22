@@ -11,6 +11,12 @@ logger = logging.getLogger('database')
 # Database configuration
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+if not DATABASE_URL:
+    logger.error("DATABASE_URL is not set in environment variables")
+    # In production you might want to raise, in local dev maybe it's fine until call
+    # But uvicorn needs it for engine creation
+    DATABASE_URL = "postgresql://user:pass@localhost:5432/db" # Safe dummy for parsing
+
 # Parse the database URL to extract connection parameters
 parsed_url = urlparse(DATABASE_URL)
 
@@ -31,14 +37,14 @@ async def get_db() -> AsyncGenerator:
     """Async dependency for FastAPI to get database session"""
     from sqlmodel import Session
     async with Session(engine) as session:
-        logger.info("Database session created")
+        logger.debug("Database session created")
         yield session
 
 def get_sync_db():
     """Sync dependency for FastAPI to get database session"""
     from sqlmodel import Session
     with Session(engine) as session:
-        logger.info("Synchronous database session created")
+        logger.debug("Synchronous database session created")
         yield session
 
 async def init_db():

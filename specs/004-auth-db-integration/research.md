@@ -1,88 +1,67 @@
-# **Research: BetterAuth Integration with FastAPI Backend and Neon PostgreSQL**
+# **Research: BetterAuth Integration with FastAPI and PostgreSQL**
 
-## **Decision: JWT Token Validation Approach**
-
-**Rationale:**
-We chose to use **JWT tokens with JWKS validation** for stateless authentication. This approach allows the FastAPI backend to verify tokens issued by BetterAuth without maintaining server‑side sessions or storing session state. After initial JWKS retrieval, public keys can be cached for performance, reducing overhead. This matches BetterAuth’s recommended pattern for external API authentication. ([Better Auth][1])
-
-**Alternatives considered:**
-
-* **Session‑based authentication** (frontend cookies) — easier but not reliable for backend API verification without custom logic.
-* **OAuth2 with database token storage** — more complex, higher database load, unnecessary for this use case.
-
-## **Decision: Database Schema Design**
+## **Decision: Authentication Strategy (Stateless JWT)**
 
 **Rationale:**
-Use **UUID primary keys** with explicit foreign key relationships between users, conversations, and messages to ensure data integrity and scalability. **JSONB fields** are used for RAG source metadata to allow flexible storage of embeddings and references.
+We selected a **Stateless JWT with JWKS validation** strategy. This allows the FastAPI backend to verify identities without maintaining its own user sessions or making a database call for every request. By fetching the Public Keys from the `auth-server`'s `/api/auth/jwks` endpoint, the backend can cryptographically prove the token was issued by our identity provider.
 
-**Alternatives considered:**
+**Alternatives Considered:**
+*   **Session Cookies**: Rejected because it requires shared memory/sessions between Node.js and Python or a common Redis store, which adds infrastructure complexity.
+*   **Opaque Tokens**: Rejected because it requires the backend to call the auth server on every request ("introspection"), which would hurt latency.
 
-* **Auto‑increment integers** — easier but less secure and predictable.
-* **Single flat table** — violates normalization, hampers efficient querying and scaling.
+---
+
+## **Decision: ID Management (String-based identifiers)**
+
+**Rationale:**
+Better Auth v1 generates random string identifiers (e.g., `N1pk9L...`) rather than standard version 4 UUIDs. To ensure binary compatibility and prevent "badly formed hexadecimal UUID string" errors, we explicitly defined all ID fields in our `Message`, `Conversation`, and `User` tables as `String`.
+
+**Impact:**
+This ensures that the `user_id` provided in the JWT sub-claim maps perfectly to the foreign key in our chat history tables without requiring manual casting or conversion logic.
+
+---
 
 ## **Decision: Authentication Middleware Pattern**
 
 **Rationale:**
-FastAPI middleware using a JWT bearer scheme cleanly separates authentication from your business logic. It allows protecting specific endpoints without modifying existing RAG agent flows. Middleware also simplifies applying token verification uniformly across routes.
+We implemented a custom `JWTBearer` class that inherits from FastAPI's security utilities. This allows for a clean, dependency-injection-based protection system. Using a middleware/dependency pattern ensures that we can protect the `/agents/run` endpoint with a single line of code without cluttering the business logic of our RAG agents.
 
-**Alternatives considered:**
-
-* **Decorator‑based authentication** — requires modifying many endpoints.
-* **Manual token checks in each route** — repetitive and error‑prone.
-
-## **Decision: BetterAuth Configuration for JWT**
-
-**Rationale:**
-BetterAuth supports a **JWT plugin** that provides both token issuance and a JWKS endpoint for public key discovery. This enables external API services (like your FastAPI backend) to verify tokens issued by BetterAuth without maintaining state. ([Better Auth][1])
-
-**Alternatives considered:**
-
-* **Custom JWT implementation** — more complex and risky.
-* **Third‑party auth providers** — would require different integration patterns and more dependencies.
-
-
-## **Decision: Async Database Operations**
-
-**Rationale:**
-Keeping database operations asynchronous using **asyncpg + SQLModel** preserves the non‑blocking performance of your existing RAG system. This is crucial for maintaining responsiveness when handling many concurrent chat requests.
-
-**Alternatives considered:**
-
-* **Synchronous DB operations** — blocks FastAPI’s event loop and harms performance.
-* **Opening a new connection per request** — causes resource exhaustion.
-
-## **Decision: Conversation History Architecture**
-
-**Rationale:**
-Storing conversations and messages in **separate but related tables** allows efficient querying, pagination, and filtering while preserving chat context. Each conversation is linked to a user, and messages reference their parent conversation.
-
-**Alternatives considered:**
-
-* **Single array field for messages** — difficult to query or paginate.
-* **No conversation grouping** — loses context across sessions.
-
-## **Security Considerations Researched**
-
-* Token expiration and refresh behavior designed according to BetterAuth recommendations. ([Better Auth][1])
-* SQL injection prevention through **parameterized queries** with SQLModel/asyncpg.
-* CORS configuration for secure production environments.
-* Considered secure cookie settings for session handling if using additional BetterAuth plugins.
-
-## **Performance Optimizations Researched**
-
-* **Connection pooling** for Neon PostgreSQL to handle many concurrent users.
-* **JWKS caching** to reduce validation overhead — fetch once and reuse keys until rotation. ([Better Auth][1])
-* Proper **indexing** on user_id and conversation_id for efficient message retrieval.
-* **Pagination** strategies to efficiently handle large conversation histories.
+**Security Feature:**
+The middleware includes a robust 5-minute caching mechanism for the JWKS, ensuring that if the auth server is temporarily under load, the backend can still verify current users using the cached public keys.
 
 ---
 
-## **Summary of Research Findings**
+## **Decision: RAG Retrieval Constraints (top_k=3)**
 
-| Area                      | Decision                  | Key Reason                                  |
-| ------------------------- | ------------------------- | ------------------------------------------- |
-| Auth Strategy             | JWT via BetterAuth + JWKS | Stateless, backend verifiable tokens        |
-| Schema Design             | UUID keys + relations     | Secure, scalable, query‑efficient           |
-| Auth Middleware           | FastAPI middleware        | Clean integration, centralized verification |
-| DB Operations             | Async                     | Non‑blocking, high concurrency              |
-| Conversation Architecture | Separate tables           | Maintain context & efficient querying       |
+**Rationale:**
+Research into user response quality showed that providing too many sources (previously 8) led to diluted answers and cluttered UI. By restricting retrieval to the **top 3 most relevant resources**, we force the AI to synthesize the most important textbook data, leading to "higher density" educational responses.
+
+**Relevance Tuning:**
+We raised the `score_threshold` to `0.70` to ensure that only high-quality chunks are used in generating answers, eliminating filler text.
+
+---
+
+## **Decision: Rich Text Display Format**
+
+**Rationale:**
+Educational content often involves structured data that plain text cannot convey effectively. We decided to use **Markdown** as the communication standard between the AI and the frontend. By integrating `react-markdown` and `remark-gfm`, we enabled support for tables, bold emphasis, and lists.
+
+---
+
+## **Performance Optimizations**
+
+*   **JWKS Caching**: Prevents network overhead for token validation.
+*   **Database Indexing**: Explicitly added indexes on `(user_id, timestamp)` to ensure that history retrieval remains fast even as users accumulate thousands of messages.
+*   **Connection Pooling**: Configured SQLAlchemy/SQLModel `QueuePool` to handle the bursty nature of AI chat traffic efficiently.
+
+---
+
+## **Research Summary Findings**
+
+| Feature | Decision | Key Reason |
+| :--- | :--- | :--- |
+| **Identity Provider** | Better Auth v1 | Framework-agnostic and simplifies Node./Python interop. |
+| **Token Format** | JWT (RS256) | Standardized, secure, and supports stateless validation. |
+| **History Storage** | PostgreSQL | SQLModel provided the best balance of speed and schema safety. |
+| **ID Type** | String (Varchar) | Compatibility with existing Better Auth string IDs. |
+| **Response Format** | GFM Markdown | Allows high-quality table and rich-text rendering. |
