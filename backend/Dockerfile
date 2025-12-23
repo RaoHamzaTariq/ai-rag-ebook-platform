@@ -6,7 +6,7 @@ WORKDIR /app
 
 # 1. Copy requirements from the backend folder
 # We use ./ because the Dockerfile is already inside /backend
-COPY requirements.txt .
+COPY backend/requirements.txt .
 
 # 2. Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
