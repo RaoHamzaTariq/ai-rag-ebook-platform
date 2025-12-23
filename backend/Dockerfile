@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# 1. Copy requirements using the full path from the repo root
+# 1. Copy requirements using the full path from the repo root.
 COPY backend/requirements.txt .
 
 # 2. Install dependencies
