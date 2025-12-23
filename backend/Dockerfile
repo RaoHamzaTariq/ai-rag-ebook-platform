@@ -17,9 +17,9 @@ COPY backend/ .
 ENV PYTHONPATH=/app
 
 # 5. Expose the port
-EXPOSE 3000
+EXPOSE 8000
 
 # 6. Start FastAPI 
 # Since we copied the contents of 'backend' into '/app', 
 # your 'src' folder is now at '/app/src'
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
