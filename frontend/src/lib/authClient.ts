@@ -1,16 +1,14 @@
 import { createAuthClient } from "better-auth/react";
 import { jwtClient } from "better-auth/client/plugins";
 
-import siteConfig from '@generated/docusaurus.config';
-
 export const authClient = createAuthClient({
-  baseURL: siteConfig.customFields?.betterAuthUrl as string || "http://localhost:3001",
+	baseURL: "https://authserver1-r9l3i286.b4a.run",
 	fetchOptions: {
 		credentials: "include"
 	},
-  plugins: [
-    jwtClient()
-  ]
+	plugins: [
+		jwtClient()
+	]
 });
 
 export const { signIn, signUp, useSession, signOut } = authClient;
