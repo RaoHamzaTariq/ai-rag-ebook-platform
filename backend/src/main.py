@@ -22,21 +22,22 @@ app = FastAPI(
 )
 
 FRONTEND_URL= os.getenv("FRONTEND_URL")
+logger.info(FRONTEND_URL)
 if not FRONTEND_URL:
     logger.warning("No FRONTEND_URL set. The chatbot will fail at runtime until a key is provided.")
 
 
 # Configure CORS specifically for your frontend
 app.add_middleware(
-	CORSMiddleware,
-	allow_origins=[
-        FRONTEND_URL,
-		"http://localhost:3000",  # for local development
-		"http://localhost:3001"   # if needed
-	],
-	allow_credentials=True,
-	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-	allow_headers=["*"],
+  CORSMiddleware,
+  allow_origins=[
+    os.getenv("FRONTEND_URL"),  # https://ai-ebook-platform.vercel.app
+    "http://localhost:3000",
+    "http://localhost:3001"
+  ],
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
 )
 
 # Include API routers
