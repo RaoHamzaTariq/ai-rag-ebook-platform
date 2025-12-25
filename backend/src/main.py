@@ -3,7 +3,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-
+from fastapi import Request
+from fastapi.responses import JSONResponse
 # Load environment variables from .env
 load_dotenv()
 
@@ -30,16 +31,28 @@ if not FRONTEND_URL:
 # Configure CORS specifically for your frontend
 app.add_middleware(
   CORSMiddleware,
-#   allow_origins=[
-#     os.getenv("FRONTEND_URL"),  # https://ai-ebook-platform.vercel.app
-#     "http://localhost:3000",
-#     "http://localhost:3001"
-#   ],
-  allow_origins=["*"],
+  allow_origins=[
+    os.getenv("FRONTEND_URL"),  # https://ai-ebook-platform.vercel.app
+    "http://localhost:3000",
+    "http://localhost:3001"
+  ],
+#   allow_origins=["*"],
   allow_credentials=True,
   allow_methods=["*"],
   allow_headers=["*"],
 )
+
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(rest_of_path: str, request: Request):
+    return JSONResponse(
+        {},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Credentials": "true"
+        }
+    )
 
 # Include API routers
 app.include_router(agent_router)
