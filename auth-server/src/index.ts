@@ -20,3 +20,7 @@ app.all("/api/auth/*", toNodeHandler(auth));
 app.listen(port, () => {
     console.log(`Auth server listening on port ${port}`);
 });
+
+app.get("/", (req, res) => {
+  res.json({ status: "ok" });
+});
