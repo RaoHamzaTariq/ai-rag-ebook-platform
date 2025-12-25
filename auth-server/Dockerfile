@@ -1,24 +1,26 @@
-# Use Node 18 (stable + small image)
+# Use Node.js 18
 FROM node:18-alpine
 
-# Working directory
+# Create app directory
 WORKDIR /app
 
-# Copy only package files first (faster builds)
+# Copy package files
 COPY auth-server/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy entire auth-server
+# Copy all source code
 COPY auth-server/ .
 
-# Build TypeScript into dist/
+# Install TypeScript globally (optional)
 RUN npm install -g typescript
+
+# Build TypeScript files to dist/
 RUN tsc
 
-# Expose port internally
+# Expose the internal container port
 EXPOSE 3001
 
-# Start server from compiled JS
+# Start the server
 CMD ["node", "dist/index.js"]
