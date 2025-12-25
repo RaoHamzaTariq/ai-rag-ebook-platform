@@ -13,7 +13,7 @@ if not GEMINI_API_KEY:
     logger.warning("Neither GOOGLE_API_KEY nor OPENAI_API_KEY set. The chatbot will fail at runtime until a key is provided.")
     # For now, we'll let it pass to allow the server to start (simple mode)
     # but actual agent runs will fail.
-    GEMINI_API_KEY = "PLACEHOLDER_KEY"
+    # GEMINI_API_KEY = "PLACEHOLDER_KEY"
 
 # Initialize OpenAI client wih Gemini API
 external_client = AsyncOpenAI(

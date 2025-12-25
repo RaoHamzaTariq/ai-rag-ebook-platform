@@ -22,6 +22,10 @@ app = FastAPI(
 )
 
 FRONTEND_URL= os.getenv("FRONTEND_URL")
+if not FRONTEND_URL:
+    logger.warning("No FRONTEND_URL set. The chatbot will fail at runtime until a key is provided.")
+
+
 # Configure CORS specifically for your frontend
 app.add_middleware(
 	CORSMiddleware,
@@ -42,16 +46,16 @@ app.include_router(user_router)
 
 @app.get("/", tags=["Health Check"])
 async def root():
-logger.info("Health check endpoint called")
-return {"status": "ok", "message": "RAG Backend System is running."}
+    logger.info("Health check endpoint called")
+    return {"status": "ok", "message": "RAG Backend System is running."}
 
 @app.on_event("startup")
 async def startup_event():
-logger.info("Startup successfully")
+    logger.info("Startup successfully")
 
 if __name__ == "__main__":
-import uvicorn
-import os
-logger.info("Starting RAG Backend System")
-port = int(os.environ.get("PORT", 8000))
-uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
+    import uvicorn
+    import os
+    logger.info("Starting RAG Backend System")
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
