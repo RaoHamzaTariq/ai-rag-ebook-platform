@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # 5. Copy all project files
-COPY . .
+COPY auth-server/ .
 
 # 6. Install TypeScript globally
 RUN npm install -g typescript
