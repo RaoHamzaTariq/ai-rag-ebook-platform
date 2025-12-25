@@ -40,17 +40,7 @@ class AgentClient {
         console.log(`Authenticated request for user: ${session.user.id}`);
       }
 
-      // Still try to get the JWT token but handle failure gracefully
-      try {
-        const tokenResult = await authClient.token();
-
-        if (tokenResult?.data?.token) {
-          headers['Authorization'] = `Bearer ${tokenResult.data.token}`;
-          console.log(headers)
-        }
-      } catch (tokenErr) {
-        console.log('JWT Fetch skipped or failed, using simple user identification', tokenErr);
-      }
+      // Skip JWT token fetching as JWT logic has been removed
 
       const response = await fetch(`${this.baseUrl}/agents/run`, {
         method: 'POST',

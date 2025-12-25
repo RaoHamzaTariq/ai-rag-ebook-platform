@@ -21,23 +21,10 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data: session, isPending } = useSession();
 
-  // Function to get JWT token from BetterAuth client and store it
+  // Function to get user info (JWT logic removed)
   const getTokenFromAuthClient = async (): Promise<string | null> => {
-    try {
-      const tokenResponse = await authClient.token();
-
-      const token = tokenResponse?.data?.token;
-
-      if (token) {
-        // Store the token for potential use by other parts of the app
-        storeToken(token);
-        return token;
-      }
-      return null;
-    } catch (error) {
-      console.error('Error getting token from auth client:', error);
-      return null;
-    }
+    // JWT logic has been removed, returning null
+    return null;
   };
 
   // Ensure session persistence across page refreshes

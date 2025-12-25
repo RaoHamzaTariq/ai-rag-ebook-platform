@@ -9,7 +9,7 @@ from sqlmodel import Session
 # Set up logger
 logger = logging.getLogger('auth')
 
-# Initialize the JWT Bearer authentication scheme
+# Initialize the authentication scheme (JWT logic removed, using X-User-ID header)
 oauth2_scheme = JWTBearer(auto_error=True)
 
 async def get_current_user_id(request: Request, _ = Depends(oauth2_scheme)) -> str:
@@ -18,21 +18,13 @@ async def get_current_user_id(request: Request, _ = Depends(oauth2_scheme)) -> s
     Always returns a value (either real user ID or a fallback).
     """
     try:
-        # The user_id should have been set in the request state by the JWTBearer middleware
+        # The user_id should have been set in the request state by the middleware
         user_id = getattr(request.state, 'user_id', None)
-        
+
         if not user_id:
             raise HTTPException(status_code=401, detail="Authentication required")
-        jwt_payload = getattr(request.state, 'user_jwt_payload', None)
 
-        # Sync user data from JWT/state if available
-        if jwt_payload:
-            try:
-                # Get database session to sync user data
-                with next(get_sync_db()) as session:
-                    await UserService.get_or_create_user_from_jwt_payload(session, jwt_payload)
-            except Exception as e:
-                logger.warning(f"Could not sync user data: {e}")
+        # JWT sync logic has been removed, only using X-User-ID header
 
         logger.info(f"Using User ID for request: {user_id}")
         return user_id
@@ -49,15 +41,6 @@ async def get_optional_user_id(request: Request, _ = Depends(oauth2_scheme)) -> 
     """
     try:
         user_id = getattr(request.state, 'user_id', None)
-        jwt_payload = getattr(request.state, 'user_jwt_payload', None)
-
-        if user_id and jwt_payload:
-            try:
-                # Get database session to sync user data
-                with next(get_sync_db()) as session:  # Using sync db as we're in a sync context
-                    await UserService.get_or_create_user_from_jwt_payload(session, jwt_payload)
-            except Exception as e:
-                logger.warning(f"Could not sync user data from JWT: {e}")
 
         if user_id:
             logger.info(f"Optional user ID retrieved: {user_id}")

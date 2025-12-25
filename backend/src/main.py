@@ -30,11 +30,12 @@ if not FRONTEND_URL:
 # Configure CORS specifically for your frontend
 app.add_middleware(
   CORSMiddleware,
-  allow_origins=[
-    os.getenv("FRONTEND_URL"),  # https://ai-ebook-platform.vercel.app
-    "http://localhost:3000",
-    "http://localhost:3001"
-  ],
+#   allow_origins=[
+#     os.getenv("FRONTEND_URL"),  # https://ai-ebook-platform.vercel.app
+#     "http://localhost:3000",
+#     "http://localhost:3001"
+#   ],
+  allow_origins=["*"],
   allow_credentials=True,
   allow_methods=["*"],
   allow_headers=["*"],

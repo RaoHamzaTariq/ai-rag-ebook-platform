@@ -8,8 +8,6 @@ python-frontmatter
 langchain
 langchain-community
 PyYAML
-python-jose[cryptography]
-cryptography
 asyncpg
 sqlmodel
 httpx
