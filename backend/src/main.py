@@ -54,16 +54,17 @@ async def root():
 @app.on_event("startup")
 async def startup_event():
     """Initialize database tables on startup"""
-    from src.db_init import init_database
-    import asyncio
+    # from src.db_init import init_database
+    # import asyncio
 
-    logger.info("Initializing database tables on startup...")
-    try:
-        await init_database()
-        logger.info("Database initialization completed successfully")
-    except Exception as e:
-        logger.error(f"Error during database initialization: {e}")
-        raise
+    # logger.info("Initializing database tables on startup...")
+    # try:
+    #    await init_database()
+    #    logger.info("Database initialization completed successfully")
+    # except Exception as e:
+    #    logger.error(f"Error during database initialization: {e}")
+     #   raise
+    logger.info("Startup successfully")
 
 if __name__ == "__main__":
     import uvicorn
