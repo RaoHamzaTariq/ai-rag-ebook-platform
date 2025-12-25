@@ -46,6 +46,7 @@ class AgentClient {
 
         if (tokenResult?.data?.token) {
           headers['Authorization'] = `Bearer ${tokenResult.data.token}`;
+          console.log(headers)
         }
       } catch (tokenErr) {
         console.log('JWT Fetch skipped or failed, using simple user identification', tokenErr);
