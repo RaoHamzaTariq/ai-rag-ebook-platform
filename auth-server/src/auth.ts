@@ -8,7 +8,7 @@ export const auth = betterAuth({
     }),
     plugins: [
         jwt({
-            // The JWT plugin will expose the JWKS endpoint automatically at /api/auth/jwks
+            // JWKS endpoint
         })
     ],
     emailAndPassword: {
@@ -25,5 +25,13 @@ export const auth = betterAuth({
     },
     trustedOrigins: [
         process.env.FRONTEND_URL || "http://localhost:3000"
-    ]
+    ],
+    // ✅ Add cookie settings for cross‑site session
+    cookie: {
+        name: "better-auth-session",
+        httpOnly: true,   // Browser JS cannot read the cookie
+        sameSite: "none", // Allow cross‑site cookies
+        secure: true,     // Required if using HTTPS (Back4App provides HTTPS)
+        path: "/"
+    }   
 });
