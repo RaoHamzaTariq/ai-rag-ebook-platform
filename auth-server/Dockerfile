@@ -6,7 +6,7 @@ WORKDIR /app
 
 # 3. Copy only package.json & package-lock.json first
 # This helps caching and speeds up rebuilds
-COPY auth-server/package*.json ./
+COPY package*.json ./
 
 # 4. Install dependencies
 RUN npm install
