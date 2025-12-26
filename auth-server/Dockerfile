@@ -1,7 +1,9 @@
-# Replace alpine with node:20-slim
+# 1. Change FROM node:20-alpine to node:20-slim
 FROM node:20-slim
 
-# The rest of your Dockerfile remains the same
+# 2. Add build dependencies (required for some Node modules on slim)
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY auth-server/package*.json ./
 RUN npm install
