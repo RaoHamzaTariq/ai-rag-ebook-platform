@@ -1,6 +1,5 @@
 # 1. Use Node 20 Alpine
-FROM node:20-alpine
-
+FROM node:20-slim
 # 2. Set working directory inside container
 WORKDIR /app
 
