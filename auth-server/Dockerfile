@@ -5,9 +5,9 @@ FROM node:20-slim
 RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY auth-server/package*.json ./
+COPY package*.json ./
 RUN npm install
-COPY auth-server/ .
+COPY / .
 RUN npm install -g typescript
 RUN tsc
 EXPOSE 3001
